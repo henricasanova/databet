@@ -1,0 +1,36 @@
+
+{
+
+
+  "cas": {
+    "baseUrl": "https://cas-test.its.hawaii.edu/cas/",
+    "autoClose": true
+  },
+  "public": {
+    "cas": {
+      "loginUrl": "https://cas-test.its.hawaii.edu/cas/login",
+      "serviceParam": "service",
+      "popupWidth": 810,
+      "popupHeight": 610
+    }
+  },
+
+  "authorized_nonCAS_users": {
+    "admin@": {
+      "username": "admin@",
+      "is_CAS": false,
+      "is_admin": true,
+      "name": "Admin User",
+      "email": "henric@hawaii.edu"
+    },
+    "testuser@": {
+      "username": "testuser@",
+      "is_CAS": false,
+      "is_admin": false,
+      "name": "Test User",
+      "email": "henric@hawaii.edu"
+    }
+  }
+
+}
+
