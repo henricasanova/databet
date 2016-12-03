@@ -1,15 +1,3 @@
-<!--<template name="Header">-->
-    <!--<div class="ui top fixed borderless inverted menu">-->
-  <!--<div class="ui container">-->
-      <!--<a class="item" href="{{pathFor 'Home_Page'}}"><h1>meteor-application-template</h1></a>-->
-      <!--{{#if currentUser}}-->
-        <!--<a class="{{ isActiveRoute 'Add_Stuff_Page'}} item" href="{{ pathFor 'Add_Stuff_Page' }}">Add Stuff </a>-->
-        <!--<a class="{{ isActiveRoute 'List_Stuff_Page'}} item" href="{{ pathFor 'List_Stuff_Page' }}">List Stuff</a>-->
-      <!--{{/if}}-->
-      <!--<a href="#" class="item">{{> loginButtons }} </a>-->
-    <!--</div>-->
-  <!--</div>-->
-<!--</template>-->
 
 <template name="Header">
 
@@ -17,7 +5,7 @@
 
     {{#if currentUser}}
 
-    <a class="item {{home_active}}" href="{{pathFor 'Home'}}">
+    <a class="item {{home_active}}" href="{{pathFor 'Home_Page'}}">
       <i class="ui icon list layout"></i>Todos
     </a>
 

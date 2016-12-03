@@ -15,6 +15,14 @@ FlowRouter.route('/FAQ', {
   },
 });
 
+
+FlowRouter.route('/InstructorViewArchived', {
+  name: 'InstructorViewArchived',
+  action() {
+    BlazeLayout.render("App_Body", {main: "InstructorViewArchived"});
+  },
+});
+
 FlowRouter.notFound = {
   action() {
     BlazeLayout.render('App_Body', { main: 'App_Not_Found' });

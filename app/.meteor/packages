@@ -54,3 +54,5 @@ alanning:roles
 useraccounts:core
 atoy40:accounts-cas
 random
+tomi:upload-server
+tomi:upload-jquery

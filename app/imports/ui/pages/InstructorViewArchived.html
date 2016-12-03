@@ -1,0 +1,87 @@
+<template name="InstructorViewArchived">
+
+  <div class="ui container raised padded text segment">
+    <h2 class="ui header aligned center">Previously Entered Assessments for Past Courses</h2>
+  </div>
+
+  <div class="ui container raised padded text segment">
+
+    {{#if isInRole 'admin'}}
+    <div class="ui grid">
+      <div class="twelve wide column"></div>
+      <div class="four wide column">
+        {{> AdminUserSelect }}
+      </div>
+    </div>
+    <hr>
+    {{/if}}
+
+    {{#if atLeastOneOfferedCourse}}
+    <table class="ui table">
+      <thead>
+      <tr>
+        <th class="two wide">Semester</th>
+        <th class="two wide">Course</th>
+        <th class="one wide center aligned"># Assessments</th>
+        <th class="five wide center aligned">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each listOfOfferedCourses}}
+      {{> OfferedCourseRowArchived }}
+      {{/each}}
+      </tbody>
+    </table>
+    {{else}}
+    <h3>No previously assessed courses</h3>
+    <!--<h3><a href="{{pathFor 'Home'}}">See your current courses...</a></h3>-->
+    {{/if}}
+
+
+  </div>
+
+</template>
+
+<template name="OfferedCourseRowArchived">
+
+  <tr>
+
+    <td> {{semester_string}}</td>
+    <td> {{course_alphanumeric}}</td>
+    <td class="center aligned">
+      {{#if is_there_at_least_one_assessment_item}}
+      <div class="ui circular label buttonpopup"><b>{{num_assessment_items}}</b></div>
+      <div class="ui flowing popup top left transition hidden">
+        <table class="ui small table celled">
+          <tr>
+            <td class="active"><b>Entered assessments</b></td>
+          </tr>
+          {{#each popup_info}}
+          <tr>
+            <td> {{this}}</td>
+          </tr>
+          {{/each}}
+        </table>
+      </div>
+      {{else}}
+      <div class="ui red circular label"><b>{{num_assessment_items}}</b></div>
+      <div class="ui flowing popup top left transition hidden">
+        This shouldn't happen...!
+      </div>
+      {{/if}}
+    </td>
+
+    <td class="center aligned">
+      <a href="{{pathFor 'AssessmentItems'}}/{{this._id}}" class="button circular ui icon green">
+        <i class="ui icon folder open outline"></i>&nbsp;Edit
+      </a>
+      &nbsp;
+      <button class="button circular ui icon red unarchive_course" id="{{this._id}}">
+        <i class="ui icon folder open outline"></i>&nbsp;Put back in todos
+      </button>
+    </td>
+
+
+  </tr>
+
+</template>

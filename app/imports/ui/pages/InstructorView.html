@@ -1,0 +1,87 @@
+<template name="InstructorView">
+
+  <div class="ui container raised padded text segment">
+
+    {{#if isInRole 'admin'}}
+    <div class="ui grid">
+      <div class="twelve wide column"></div>
+      <div class="four wide column">
+        {{> AdminUserSelect }}
+      </div>
+    </div>
+    <hr>
+    {{/if}}
+    <h2 class="ui header aligned center">Your todo list</h2>
+    {{#if atLeastOneOfferedCourse}}
+    <table class="ui table">
+      <thead>
+      <tr>
+        <th class="two wide">Semester</th>
+        <th class="two wide">Course</th>
+        <th class="one wide center aligned"># Assessments</th>
+        <th class="four wide center aligned">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each listOfOfferedCourses}}
+      {{> OfferedCourseRow }}
+      {{/each}}
+      </tbody>
+    </table>
+    {{else}}
+    <h3>You have nothing to do right now!<br><br>
+      <!--But you can look at  <a href="{{pathFor 'InstructorViewArchived'}}"> previously entered assessment data</a> to revisit it.-->
+    </h3>
+    {{/if}}
+
+  </div>
+
+</template>
+
+<template name="OfferedCourseRow">
+
+  <tr>
+
+    <td> {{semester_string}}</td>
+    <td> {{course_alphanumeric}}</td>
+    <td class="center aligned">
+      {{#if is_there_at_least_one_assessment_item}}
+      <div class="ui circular label buttonpopup"><b>{{num_assessment_items}}</b></div>
+      <div class="ui flowing popup top left transition hidden">
+        <table class="ui small table celled">
+          <tr>
+            <td class="active"><b>Already entered assessments</b></td>
+          </tr>
+          {{#each popup_info}}
+          <tr>
+            <td> {{this}}</td>
+          </tr>
+          {{/each}}
+        </table>
+      </div>
+      {{else}}
+      <div class="ui red circular label buttonpopup"><b>{{num_assessment_items}}</b></div>
+      <div class="ui flowing popup top left transition hidden">
+        You need to enter assessment for this course!
+      </div>
+      {{/if}}
+    </td>
+
+    <td class="right aligned">
+      <a class="button circular ui icon green"
+         href="{{pathFor 'AssessmentItems'}}/{{this._id}}">
+        <i class="ui icon folder open outline"></i>&nbsp;Assess</a>
+      {{#if is_there_at_least_one_assessment_item}}
+      <button class="button circular ui icon red archive_course" id="{{this._id}}">
+        <i class="ui icon folder closed outline"></i>&nbsp;Finalize
+      </button>
+      {{else}}
+      <button class="button circular ui icon red archive_course disabled" id="{{this._id}}">
+        <i class="ui icon folder closed outline"></i>&nbsp;Finalize
+      </button>
+      {{/if}}
+    </td>
+
+  </tr>
+
+</template>
