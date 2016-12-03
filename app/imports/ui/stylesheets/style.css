@@ -1,3 +1,7 @@
 body {
-  padding-top: 61px;  /* Move body of page below navbar. */
+  padding-top: 0px;  /* Move body of page below navbar. */
+}
+
+.help_message_text {
+  color:DarkGreen;
 }

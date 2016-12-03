@@ -15,8 +15,8 @@ echo ROOT_URL=$ROOT_URL
 export UPLOAD_DIR=`pwd`/UploadedFiles
 echo UPLOAD_DIR=$UPLOAD_DIR
 
-#SETTINGS_FILE=../config/settings.real.json
-SETTINGS_FILE=../config/settings.development.json
+#SETTINGS_FILE=../config/settings.development.json
+SETTINGS_FILE=../config/settings.real.json
 
 meteor --settings=$SETTINGS_FILE  --port $PORT --no-release-check
 

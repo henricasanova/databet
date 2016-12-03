@@ -1,14 +1,60 @@
 <template name="Home_Page">
-  <div class="ui middle aligned centered grid text container">
+  <!--<div class="ui middle aligned centered grid text container">-->
 
-    <div class="four wide column">
-	    <img class="ui small circular image" src="{{get_root_url}}/images/meteor-logo.png"/>
-    </div>
+    <!--<div class="four wide column">-->
+	    <!--<img class="ui small circular image" src="{{get_root_url}}/images/meteor-logo.png"/>-->
+    <!--</div>-->
 
-    <div class="eight wide column">
-      <h1>Welcome to this template</h1>
-      <p>Now get to work and modify this app!</p>
-    </div>
+    <!--<div class="eight wide column">-->
+      <!--<h1>Welcome to this template</h1>-->
+      <!--<p>Now get to work and modify this app!</p>-->
+    <!--</div>-->
 
+  <!--</div>-->
+
+
+  {{#if currentUser}}
+
+
+  <div class="ui container raised text container segment">
+    <h2 class="ui header aligned center">
+      Welcome to DataBET!<br>
+    </h2>
+
+    <h3 class="ui header aligned center"><a href="https://youtu.be/Jrma8Jv4YAY" target="_blank">Watch the DataBET walkthrough screencast</a></h3>
+    {{#if isInRole 'admin'}}
+    <p>
+      As an administrator you can use the top level menu to manage DataBET,
+      as well as see the Instructor View below.
+    </p>
+
+    {{else}}
+    <br>
+    <ul class="ui list">
+      <li> <h3 class="ui header">Below is your todo list</h3></li>
+      <li> <h3 class="ui header">Use the navigation bar above to look at <a href="{{pathFor 'InstructorViewArchived'}}">previous assessments</a>
+        or at the <a href="{{pathFor 'FAQ'}}">FAQs</a></h3></li>
+    </ul>
+
+
+    {{/if}}
   </div>
+
+  {{> InstructorView}}
+
+
+
+
+
+
+  <!--{{ get_current_username }}-->
+
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
+  {{/if}}
+
 </template>

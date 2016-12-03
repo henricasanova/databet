@@ -1,0 +1,26 @@
+<template name="Login">
+
+  {{#if currentUser}}
+
+  {{else}}
+
+  <div class="ui grid">
+    <div class="four wide column"></div>
+    <div class="four wide column">
+      <button class="ui green button cas-login">Login with UH Credentials</button>
+    </div>
+    <div class="four wide column">
+
+    <a href="{{pathFor 'NonCasLogin'}}" class="ui grey button noncas-login">Login with Preset Account</a>
+
+      </div>
+
+    <div class="four wide column"></div>
+
+
+  </div>
+
+  {{/if}}
+
+</template>
+

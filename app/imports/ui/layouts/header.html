@@ -1,12 +1,74 @@
+<!--<template name="Header">-->
+    <!--<div class="ui top fixed borderless inverted menu">-->
+  <!--<div class="ui container">-->
+      <!--<a class="item" href="{{pathFor 'Home_Page'}}"><h1>meteor-application-template</h1></a>-->
+      <!--{{#if currentUser}}-->
+        <!--<a class="{{ isActiveRoute 'Add_Stuff_Page'}} item" href="{{ pathFor 'Add_Stuff_Page' }}">Add Stuff </a>-->
+        <!--<a class="{{ isActiveRoute 'List_Stuff_Page'}} item" href="{{ pathFor 'List_Stuff_Page' }}">List Stuff</a>-->
+      <!--{{/if}}-->
+      <!--<a href="#" class="item">{{> loginButtons }} </a>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</template>-->
+
 <template name="Header">
-    <div class="ui top fixed borderless inverted menu">
-  <div class="ui container">
-      <a class="item" href="{{pathFor 'Home_Page'}}"><h1>meteor-application-template</h1></a>
-      {{#if currentUser}}
-        <a class="{{ isActiveRoute 'Add_Stuff_Page'}} item" href="{{ pathFor 'Add_Stuff_Page' }}">Add Stuff </a>
-        <a class="{{ isActiveRoute 'List_Stuff_Page'}} item" href="{{ pathFor 'List_Stuff_Page' }}">List Stuff</a>
-      {{/if}}
-      <a href="#" class="item">{{> loginButtons }} </a>
+
+  <div class="ui inverted blue labeled icon attached  menu">
+
+    {{#if currentUser}}
+
+    <a class="item {{home_active}}" href="{{pathFor 'Home'}}">
+      <i class="ui icon list layout"></i>Todos
+    </a>
+
+    <a class="item {{instructor_view_archived_active}}" href="{{pathFor 'InstructorViewArchived'}}">
+      <i class="ui icon archive"></i>Completed</a>
+
+    <a class="item {{FAQ_active}}" href="{{pathFor 'FAQ'}}">
+      <i class="ui icon info "></i>FAQs
+    </a>
+
+    {{#if isInRole 'admin'}}
+
+    <a class="item {{manage_users_active}}" href="{{pathFor 'ManageUsers'}}">
+      <i class="ui icon users"></i>Accounts</a>
+
+    <a class="item {{manage_curricula_active}}" href="{{pathFor 'ManageCurricula'}}">
+      <i class="ui icon university"></i> Curricula</a>
+
+    <a class="item {{manage_semesters_active}}" href="{{pathFor 'ManageSemesters'}}">
+      <i class="ui icon calendar"></i>Semesters</a>
+
+    <a class="item {{manage_reports_active}}" href="{{pathFor 'ManageReports'}}">
+      <i class="ui icon book"></i>Reports</a>
+
+    <a class="item {{manage_backups_active}}" href="{{pathFor 'ManageBackups'}}">
+      <i class="ui icon database"></i>Backups</a>
+
+    <a class="item {{statistics_active}}" href="{{pathFor 'Statistics'}}">
+      <i class="ui icon bar chart"></i>Statistics</a>
+
+    <a class="item {{doctor_active}}" href="{{pathFor 'Doctor'}}">
+      <i class="ui icon first aid"></i>Doctor</a>
+
+    {{/if}}
+
+
+    <div class="right menu">
+      {{> LogoutButton }}
     </div>
+
+    {{else}}
+
+    <br>
+    <h1 class="ui center aligned header inverted">
+      &nbsp;&nbsp;DataBET
+    </h1>
+    <br>
+
+    {{/if}}
+
   </div>
+  <br>
+
 </template>
