@@ -11,6 +11,7 @@ Template.List_Stuff_Page.helpers({
   },
 
   crap() {
-    return "COO";
+    return "CRAP";
   },
+
 });
