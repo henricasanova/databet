@@ -1,15 +1,6 @@
 import { Template } from 'meteor/templating';
 import { AccountsTemplates } from 'meteor/useraccounts:core';
 
-
-Template.Login.helpers({
-
-  crap() {
-    return "CRAP";
-  }
-
-});
-
 Template.Login.events({
 
   'click .cas-login': function(e) {
