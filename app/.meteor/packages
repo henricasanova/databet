@@ -30,7 +30,7 @@ aldeed:autoform
 sacha:spin
 
 # Account management
-accounts-ui@1.1.9
+accounts-ui
 accounts-password
 
 # Routing
@@ -56,3 +56,4 @@ atoy40:accounts-cas
 random
 tomi:upload-server
 tomi:upload-jquery
+useraccounts:semantic-ui

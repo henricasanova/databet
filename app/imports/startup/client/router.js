@@ -8,6 +8,13 @@ FlowRouter.route('/', {
   },
 });
 
+FlowRouter.route('/NonCasLogin', {
+  name: 'NonCasLogin',
+  action() {
+    BlazeLayout.render("App_Body", {main: "NonCasLogin"});
+  },
+});
+
 FlowRouter.route('/FAQ', {
   name: 'FAQ',
   action() {

@@ -1,4 +1,3 @@
-
 AssessmentItems = new Mongo.Collection("AssessmentItems");
 
 AssessmentItems.attachSchema(new SimpleSchema({

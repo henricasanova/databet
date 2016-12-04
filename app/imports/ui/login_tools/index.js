@@ -6,4 +6,4 @@ import './LogoutButton.js';
 
 import './NonCasLogin.html';
 
-import '../../startup/client/startup.js';
+//import '../../startup/client/login.js';

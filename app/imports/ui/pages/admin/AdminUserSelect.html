@@ -1,0 +1,20 @@
+<template name="AdminUserSelect">
+
+  {{#if currentUser}}
+  {{#if isInRole 'admin'}}
+
+  <select class="ui fluid dropdown admin_user_select">
+    {{#each listOfUsers}}
+    {{#if is_current_user}}
+    <option value="{{this._id}}" selected>{{this.username}}</option>
+    {{else}}
+    <option value="{{this._id}}">{{this.username}}</option>
+    {{/if}}
+    {{/each}}
+  </select>
+
+  {{/if}}
+  {{/if}}
+
+</template>
+
