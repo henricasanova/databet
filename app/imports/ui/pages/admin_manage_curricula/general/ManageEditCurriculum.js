@@ -78,7 +78,6 @@ Template.ManageEditCurriculum.helpers({
     if (curriculum) {
       return curriculum.description;
     } else {
-      console.log("** WEIRD ERROR in Template.ManageEditCurriculum.helpers when going back to previous page...");
       return null;
     }
   },

@@ -4,6 +4,6 @@
 import './ManageAddCurriculum.html';
 import './ManageAddCurriculum.js';
 import './ManageCurricula.html';
-import './ManageCurricula';
+import './ManageCurricula.js';
 import './ManageEditCurriculum.html';
-import './ManageEditCurriculum';
+import './ManageEditCurriculum.js';

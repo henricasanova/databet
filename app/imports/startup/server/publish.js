@@ -1,14 +1,10 @@
 import '../../api/databet_collections/';
 
-console.log("PUBLISHING COLLECTIONS");
-
 // Publish the Meteor.user collection
 Meteor.publish("Meteor.users", function() {
   if (Roles.userIsInRole(this.userId, 'admin')) {
-    console.log("USER IS ADMIN");
     return Meteor.users.find({});
   } else {
-    console.log("USER IS NOT ADMIN");
     return Meteor.users.find({_id: this.userId});
   }
 });
