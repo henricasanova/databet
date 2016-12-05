@@ -1,0 +1,87 @@
+<template name="ManageAddSemester">
+
+
+  <div class="ui container raised very padded text container segment">
+
+
+    {{#if curricula_not_empty}}
+
+    <form class="ui equal width form">
+
+      <h3 class="ui dividing header">Creating a new semester</h3>
+
+      <div class="fields">
+        <div class="field">
+          <select id="year" class="ui fluid dropdown year_select">
+            <option value="">Select a year</option>
+            {{#each year_range}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+          </select>
+          {{#if missing_year}}
+          <div class="ui pointing red basic label">
+            Enter a year
+          </div>
+          {{/if}}
+        </div>
+
+        <div class="field">
+          <select id="session" class="ui fluid dropdown session_select">
+            <option value="">Select a session</option>
+            <option value="Fall">Fall</option>
+            <option value="Spring">Spring</option>
+            <option value="Summer">Summer</option>
+          </select>
+          {{#if missing_session}}
+          <div class="ui pointing red basic label">
+            Select a session
+          </div>
+          {{/if}}
+        </div>
+</div>
+
+        <div class="field">
+          <select id="curriculum" class="ui fluid dropdown curriculum_select">
+            <option value="">Select a curriculum version</option>
+            {{#each curricula}}
+            <option value="{{this._id}}">{{this.description}}</option>
+            {{/each}}
+          </select>
+          {{#if missing_curriculum}}
+          <div class="ui pointing red basic label">
+            Select a curriculum version
+          </div>
+          {{/if}}
+        </div>
+
+
+      <div class="field">
+        {{#if already_exists}}
+        <div class="field ui red basic label">
+          Semester already exists
+        </div>
+        {{/if}}
+      </div>
+
+      <br>
+
+    </form>
+
+    <a class="ui button red cancel">Cancel</a>
+
+    <button class="ui button green submit">Create new Semester</button>
+
+
+    {{ else }}
+
+      <h4>You cannot add semesters before at least one curriculum is defined!</h4>
+
+    <a class="ui button red cancel">Ok</a>
+
+    {{/if}}
+
+
+
+  </div>
+
+</template>

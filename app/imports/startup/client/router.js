@@ -64,3 +64,24 @@ FlowRouter.route('/manage_edit_curriculum/:_id', {
     BlazeLayout.render("App_Body", {main: "ManageEditCurriculum"});
   },
 });
+
+FlowRouter.route('/manage_semesters', {
+  name: 'ManageSemesters',
+  action() {
+    BlazeLayout.render("App_Body", {main: "ManageSemesters"});
+  },
+});
+
+FlowRouter.route('/manage_edit_semester/:_id', {
+  name: 'ManageEditSemester',
+  action() {
+    BlazeLayout.render("App_Body", {main: "ManageEditSemester"});
+  },
+});
+
+FlowRouter.route('/manage_semester_email/:_id', {
+  name: 'ManageSemesterEmailInstructors',
+  action() {
+    BlazeLayout.render("App_Body", {main: "ManageSemesterEmailInstructors"});
+  },
+});
