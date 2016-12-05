@@ -1,0 +1,73 @@
+<template name="ManageAddCurriculum">
+
+  <div class="ui container raised very padded text container segment">
+
+    <form class="ui equal width form">
+      <h3 class="ui dividing header">Creating a new curriculum</h3>
+
+      <div class="field sixteen wide">
+        <label for="description">Description</label>
+        <input placeholder="Some text" id="description" type="text">
+        {{#if missing_description}}
+        <div class="ui pointing red basic label">
+          Please enter a (long enough) description
+        </div>
+        {{/if}}
+        {{#if already_exists}}
+        <div class="ui pointing red basic label">
+          Description already exists!
+        </div>
+        {{/if}}
+      </div>
+
+      {{#if atLeastOneCurriculum}}
+
+
+      <div class="inline fields">
+        <label>Clone an existing curriculum?</label>
+
+        <div class="field">
+          <div class="ui radio checkbox" id="dontCloneButton">
+            <input type="radio" name="cloning" id="dontClone" checked="" tabindex="0" class="hidden">
+            <label>No</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox" id="cloneButton">
+            <input type="radio" name="cloning" id="clone" tabindex="0" class="hidden">
+            <label>Yes</label>
+          </div>
+        </div>
+      </div>
+
+      {{#if cloning}}
+      <div class="field">
+
+        <select id="curriculum_select" class="ui fluid dropdown curriculum_select">
+          <option value="">Select a curriculum to clone</option>
+          {{#each curricula}}
+          <option value="{{this._id}}">{{this.description}}</option>
+          {{/each}}
+
+        </select>
+        {{#if missing_curriculum}}
+        <div class="ui pointing red basic label">
+          Specify a curriculum to clone
+        </div>
+        {{/if}}
+      </div>
+      {{/if}}
+
+
+      {{/if}}
+
+      <button class="ui button red cancel">Cancel</button>
+
+      <button class="ui button green submit">Create curriculum</button>
+
+
+    </form>
+
+  </div>
+
+</template>

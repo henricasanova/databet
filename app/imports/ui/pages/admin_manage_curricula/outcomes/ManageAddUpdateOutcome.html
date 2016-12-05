@@ -1,0 +1,80 @@
+<template name="ManageAddUpdateOutcome">
+
+
+  <div class="ui container raised very padded text segment">
+    <form class="ui equal width form">
+      {{#if is_add}}
+      <h3 class="ui dividing header">Creating a new Outcome</h3>
+      {{else}}
+      <h3 class="ui dividing header">Updating an existing Outcome</h3>
+      {{/if}}
+
+
+      <div class="field twelve wide">
+
+        <label for="description">Description</label>
+        {{#if is_add}}
+        <input  class="input_description" placeholder="Some text" id="description_new" type="text">
+        {{else}}
+        <input  class="input_description" value="{{outcomeToUpdate.description}}" id="description_{{outcomeToUpdate._id}}" type="text">
+        {{/if}}
+        {{#if missing_description}}
+        <div class="ui pointing red basic label">
+          Please enter a (long enough) description
+        </div>
+        {{/if}}
+        {{#if taken_description}}
+        <div class="ui pointing red basic label">
+          This Outcome already exists!
+        </div>
+        {{/if}}
+      </div>
+
+      {{#if is_update}}
+      <label>Performance Indicators</label>
+
+      <!--<div class="ui container segment twelve wide">-->
+
+      {{#each listOfPerformanceIndicators}}
+        <div class="inline fields twelve wide">
+          <div class="field eleven wide">
+            <input class="input_pi_description" value="{{this.description}}" id="pi_{{this._id}}" type="text">
+          </div>
+          <div class="field one wide">
+            <button class="button circular ui icon button green pi_up" id="pi_up_{{this._id}}"><i class="icon arrow up"></i></button>
+            <button class="circular ui icon button green pi_down" id="pi_down_{{this._id}}"><i class="icon arrow down"></i></button>
+            <button class="ui button red circular icon button_remove_pi" id="remove_pi_{{this._id}}"><i class="icon trash"></i></button>
+          </div>
+        </div>
+      {{/each}}
+
+      <!--</div>-->
+
+
+
+      <!--<div class="ui container segment twelve wide">-->
+        <div class="inline fields twelve wide">
+          <div class="field eleven wide">
+          <input class = "new_pi_description" placeHolder="Enter a new Performance Indicator" id="new_pi_description_{{outcomeToUpdate._id}}" type="text">
+          </div>
+          <div class="field one wide">
+          <button class= "ui button green circular icon button_add_pi " id="button_add_pi_{{outcomeToUpdate._id}}"><i class="icon add"></i></button>
+            </div>
+        </div>
+      <!--</div>-->
+
+      {{/if}}
+
+    </form>
+    <br>
+    {{#if is_add}}
+    <button class="ui button green" id="submit">Create Outcome</button>
+    <button class="ui button red" id="cancel">Cancel</button>
+    {{else}}
+    <button class="ui button green" id="submit">Apply Changes</button>
+    {{/if}}
+
+  </div>
+
+
+</template>

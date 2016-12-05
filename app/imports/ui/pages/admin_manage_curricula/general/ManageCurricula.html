@@ -1,0 +1,91 @@
+<template name="ManageCurricula">
+
+  <!--<h3 class="ui header center aligned">Curriculum management</h3>-->
+  <br>
+
+  <div class="ui container center">
+
+    {{#if atLeastOneCurriculum}}
+    <table class="ui table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Date created</th>
+        <th>Description</th>
+        <th class="two wide"></th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each listOfCurricula}}
+      {{> curriculumRow }}
+      {{/each}}
+      </tbody>
+    </table>
+    {{/if}}
+
+    {{#if add_curriculum_mode}}
+
+    {{> ManageAddCurriculum set_to_false_when_done=get_reference_to_reactive_var_add_curriculum_mode}}
+
+    {{else}}
+
+    <a class="ui button green" id="add_curriculum_button"><i class="ui icon add"></i>Add a new Curriculum</a>
+
+    {{/if}}
+
+  </div>
+
+
+</template>
+
+
+<template name="curriculumRow">
+
+
+  <div id="modal_{{this._id}}" class="ui scrolling modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Are you sure you want to remove curriculum {{this.description}}?
+    </div>
+
+    <div class="description">
+
+      <div class="ui three wide container padded center raised segment">
+        <h3>This curriculum is linked to:</h3>
+        <ul class="ui list">
+          <li class="item"><h4>Courses: <b>{{num_courses}}</b></h4></li>
+          <li class="item"><h4>Offered Courses: <b>{{num_offered_courses}}</b></h4></li>
+          <li class="item"><h4>Assessment Items: <b>{{num_assessment_items}}</b></h4></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="actions">
+      <div class="ui red button cancel">
+        <i class="remove icon"></i>
+        No
+      </div>
+      <div class="ui green button ok">
+        <i class="checkmark icon"></i>
+        Remove Curriculum
+      </div>
+    </div>
+  </div>
+
+
+  <tr>
+    <td>{{ this._id }}</td>
+    <td>{{ dateCreated }}</td>
+    <td>{{ curriculumDescription }}</td>
+    <td class="right align">
+      <a class="button circular ui icon button teal manage_edit_curriculum"
+         href="{{pathFor 'ManageEditCurriculum'}}/{{this._id}}">
+        <i class="icon edit"></i>
+      </a>
+      <button class="circular ui icon button red manage_delete_curriculum">
+        <i class="icon delete"></i>
+      </button>
+    </td>
+  </tr>
+</template>

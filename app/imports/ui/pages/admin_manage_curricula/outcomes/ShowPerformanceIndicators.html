@@ -1,0 +1,28 @@
+<template name="ShowPerformanceIndicators">
+
+
+  {{#if is_there_at_least_one_pi}}
+  <div class="ui button circular ui icon buttonpopup">
+  {{number_of_pis}}
+  </div>
+  {{else}}
+  <div class="ui button circular ui red icon buttonpopup">
+  <i class="ui icon warning"></i>
+  </div>
+  {{/if}}
+
+<div class="ui flowing popup top left transition hidden">
+
+  {{#if noPerformanceIndicator}}
+  No Performance Indicators<br>
+  You need to add at least one!
+  {{else}}
+  <table class="ui table">
+    {{#each listOfPerformanceIndicators}}
+    <tr><td> {{this.description}}</td></tr>
+    {{/each}}
+  </table>
+  {{/if}}
+</div>
+
+</template>

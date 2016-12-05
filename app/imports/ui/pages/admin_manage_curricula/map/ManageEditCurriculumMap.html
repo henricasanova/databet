@@ -1,0 +1,122 @@
+<template name="ManageEditCurriculumMap">
+
+  <div class="ui container center">
+
+    {{#if at_least_one_outcome}}
+
+    {{#if at_least_one_pi}}
+
+    {{#if at_least_one_course}}
+
+    <table class="ui table celled striped">
+
+      {{> CurriculumMapTableHead}}
+      {{#each list_of_outcomes}}
+        {{> OutcomeRows}}
+      {{/each}}
+    </table>
+
+
+    {{else}}
+    <h4>Empty curriculum map because there are no courses in curriculum</h4>
+    {{/if}}
+
+    {{else}}
+    <h4>Empty curriculum map because there are no performance indicators in curriculum</h4>
+    {{/if}}
+    {{else}}
+    <h4>Empty curriculum map because there are no student outcomes in curriculum</h4>
+    {{/if}}
+
+
+  </div>
+  <br>
+
+</template>
+
+
+<template name="OutcomeRows">
+
+  {{#each listOfPerformanceIndicators}}
+    {{> PerformanceIndicatorRow}}
+  {{/each}}
+
+</template>
+
+<template name="PerformanceIndicatorRow">
+
+  <tr>
+  <td class="one wide align left">
+
+    <div class="ui icon buttonpopup">
+      {{row_label}}
+    </div>
+    <div class="ui flowing popup top left transition hidden">
+      <table class="ui table celled">
+        <tr><td class="active"> <b>Outcome: </b>{{outcome_description}}</td></tr>
+        <tr><td> <b>Performance Indicator: </b>{{this.description}}</td></tr>
+      </table>
+    </div>
+
+  </td>
+  {{> CheckBoxes pi_id=this_id }}
+
+  </tr>
+
+</template>
+
+
+<template name="CheckBoxes">
+
+  {{#each listOfCourses}}
+  <td class="ui align center">
+    <!--COURSE: {{this._id}}-->
+    <!--PI: {{pi_id}}-->
+    <div class="ui checkbox">
+    {{#if ../../../../is_locked}}
+    <input disabled type="checkbox" name="example"
+        class="mapcheckbox" {{is_checked this_id pi_id elementary}} id="checkbox_elementary_{{this._id}}_{{pi_id}}"> <label>E</label>
+    {{else}}
+    <input type="checkbox" name="example"
+        class="mapcheckbox" {{is_checked this_id pi_id elementary}} id="checkbox_elementary_{{this._id}}_{{pi_id}}"> <label>E</label>
+    {{/if}}
+    </div>
+    <br>
+    <div class="ui checkbox">
+    {{#if ../../../../is_locked}}
+    <input disabled type="checkbox" name="example"
+        class="mapcheckbox" {{is_checked this_id pi_id proficient}} id="checkbox_proficient_{{this._id}}_{{pi_id}}"> <label>P</label>
+    {{else}}
+    <input type="checkbox" name="example"
+        class="mapcheckbox" {{is_checked this_id pi_id proficient}} id="checkbox_proficient_{{this._id}}_{{pi_id}}"> <label>P</label>
+    {{/if}}
+    </div>
+  </td>
+  {{/each}}
+
+</template>
+
+<template name="CurriculumMapTableHead">
+  <thead>
+  <tr>
+    <th class="left align one wide">
+      SOs/PIs
+    </th>
+    {{#each listOfCourses}}
+      {{> CurriculumMapTableHeadCell}}
+    {{/each}}
+  </tr>
+  </thead>
+</template>
+
+
+<template name="CurriculumMapTableHeadCell">
+  <th class="one wide">
+    <div class="ui icon buttonpopup">
+      {{this.alphanumeric}}
+    </div>
+    <div class="ui flowing popup top left transition hidden">
+      {{this.title}}
+    </div>
+  </th>
+</template>

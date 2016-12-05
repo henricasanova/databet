@@ -1,0 +1,105 @@
+<template name="ManageEditCurriculumCourses">
+
+  <div class="ui container center">
+
+    {{#if at_least_one_course}}
+    <table class="ui table">
+      <thead>
+      <tr>
+        <th class="three wide">ID</th>
+        <th class="two wide">Alphanumeric</th>
+        <th class="eight wide">Title</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each list_of_courses}}
+      {{> courseRow}}
+      {{/each}}
+      </tbody>
+    </table>
+    {{/if}}
+
+  </div>
+
+  <br>
+
+
+  {{#if add_course_mode}}
+  {{> ManageAddUpdateCourse action="add" set_to_false_when_done=get_reference_to_reactive_var_add_course_mode}}
+  {{else}}
+  {{#if is_locked}}
+  {{else}}
+  <button class="ui button green" id="button_add_course">Add a new course</button>
+  {{/if}}
+  {{/if}}
+
+</template>
+
+
+<template name="courseRow">
+
+
+  <div id="modal_delete_course_{{this._id}}" class="ui scrolling modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Are you sure you want to remove course {{this.alphanumeric}}?
+    </div>
+
+    <div class="description">
+
+      <div class="ui three wide container padded center raised segment">
+        <h3>This course is linked to:</h3>
+        <ul class="ui list">
+          <li class="item"><h4>Offered Courses: <b>{{num_offered_courses}}</b></h4></li>
+          <li class="item"><h4>Assessment Items: <b>{{num_assessment_items}}</b></h4></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="actions">
+      <div class="ui red button cancel">
+        <i class="remove icon"></i>
+        No
+      </div>
+      <div class="ui green button ok">
+        <i class="checkmark icon"></i>
+        Remove Course
+      </div>
+    </div>
+  </div>
+
+
+  <tr>
+
+    {{#if update_course_mode}}
+
+    <td colspan="4">
+      {{> ManageAddUpdateCourse action="update" courseId=courseId
+      set_to_false_when_done=get_reference_to_reactive_var_update_course_mode}}
+    </td>
+
+    {{else}}
+
+    <td>{{this._id}}</td>
+    <td>{{this.alphanumeric}}</td>
+    <td>{{this.title}}</td>
+    <td class="right align two wide">
+
+      {{#if ../is_locked}}
+      {{else}}
+      <button class="button circular ui icon button teal course_edit" value="{{this._id}}">
+        <i class="icon edit"></i>
+      </button>
+      <button class="circular ui icon button red course_delete" value="{{this._id}}">
+        <i class="icon delete"></i>
+      </button>
+      {{/if}}
+
+    </td>
+
+    {{/if}}
+  </tr>
+
+</template>

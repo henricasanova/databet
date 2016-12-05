@@ -1,0 +1,101 @@
+<template name="ManageEditCurriculum">
+
+
+  <div class="ui container center">
+
+    <h3 class="ui dividing header">Editing an existing curriculum</h3>
+
+
+    <div id="unlock_modal" class="ui basic modal">
+      <i class="close icon"></i>
+
+      <div class="header">
+        Are you sure you want to unlock {{curriculum_description}} ?
+      </div>
+
+      <div class="description">
+        <p>Modifying it may compromise the database if assessment data has been entered already.</p>
+      </div>
+      <div class="actions">
+        <div class="two fluid ui inverted buttons">
+          <div class="ui red basic inverted button cancel">
+            <i class="remove icon"></i>
+            No
+          </div>
+          <div class="ui green basic inverted button ok">
+            <i class="checkmark icon"></i>
+            Yes
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="ui container raised segment">
+      {{#if is_locked}}
+      <button class="button circular ui icon  red" id="button_unlock"><i class="icon lock"></i></button>
+      &nbsp; <b>This curriculum is locked</b>
+      {{else}}
+      <button class="button circular ui icon  green" id="button_lock"><i class="icon unlock"></i></button>
+      &nbsp; <b>This curriculum is not locked</b>
+      {{/if}}
+    </div>
+
+    {{#if is_locked}}
+
+    <h3>{{curriculum_description}}</h3>
+
+    {{else}}
+    <form class="ui equal width form">
+
+
+      <label for="curriculum_description">Curriculum description</label>
+
+      <div class="fields inline six wide">
+        <input placeholder="ICS XYZ" id="curriculum_description" type="text" value="{{curriculum_description}}">
+        &nbsp;
+        <button class="button circular ui icon button green" id="curriculum_description_update"><i
+            class="icon checkmark"></i></button>
+      </div>
+      <div class="field six wide">
+        {{#if missing_curriculum_description}}
+        <div class="ui pointing red basic label">
+          Please enter a (long enough) description
+        </div>
+        {{/if}}
+        {{#if curriculum_already_exists}}
+        <div class="ui pointing red basic label">
+          This curriculum already exists!
+        </div>
+        {{/if}}
+      </div>
+
+    </form>
+    {{/if}}
+
+
+    <div class="ui top attached tabular menu">
+      <div class="active item" id="outcomes_tab" data-tab="outcomes_tab">Student Outcomes</div>
+      <div class="item" id="courses_tab" data-tab="courses_tab">Courses</div>
+      <div class="item" id="map_tab" data-tab="map_tab">Curriculum Map</div>
+    </div>
+    <div class="ui active bottom attached tab segment" data-tab="outcomes_tab">
+      {{> ManageEditCurriculumOutcomes is_locked=is_locked }}
+    </div>
+    <div class="ui bottom attached  tab segment" data-tab="courses_tab">
+      {{> ManageEditCurriculumCourses is_locked=is_locked}}
+    </div>
+    <div class="ui bottom attached  tab segment" data-tab="map_tab">
+      {{> ManageEditCurriculumMap is_locked=is_locked}}
+    </div>
+
+    <br>
+
+    <a href="{{pathFor 'ManageCurricula'}}" class="ui button grey goback">Go back</a>
+
+  </div>
+
+</template>
+
+
+

@@ -1,0 +1,118 @@
+<template name="ManageEditCurriculumOutcomes">
+
+  <div class="ui container center">
+
+    {{#if at_least_one_outcome}}
+    <table class="ui table">
+      <thead>
+      <tr>
+        <th class="three wide">ID</th>
+        <th class="six wide">Description</th>
+        <th class="three wide center aligned">Performance Indicators</th>
+        <th class="four wide"></th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each list_of_outcomes}}
+      {{> OutcomeRow}}
+      {{/each}}
+      </tbody>
+    </table>
+    {{/if}}
+
+  </div>
+
+  <br>
+
+  {{#if add_outcome_mode}}
+  {{> ManageAddUpdateOutcome action="add" set_to_false_when_done=get_reference_to_reactive_var_add_outcome_mode}}
+  {{else}}
+  {{#if is_locked}}
+  {{else}}
+  <button class="ui button green" id="button_add_outcome"><i class="ui icon add"></i>Add a new Outcome</button>
+  {{/if}}
+  {{/if}}
+
+</template>
+
+
+
+<template name="OutcomeRow">
+
+
+  <div id="modal_delete_outcome_{{this._id}}" class="ui scrolling modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Are you sure you want to remove outcome "{{this.description}}"?
+    </div>
+
+    <div class="description">
+
+      <div class="ui three wide container padded center raised segment">
+        <h3>This student outcome is linked to:</h3>
+        <ul class="ui list">
+          <li class="item"><h4>Performance Indicators: <b>{{num_performance_indicators}}</b></h4></li>
+          <li class="item"><h4>Courses: <b>{{num_courses}}</b></h4></li>
+          <li class="item"><h4>Offered Courses: <b>{{num_offered_courses}}</b></h4></li>
+          <li class="item"><h4>Assessment Items: <b>{{num_assessment_items}}</b></h4></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="actions">
+      <div class="ui red button cancel">
+        <i class="remove icon"></i>
+        No
+      </div>
+      <div class="ui green button ok">
+        <i class="checkmark icon"></i>
+        Remove Student Outcome
+      </div>
+    </div>
+  </div>
+
+
+
+  <tr>
+
+    {{#if update_outcome_mode}}
+
+    <td colspan="3">
+      {{> ManageAddUpdateOutcome action="update" outcomeId=outcomeId set_to_false_when_done=get_reference_to_reactive_var_update_outcome_mode}}
+    </td>
+
+    {{else}}
+
+    <td>{{this._id}}</td>
+    <td>{{this.description}}</td>
+    <td class="center aligned">
+      {{> ShowPerformanceIndicators outcomeId=outcomeId }}
+    </td>
+    <td class="right aligned">
+
+      {{#if ../is_locked}}
+      {{else}}
+
+        <button class="button circular ui icon button green outcome_up" value="{{this._id}}">
+          <i class="icon arrow up"></i>
+        </button>
+
+        <button class="circular ui icon button green outcome_down" value="{{this._id}}">
+          <i class="icon arrow down"></i>
+        </button>
+
+        <button class="button circular ui icon button teal outcome_edit" value="{{this._id}}">
+          <i class="icon edit"></i>
+        </button>
+        <button class="circular ui icon button red outcome_delete" value="{{this._id}}">
+          <i class="icon delete"></i>
+        </button>
+
+      {{/if}}
+      </td>
+
+    {{/if}}
+  </tr>
+
+</template>

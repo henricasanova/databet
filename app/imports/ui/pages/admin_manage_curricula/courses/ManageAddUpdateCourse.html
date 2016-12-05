@@ -1,0 +1,60 @@
+<template name="ManageAddUpdateCourse">
+
+  <div class="ui container raised very padded text segment">
+    <form class="ui equal width form">
+      {{#if is_add}}
+      <h3 class="ui dividing header">Creating a new course</h3>
+      {{else}}
+      <h3 class="ui dividing header">Updating an existing course</h3>
+      {{/if}}
+
+
+      <div class="field eight wide">
+
+        <label for="alphanumeric">Alphanumeric</label>
+        {{#if is_add}}
+        <input placeholder="ICS XYZ" id="alphanumeric" type="text">
+        {{else}}
+        <input value="{{courseToUpdate.alphanumeric}}" id="alphanumeric" type="text">
+        {{/if}}
+        {{#if missing_alphanumeric}}
+        <div class="ui pointing red basic label">
+          Please enter a (long enough) alphanumeric identifier
+        </div>
+        {{/if}}
+        {{#if taken_alphanumeric}}
+        <div class="ui pointing red basic label">
+          This course already exists!
+        </div>
+        {{/if}}
+      </div>
+
+      <div class="field sixteen wide">
+        <label for="title">Course Title</label>
+        {{#if is_add}}
+        <input placeholder="Some text" id="title" type="text">
+        {{else}}
+        <input value="{{courseToUpdate.title}}" id="title" type="text">
+        {{/if}}
+        {{#if missing_title}}
+        <div class="ui pointing red basic label">
+          Please enter a (long enough) description
+        </div>
+        {{/if}}
+      </div>
+
+    </form>
+    <br>
+
+    <button class="ui button red" id="cancel">Cancel</button>
+
+    {{#if is_add}}
+    <button class="ui button green" id="submit">Create course</button>
+    {{else}}
+    <button class="ui button green" id="submit">Update course</button>
+    {{/if}}
+
+  </div>
+
+
+</template>
