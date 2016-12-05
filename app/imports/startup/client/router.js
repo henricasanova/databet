@@ -43,3 +43,11 @@ FlowRouter.route('/manage_users', {
   },
 });
 
+
+FlowRouter.route('/manage_statistics', {
+  name: 'ManageStatistics',
+  action() {
+    BlazeLayout.render("App_Body", {main: "ManageStatistics"});
+  },
+});
+
