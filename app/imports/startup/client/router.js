@@ -51,3 +51,9 @@ FlowRouter.route('/manage_statistics', {
   },
 });
 
+FlowRouter.route('/manage_curricula', {
+  name: 'ManageCurricula',
+  action() {
+    BlazeLayout.render("App_Body", {main: "ManageCurricula"});
+  },
+});

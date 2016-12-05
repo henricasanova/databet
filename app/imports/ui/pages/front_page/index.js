@@ -1,7 +1,7 @@
 /**
  * Created by casanova on 12/4/16.
  */
-import 'front_page.html';
+import './front_page.html';
 
-import 'InstructorView.html';
-import 'InstructorView.js';
+import './InstructorView.html';
+import './InstructorView.js';

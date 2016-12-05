@@ -100,6 +100,6 @@ Template.ManageEditCurriculum.helpers({
 });
 
 
-Template.ManageEditCurriculumOutcomes.onRendered(function () {
-});
+// Template.ManageEditCurriculumOutcomes.onRendered(function () {
+// });
 
