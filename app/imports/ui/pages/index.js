@@ -12,3 +12,9 @@ import './archive_page/InstructorViewArchived.js';
 
 import './admin_user_select/AdminUserSelect.html';
 import './admin_user_select/AdminUserSelect.js';
+
+
+import './admin_manage_users/ManageAddUpdateUser.html';
+import './admin_manage_users/ManageAddUpdateUser.js';
+import './admin_manage_users/ManageUsers.html';
+import './admin_manage_users/ManageUsers.js';

@@ -1,0 +1,138 @@
+<template name="ManageAddUpdateUser">
+
+  <div class="ui container raised very padded text segment">
+    <form class="ui equal width form ">
+      {{#if is_add}}
+      <h3 class="ui dividing header">Creating a new user</h3>
+      {{else}}
+      <h3 class="ui dividing header">Updating an existing user</h3>
+      {{/if}}
+
+      <div class="inline fields">
+        <label for="isAdmin">Should user be an admin?</label>
+        <div class="field">
+          <div class="ui radio checkbox">
+            {{#if is_add}}
+            <input type="radio" name="isAdmin" id="isNotAdmin" checked="" tabindex="0" class="hidden">
+            {{else}}
+            {{#if userToUpdate.is_admin}}
+            <input type="radio" name="isAdmin" id="isNotAdmin" tabindex="0" class="hidden">
+            {{else}}
+            <input type="radio" name="isAdmin" id="isNotAdmin" checked="" tabindex="0" class="hidden">
+            {{/if}}
+            {{/if}}
+            <label>No</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox">
+            {{#if is_add}}
+            <input type="radio" name="isAdmin" id="isAdmin" tabindex="0" class="hidden">
+            {{else}}
+            {{#if userToUpdate.is_admin}}
+            <input type="radio" name="isAdmin" id="isAdmin" checked="" tabindex="0" class="hidden">
+            {{else}}
+            <input type="radio" name="isAdmin" id="isAdmin" tabindex="0" class="hidden">
+            {{/if}}
+            {{/if}}
+            <label>Yes</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field sixteen wide">
+        <label>Username</label>
+        {{#if is_add}}
+        <input type="text" placeholder="username" id="username">
+        {{#if missing_username}}
+        <div class="ui pointing red basic label">
+          Please enter a (long enough) username
+        </div>
+        {{/if}}
+        {{#if taken_username}}
+        <div class="ui pointing red basic label">
+          This username is already taken
+        </div>
+        {{/if}}
+        {{else}}
+        <input disabled type="text" value="{{userToUpdate.username}}" id="username">
+        {{/if}}
+      </div>
+
+      <div class="field sixteen wide">
+        <label>E-mail address (defaults to username@hawaii.edu)</label>
+        {{#if is_add}}
+        <input type="text" placeholder="e-mail" id="email">
+        {{else}}
+        <input type="text" value="{{userToUpdate.email}}" id="email">
+        {{/if}}
+      </div>
+
+      <div class="field sixteen wide">
+        <label>Name</label>
+        {{#if is_add}}
+        <input type="text" placeholder="John Smith" id="name">
+        {{else}}
+        <input type="text" value="{{userToUpdate.name}}" id="name">
+        {{/if}}
+        {{#if missing_name }}
+        <div class="ui pointing red basic label">
+          Please enter a (long enough) name
+        </div>
+        {{/if}}
+      </div>
+
+      {{#if is_add}}
+      <div class="inline fields">
+        <label for="emailNotification">Send e-mail notification?</label>
+        <div class="field">
+          <div class="ui radio checkbox" id="dontSendEmailButton">
+            <input type="radio" name="emailNotification" id="dontSendEmail" checked="" tabindex="0" class="hidden">
+            <label>No</label>
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox" id="sendEmailButton">
+            <input type="radio" name="emailNotification" id="sendEmail" tabindex="0" class="hidden">
+            <label>Yes</label>
+          </div>
+        </div>
+
+      </div>
+
+      {{#if send_email}}
+      <div class="field sixteen wide">
+        <label for="notification_text">Notification message:</label>
+        <textarea id="notification_text">
+Greetings,
+
+You have been registered as a DataBET user.
+
+At some point in the future you will
+be asked to enter assessment data for
+courses you have taught, at which point you
+go to the DataBET Web site at
+{{get_root_url}} and login using your UHM credentials!
+
+thanks!
+DataBET
+
+PS: Do not reply to this e-mail.
+        </textarea>
+      </div>
+      {{/if}}
+      {{/if}}
+
+      {{#if is_add}}
+      <button class="ui button green submit">Create user</button>
+      {{else}}
+      <button class="ui button green submit">Update user</button>
+      {{/if}}
+
+      <button class="ui button red cancel">Cancel</button>
+
+    </form>
+
+  </div>
+
+</template>

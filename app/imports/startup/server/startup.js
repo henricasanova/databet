@@ -1,59 +1,82 @@
-import '../../api/databet_collections/';
+console.log("SERVER-SIDE: ROOT_URL = ", process.env.ROOT_URL);
 
-console.log("PUBLISHING COLLECTIONS");
-
-// Publish the Meteor.user collection
-Meteor.publish("Meteor.users", function() {
-  if (Roles.userIsInRole(this.userId, 'admin')) {
-    console.log("USER IS ADMIN");
-    return Meteor.users.find({});
-  } else {
-    console.log("USER IS NOT ADMIN");
-    return Meteor.users.find({_id: this.userId});
+Meteor.startup(function () {
+  try {
+    configure_email();
+    //initialize_upload_server();
+    reset_globals();
+  } catch (e) {
+    throw(e);
   }
+  console.log("Server running at: ", Meteor.absoluteUrl());
+
 });
 
-// Publish the Semesters collection
-Meteor.publish("Semesters", function() {
-  return Semesters.find({});
-});
 
-// Publish the Curricula collection
-Meteor.publish("Curricula", function() {
-  return Curricula.find({});
-});
+function configure_email() {
+  smtp = {
+    username: 'icsdatabet@gmail.com',
+    password: 'fg$341s351Sdw69',
+    server:   'smtp.gmail.com',
+    port: 465
+  };
 
-// Publish the StudentOutcomes collection
-Meteor.publish("StudentOutcomes", function() {
-  return StudentOutcomes.find({});
-});
+  process.env.MAIL_URL = 'smtp://' + encodeURIComponent(smtp.username) + ':' + encodeURIComponent(smtp.password) + '@' + encodeURIComponent(smtp.server) + ':' + smtp.port;
+  console.log("====> ", process.env.MAIL_URL);
+}
 
-// Publish the PerformanceIndicators collection
-Meteor.publish("PerformanceIndicators", function() {
-  return PerformanceIndicators.find({});
-});
+function initialize_upload_server() {
 
-// Publish the Courses collection
-Meteor.publish("Courses", function() {
-  return Courses.find({});
-});
 
-// Publish the OfferedCourses collection
-Meteor.publish("OfferedCourses", function() {
-  return OfferedCourses.find({});
-});
+  var upload_root = process.env.UPLOAD_DIR;
+  if (upload_root == undefined) {
+    throw new Meteor.Error("UPLOAD_DIR environment variable must be defined");
+  }
+  //var upload_root = process.env.PWD + '/.uploads/';
 
-// Publish the CurriculumMappings collection
-Meteor.publish("CurriculumMappings", function() {
-  return CurriculumMappings.find({});
-});
+  UploadServer.init({
+    tmpDir: upload_root+'/tmp',
+    uploadDir: upload_root,
+    uploadUrl: "/upload",  // Seems to work with a custom ROOT_URL (see Client startup) - with some hacking
+    checkCreateDirectories: true,
+    getDirectory: function(fileInfo, formData) {
+      if (formData && formData.directoryName != null) {
+        return formData.directoryName;
+      }
+      return "";
+    },
+    getFileName: function(fileInfo, formData) {
+      if (formData && formData.prefix != null) {
+        return formData.prefix + '_' + fileInfo.name;
+      }
+      return fileInfo.name;
+    },
+    finished: function(fileInfo, formData) {
+    }
+  });
 
-// Publish the AssessmentItems collection
-Meteor.publish("AssessmentItems", function() {
-  return AssessmentItems.find({});
-});
+  // Make the assessment_uploads sub-directory
+  console.log("Creating Directory "+upload_root+"/assessment_uploads/ ...");
+  var Future=Npm.require("fibers/future");
+  var exec=Npm.require("child_process").exec;
+  var future = new Future();
+  var dir = process.env.PWD;
+  var command = "mkdir -p "+ upload_root + "/assessment_uploads/";
+  exec(command, {cwd: dir}, function (error, stdout, stderr) {
+    if (error) {
+      console.log(error);
+      throw new Meteor.Error(500, command + " failed");
+    }
+    future.return(stdout.toString());
+  });
+  future.wait();
 
-// Publish the UploadedFiles collection
-Meteor.publish("UploadedFiles", function() {
-  return UploadedFiles.find({});
-});
+}
+
+function reset_globals() {
+
+  // some_global  (could come in handy)
+  Globals.remove({name: "some_global"});
+  Globals.insert({name: "some_global", value: ""});
+
+}

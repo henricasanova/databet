@@ -1,6 +1,12 @@
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 
+FlowRouter.notFound = {
+  action() {
+    BlazeLayout.render('App_Body', { main: 'App_Not_Found' });
+  },
+};
+
 FlowRouter.route('/', {
   name: 'Home_Page',
   action() {
@@ -23,15 +29,17 @@ FlowRouter.route('/FAQ', {
 });
 
 
-FlowRouter.route('/InstructorViewArchived', {
+FlowRouter.route('/archived', {
   name: 'InstructorViewArchived',
   action() {
     BlazeLayout.render("App_Body", {main: "InstructorViewArchived"});
   },
 });
 
-FlowRouter.notFound = {
+FlowRouter.route('/manage_users', {
+  name: 'ManageUsers',
   action() {
-    BlazeLayout.render('App_Body', { main: 'App_Not_Found' });
+    BlazeLayout.render("App_Body", {main: "ManageUsers"});
   },
-};
+});
+
