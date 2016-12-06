@@ -7,11 +7,11 @@ import { AssessmentItems } from '../../../../api/databet_collections/AssessmentI
 import { Meteor } from 'meteor/meteor';
 
 
-Template.ManageEditCurriculumOutcomes.onRendered(function() {
+Template.EditCurriculumOutcomes.onRendered(function() {
 
 });
 
-Template.ManageEditCurriculumOutcomes.onCreated(function() {
+Template.EditCurriculumOutcomes.onCreated(function() {
 
   this.add_outcome_mode = new ReactiveVar();
 
@@ -21,7 +21,7 @@ Template.ManageEditCurriculumOutcomes.onCreated(function() {
 
 
 //noinspection JSUnusedLocalSymbols
-Template.ManageEditCurriculumOutcomes.events({
+Template.EditCurriculumOutcomes.events({
 
   'click #button_add_outcome': function(e) {
     Template.instance().add_outcome_mode.set(true);
@@ -31,7 +31,7 @@ Template.ManageEditCurriculumOutcomes.events({
 });
 
 
-Template.ManageEditCurriculumOutcomes.helpers({
+Template.EditCurriculumOutcomes.helpers({
 
   "list_of_outcomes": function() {
     var curriculumId = FlowRouter.getParam('_id');

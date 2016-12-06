@@ -1,4 +1,4 @@
-<template name="ManageEditCurriculumCourses">
+<template name="EditCurriculumCourses">
 
   <div class="ui container center">
 
@@ -26,7 +26,7 @@
 
 
   {{#if add_course_mode}}
-  {{> ManageAddUpdateCourse action="add" set_to_false_when_done=get_reference_to_reactive_var_add_course_mode}}
+  {{> AddUpdateCourse action="add" set_to_false_when_done=get_reference_to_reactive_var_add_course_mode}}
   {{else}}
   {{#if is_locked}}
   {{else}}
@@ -76,7 +76,7 @@
     {{#if update_course_mode}}
 
     <td colspan="4">
-      {{> ManageAddUpdateCourse action="update" courseId=courseId
+      {{> AddUpdateCourse action="update" courseId=courseId
       set_to_false_when_done=get_reference_to_reactive_var_update_course_mode}}
     </td>
 

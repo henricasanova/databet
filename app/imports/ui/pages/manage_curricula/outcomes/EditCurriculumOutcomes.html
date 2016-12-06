@@ -1,4 +1,4 @@
-<template name="ManageEditCurriculumOutcomes">
+<template name="EditCurriculumOutcomes">
 
   <div class="ui container center">
 
@@ -25,7 +25,7 @@
   <br>
 
   {{#if add_outcome_mode}}
-  {{> ManageAddUpdateOutcome action="add" set_to_false_when_done=get_reference_to_reactive_var_add_outcome_mode}}
+  {{> AddUpdateOutcome action="add" set_to_false_when_done=get_reference_to_reactive_var_add_outcome_mode}}
   {{else}}
   {{#if is_locked}}
   {{else}}
@@ -79,7 +79,7 @@
     {{#if update_outcome_mode}}
 
     <td colspan="3">
-      {{> ManageAddUpdateOutcome action="update" outcomeId=outcomeId set_to_false_when_done=get_reference_to_reactive_var_update_outcome_mode}}
+      {{> AddUpdateOutcome action="update" outcomeId=outcomeId set_to_false_when_done=get_reference_to_reactive_var_update_outcome_mode}}
     </td>
 
     {{else}}

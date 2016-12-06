@@ -4,7 +4,7 @@ import { Courses } from '../../../../api/databet_collections/Courses';
 import { OfferedCourses } from '../../../../api/databet_collections/OfferedCourses';
 import { AssessmentItems } from '../../../../api/databet_collections/AssessmentItems';
 
-Template.ManageEditCurriculumCourses.onCreated(function () {
+Template.EditCurriculumCourses.onCreated(function () {
 
   this.add_course_mode = new ReactiveVar();
 
@@ -13,7 +13,7 @@ Template.ManageEditCurriculumCourses.onCreated(function () {
 });
 
 
-Template.ManageEditCurriculumCourses.events({
+Template.EditCurriculumCourses.events({
 
   'click #button_add_course': function (e) {
     Template.instance().add_course_mode.set(true);
@@ -23,7 +23,7 @@ Template.ManageEditCurriculumCourses.events({
 });
 
 
-Template.ManageEditCurriculumCourses.helpers({
+Template.EditCurriculumCourses.helpers({
 
   "list_of_courses": function () {
     var curriculumId = FlowRouter.getParam('_id');

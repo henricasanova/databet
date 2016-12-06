@@ -2,10 +2,10 @@ import { Template } from 'meteor/templating';
 import { Courses } from '../../../../api/databet_collections/Courses';
 import { Meteor } from 'meteor/meteor';
 
-Template.ManageAddUpdateCourse.onRendered(function () {
+Template.AddUpdateCourse.onRendered(function () {
 });
 
-Template.ManageAddUpdateCourse.onCreated(function () {
+Template.AddUpdateCourse.onCreated(function () {
 
   this.missing_alphanumeric = new ReactiveVar();
   this.missing_title = new ReactiveVar();
@@ -17,7 +17,7 @@ Template.ManageAddUpdateCourse.onCreated(function () {
 
 });
 
-Template.ManageAddUpdateCourse.events({
+Template.AddUpdateCourse.events({
 
   'click #cancel': function (e) {
     e.preventDefault();
@@ -102,7 +102,7 @@ Template.ManageAddUpdateCourse.events({
 
 });
 
-Template.ManageAddUpdateCourse.helpers({
+Template.AddUpdateCourse.helpers({
 
   missing_alphanumeric: function () {
     return Template.instance().missing_alphanumeric.get();

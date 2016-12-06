@@ -40,7 +40,7 @@ Template.ManageCurricula.events({
 
 Template.curriculumRow.events({
 
-  'click .manage_delete_curriculum': function (e) {
+  'click .delete_curriculum': function (e) {
     e.preventDefault();
 
     var curriculumId = this._id;

@@ -1,4 +1,4 @@
-<template name="ManageEditCurriculum">
+<template name="EditCurriculum">
 
 
   <div class="ui container center">
@@ -80,18 +80,18 @@
       <div class="item" id="map_tab" data-tab="map_tab">Curriculum Map</div>
     </div>
     <div class="ui active bottom attached tab segment" data-tab="outcomes_tab">
-      {{> ManageEditCurriculumOutcomes is_locked=is_locked }}
+      {{> EditCurriculumOutcomes is_locked=is_locked }}
     </div>
     <div class="ui bottom attached  tab segment" data-tab="courses_tab">
-      {{> ManageEditCurriculumCourses is_locked=is_locked}}
+      {{> EditCurriculumCourses is_locked=is_locked}}
     </div>
     <div class="ui bottom attached  tab segment" data-tab="map_tab">
-      {{> ManageEditCurriculumMap is_locked=is_locked}}
+      {{> EditCurriculumMap is_locked=is_locked}}
     </div>
 
     <br>
 
-    <a href="{{pathFor 'ManageCurricula'}}" class="ui button grey goback">Go back</a>
+    <a href="{{pathFor 'Curricula'}}" class="ui button grey goback">Go back</a>
 
   </div>
 

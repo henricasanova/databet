@@ -2,12 +2,12 @@ import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { Curricula } from '../../../../api/databet_collections/Curricula';
 
-Template.ManageEditCurriculum.onRendered(function () {
+Template.EditCurriculum.onRendered(function () {
   $('.tabular.menu .item').tab();
 
 });
 
-Template.ManageEditCurriculum.onCreated(function () {
+Template.EditCurriculum.onCreated(function () {
 
   this.missing_curriculum_description = new ReactiveVar();
   this.curriculum_already_exists = new ReactiveVar();
@@ -17,7 +17,7 @@ Template.ManageEditCurriculum.onCreated(function () {
 
 });
 
-Template.ManageEditCurriculum.events({
+Template.EditCurriculum.events({
 
   'keydown #curriculum_description': function (e) {
     Template.instance().missing_curriculum_description.set(false);
@@ -74,7 +74,7 @@ Template.ManageEditCurriculum.events({
   }
 });
 
-Template.ManageEditCurriculum.helpers({
+Template.EditCurriculum.helpers({
 
   "curriculum_description": function () {
     var curriculumId = FlowRouter.getParam('_id');

@@ -4,10 +4,10 @@ import { PerformanceIndicators } from '../../../../api/databet_collections/Perfo
 import { StudentOutcomes } from '../../../../api/databet_collections/StudentOutcomes';
 import { _ } from 'meteor/underscore';
 
-Template.ManageAddUpdateOutcome.onRendered(function () {
+Template.AddUpdateOutcome.onRendered(function () {
 });
 
-Template.ManageAddUpdateOutcome.onCreated(function () {
+Template.AddUpdateOutcome.onCreated(function () {
 
   this.missing_description = new ReactiveVar();
   this.taken_description = new ReactiveVar();
@@ -17,7 +17,7 @@ Template.ManageAddUpdateOutcome.onCreated(function () {
 
 });
 
-Template.ManageAddUpdateOutcome.events({
+Template.AddUpdateOutcome.events({
 
   'click #cancel': function (e) {
     e.preventDefault();
@@ -197,7 +197,7 @@ Template.ManageAddUpdateOutcome.events({
 
 });
 
-Template.ManageAddUpdateOutcome.helpers({
+Template.AddUpdateOutcome.helpers({
 
   missing_description: function () {
     return Template.instance().missing_description.get();

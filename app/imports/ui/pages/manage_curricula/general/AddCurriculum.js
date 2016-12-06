@@ -8,11 +8,11 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 
-Template.ManageAddCurriculum.onRendered(function () {
+Template.AddCurriculum.onRendered(function () {
   $('.ui.radio.checkbox').checkbox();
 });
 
-Template.ManageAddCurriculum.onCreated(function () {
+Template.AddCurriculum.onCreated(function () {
 
   this.missing_description = new ReactiveVar();
   this.missing_curriculum = new ReactiveVar();
@@ -26,7 +26,7 @@ Template.ManageAddCurriculum.onCreated(function () {
 
 });
 
-Template.ManageAddCurriculum.events({
+Template.AddCurriculum.events({
 
   'click .cancel': function (e) {
     e.preventDefault();
@@ -170,7 +170,7 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
 
 }
 
-Template.ManageAddCurriculum.helpers({
+Template.AddCurriculum.helpers({
 
   missing_description: function () {
     return Template.instance().missing_description.get();

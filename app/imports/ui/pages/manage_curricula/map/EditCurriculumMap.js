@@ -5,7 +5,7 @@ import { PerformanceIndicators } from '../../../../api/databet_collections/Perfo
 import { CurriculumMappings } from '../../../../api/databet_collections/CurriculumMappings';
 import { Meteor } from 'meteor/meteor';
 
-Template.ManageEditCurriculumMap.helpers({
+Template.EditCurriculumMap.helpers({
   "list_of_outcomes": function () {
     var curriculumId = FlowRouter.getParam('_id');
     return StudentOutcomes.find({"curriculum": curriculumId}, {sort: {order: 1}});
