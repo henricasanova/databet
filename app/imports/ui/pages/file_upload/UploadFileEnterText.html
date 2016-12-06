@@ -1,0 +1,86 @@
+<template name="UploadFileEnterText">
+
+  <div class="fields">
+    <div class="inline fields">
+      <div class="field">
+        <div class="ui radio checkbox">
+          {{#if is_add}}
+          <input type="radio" name="upload_option_{{my_name}}" id="upload_method_file_{{my_name}}" checked tabindex="0"
+                 class="hidden upload_method_file">
+          {{else}}
+          {{#if initial_method_is_file}}
+          <input type="radio" name="upload_option_{{my_name}}" id="upload_method_file_{{my_name}}" checked tabindex="0"
+                 class="hidden upload_method_file">
+          {{else}}
+          <input type="radio" name="upload_option_{{my_name}}" id="upload_method_file_{{my_name}}" tabindex="0"
+                 class="hidden upload_method_file">
+          {{/if}}
+          {{/if}}
+          <label>I want to upload a file (.txt,.pdf,.jpg,.zip,.tgz,.tar)</label>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui radio checkbox">
+          {{#if is_add}}
+          <input type="radio" name="upload_option_{{my_name}}" id="upload_method_text_{{my_name}}" tabindex="0"
+                 class="hidden upload_method_text">
+          {{else}}
+          {{#if initial_method_is_text}}
+          <input type="radio" name="upload_option_{{my_name}}" id="upload_method_text_{{my_name}}" checked tabindex="0"
+                 class="hidden upload_method_text">
+          {{else}}
+          <input type="radio" name="upload_option_{{my_name}}" id="upload_method_text_{{my_name}}" tabindex="0"
+                 class="hidden upload_method_text">
+          {{/if}}
+          {{/if}}
+          <label>I want to type plain text</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{#if upload_method_is_file}}
+
+  {{#if is_update}}
+  {{#if previously_uploaded_file_exists}}
+  <div class="field">
+    <label>Previously uploaded file:
+      <a href="{{previously_uploaded_file_url}}" target="_blank">[Click here to view]</a>
+    </label>
+  </div>
+  {{/if}}
+  {{/if}}
+  <!--<h5 class="ui header">Select a file and click Upload</h5>-->
+  <div class="field">
+    <label>Choose a file and click upload:</label>
+  </div>
+
+  {{> upload_semanticUI fileTypes='.txt,.pdf,.jpg,.zip,.tgz,.tar' multiple=false callbacks=file_upload_callbacks}}
+  {{#if missing_file}}
+  <div class="ui pointing red basic label">
+    Select a file and upload it!
+  </div>
+  {{/if}}
+
+  {{/if}}
+
+
+  {{#if upload_method_is_text}}
+
+  <div class="field">
+    <label>Enter text below</label>
+  </div>
+
+  <div class="field sixteen wide">
+    <textarea placeholder="Type or cut-and-paste plain text here..." id="{{text_area_id}}" class="text_area">{{current_text_area_value}}</textarea>
+    {{#if missing_text}}
+    <div class="ui pointing red basic label">
+      Enter a (long enough) text above!
+    </div>
+    {{/if}}
+  </div>
+
+  {{/if}}
+
+
+</template>

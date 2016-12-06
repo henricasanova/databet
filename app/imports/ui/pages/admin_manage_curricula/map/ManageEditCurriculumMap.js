@@ -1,3 +1,10 @@
+import { Template } from 'meteor/templating';
+import { StudentOutcomes } from '../../../../api/databet_collections/StudentOutcomes';
+import { Courses } from '../../../../api/databet_collections/Courses';
+import { PerformanceIndicators } from '../../../../api/databet_collections/PerformanceIndicators';
+import { CurriculumMappings } from '../../../../api/databet_collections/CurriculumMappings';
+import { Meteor } from 'meteor/meteor';
+
 Template.ManageEditCurriculumMap.helpers({
   "list_of_outcomes": function () {
     var curriculumId = FlowRouter.getParam('_id');

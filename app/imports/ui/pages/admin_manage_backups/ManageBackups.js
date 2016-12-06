@@ -1,4 +1,5 @@
 import { collection_dictionary } from '../../../startup/both/collection_dictionary.js';
+import { Meteor } from 'meteor/meteor';
 
 Template.ManageBackups.onCreated(function () {
   this.zip_file_requested = new ReactiveVar();

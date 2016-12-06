@@ -1,3 +1,9 @@
+import { Template } from 'meteor/templating';
+import { Meteor } from 'meteor/meteor';
+import { Courses } from '../../../../api/databet_collections/Courses';
+import { OfferedCourses } from '../../../../api/databet_collections/OfferedCourses';
+import { AssessmentItems } from '../../../../api/databet_collections/AssessmentItems';
+
 Template.ManageEditCurriculumCourses.onCreated(function () {
 
   this.add_course_mode = new ReactiveVar();

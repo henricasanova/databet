@@ -1,3 +1,6 @@
+// import { Template } from 'meteor/templating';
+import { PerformanceIndicators } from '../../../../api/databet_collections/PerformanceIndicators';
+
 Template.ShowPerformanceIndicators.onRendered(function () {
     $('.buttonpopup')
       .popup()

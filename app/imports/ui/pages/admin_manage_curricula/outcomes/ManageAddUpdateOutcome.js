@@ -1,3 +1,9 @@
+import { Template } from 'meteor/templating';
+import { Meteor } from 'meteor/meteor';
+import { PerformanceIndicators } from '../../../../api/databet_collections/PerformanceIndicators';
+import { StudentOutcomes } from '../../../../api/databet_collections/StudentOutcomes';
+import { _ } from 'meteor/underscore';
+
 Template.ManageAddUpdateOutcome.onRendered(function () {
 });
 

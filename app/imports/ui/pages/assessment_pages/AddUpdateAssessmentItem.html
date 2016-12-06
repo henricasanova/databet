@@ -1,0 +1,379 @@
+<template name="AddUpdateAssessmentItem">
+
+  {{#if is_visible}}
+
+  <div class="ui container raised padded text segment fluid">
+
+
+    {{#if is_add}}
+    <h3 class="ui  header center aligned ">Entering new assessment data for {{course_string}}, {{semester_string}}</h3>
+    {{else}}
+    <h3 class="ui  header center aligned">Updating existing assessment data for {{course_string}},
+      {{semester_string}}</h3>
+    {{/if}}
+    <div class="ui message olive">
+      <div class="help_message_text">
+      This is the one page on which you enter assessment data for this course offering. Follow the 4 steps below
+      and save by clicking the button at the bottom of the page. You must fill in all fields to be able to save.
+      </div>
+    </div>
+
+    <div class="inline fields center aligned">
+      <div class="field">
+        <div class="ui checkbox">
+          <input type="checkbox" id="enable_help" checked="checked" tabindex="0" class="hidden">
+          <label>Show help messages below</label>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <!-- PERFORMANCE INDICATOR -->
+  <div class="ui container raised padded text segment fluid">
+    <form class="ui fluid form">
+
+      <!--PERFORMANCE INDICATOR-->
+      <h4>Step #1: Pick the relevant performance indicator</h4>
+
+      {{#if help_is_enabled}}
+      <div class="ui message olive">
+        <div class="help_message_text">
+
+        Your course has one or more associated performance indicators, based on the curriculum map
+        defined by the department, which are included in the pulldown list below. Each one
+        corresponds to a measure of how well students have learned. Pick the most relevant one for this
+        assessment. Some performance indicators are tagged with an "Elementary" or "Proficient" qualifier, which is
+        admittedly <i>subjective</i>, that you should select using your best judgement.<br>
+        You are expected to enter assessment data for at least 1 PI for a course. Entering 2 is great. More
+        is really up to you. Trying to enter assessment data for all PIs is overkill.
+      </div>
+      </div>
+      {{/if}}
+
+      <div class="field">
+        <select id="curriculum_mapping" class="ui fluid dropdown scrolling curriculum_mapping_select">
+          <option value="">Select a performance indicator (scrollable dropdown)</option>
+          {{#each list_of_curriculum_mappings}}
+          {{#if is_add}}
+          <option value="{{this._id}}" class="inverted red">{{curr_mapping_description}} ({{curr_mapping_level}})
+          </option>
+          {{else}}
+          {{#if curriculum_mapping_is_selected}}
+          <option value="{{this._id}}" selected class="inverted red"> {{curr_mapping_description}}
+            ({{curr_mapping_level}})
+          </option>
+          {{else}}
+          <option value="{{this._id}}" class="inverted red"> {{curr_mapping_description}} ({{curr_mapping_level}})
+          </option>
+          {{/if}}
+          {{/if}}
+
+          {{/each}}
+        </select>
+        {{#if missing_content "curriculum_mapping"}}
+        <div class="ui pointing red basic label">
+          Select a performance indicator
+        </div>
+        {{/if}}
+      </div>
+
+    </form>
+
+  </div>
+
+  <!-- ASSESSMENT QUESTION -->
+  <div class="ui container raised padded text segment fluid">
+    <form class="ui fluid form">
+      <h4>Step #2: Enter the assessment question</h4>
+      {{#if help_is_enabled}}
+      <div class="ui message olive">
+        <div class="help_message_text">
+
+        This section is about the work students had to do, which is called an "assessment". You have to enter an
+        "assessment type" (the kind of things students had to do), and the an "assessment question" (what you asked them
+        to do).
+      </div>
+      </div>
+      {{/if}}
+      <br>
+
+      <div class="ui grid">
+        <div class="field nine wide">
+          <label for="assessment_item_type">A) Pick an assessment question type from the list below</label>
+          <select id="assessment_item_type" class="ui fluid ten wide dropdown scrolling assessment_item_type_select">
+            <option value="">Select an assessment type (scrollable dropdown)</option>
+            {{#each list_of_assessment_item_types}}
+            {{#if is_add}}
+            <option value="{{this}}">{{this}}</option>
+            {{else}}
+            {{#if assessment_type_is_selected}}
+            <option value="{{this}}" selected>{{this}}</option>
+            {{else}}
+            <option value="{{this}}">{{this}}</option>
+
+            {{/if}}
+            {{/if}}
+            {{/each}}
+            {{#if assessment_type_other_is_selected}}
+            <option value="other" selected>Other...</option>
+            {{else}}
+            <option value="other">Other...</option>
+            {{/if}}
+          </select>
+          <!--{{#if missing_assessment_item_type}}-->
+          {{#if missing_content "assessment_item_type"}}
+          <div class="ui pointing red basic label">
+            Select an assessment type
+          </div>
+          {{/if}}
+        </div>
+
+        {{#if type_is_other}}
+        <div class="field seven wide">
+          <label for="custom_assessment_item_type_input">&nbsp; &nbsp;</label>
+          {{#if is_add}}
+          <input placeholder="Describe your assessment type..." id="custom_assessment_item_type_input" type="text">
+          {{else}}
+          <input placeholder="Describe your assessment type..." id="custom_assessment_item_type_input" type="text"
+                 value="{{type_other_value}}">
+          {{/if}}
+          <!--{{#if missing_assessment_item_type_input}}-->
+          {{#if missing_content "custom_assessment_item_type"}}
+          <div class="ui pointing red basic label">
+            Enter a (long enough) assessment type description
+          </div>
+          {{/if}}
+        </div>
+        {{/if}}
+
+      </div>
+      <br>
+      <br>
+
+      <!--ASSESSMENT QUESTION-->
+
+      <div class="ui field">
+        <label for="assessment_item_type">B) Enter the assessment question itself:</label>
+      </div>
+
+      {{> UploadFileEnterText context=assessment_question_upload_context}}
+
+
+    </form>
+  </div>
+
+  <!-- GRADES -->
+  <div class="ui container raised padded text segment fluid">
+
+    <form class="ui fluid form">
+
+      <!-- GRADES -->
+      <h4>Step #3: Enter student grades</h4>
+
+      {{#if help_is_enabled}}
+      <div class="ui message olive">
+        <div class="help_message_text">
+
+        This section is where you enter anonymous students grades. It's simply a maximum grade value and a list of
+        grades.
+      </div>
+      </div>
+      {{/if}}
+
+
+      <div class="field">
+        <label for="maximum_grade">A) Enter the maximum obtainable grade (not counting extra credit) </label>
+      </div>
+      <div class="field four wide">
+        {{#if is_add}}
+        <input placeholder="e.g., 100" id="maximum_grade" value="">
+        {{else}}
+        <input id="maximum_grade" value="{{existing_item_content 'max_grade'}}">
+        {{/if}}
+        <!--{{#if missing_maximum_grade}}-->
+        {{#if missing_content "maximum_grade"}}
+        <div class="ui pointing red basic label">
+          Enter a maximum grade
+        </div>
+        {{/if}}
+        {{#if invalid_maximum_grade}}
+        <div class="ui pointing red basic label">
+          Enter a valid maximum grade
+        </div>
+        {{/if}}
+      </div>
+
+      <!--{{#if max_grade_has_been_entered}}-->
+
+      <div class="field">
+        <label for="assessment_grades">B) Enter numerical grades obtained by students (on one line and/or multiple lines, separated by commas,
+          spaces, and/or carriage returns):
+        </label>
+        <textarea placeholder="e.g., 13, 96, 45, 77, ..." id="assessment_grades" rows=5>{{#if is_update}}{{existing_item_content "grades"}}{{/if}}</textarea>
+        <!--{{#if missing_grades}}-->
+        {{#if missing_content "grades"}}
+        <div class="ui pointing red basic label">
+          Enter grades obtained by students
+        </div>
+        {{/if}}
+        {{#if invalid_grades}}
+        <div class="ui pointing red basic label">
+          Enter valid numerical grades!
+        </div>
+        {{/if}}
+      </div>
+
+      <!--{{/if}}-->
+
+
+    </form>
+
+  </div>
+
+  <!-- STUDENT ANSWERS -->
+  <div class="ui container raised padded text segment fluid">
+
+
+    <form class="ui fluid form">
+
+      <!-- SAMPLE STUDENT ANSWERS -->
+      <h4>Step #4: Enter sample student answers</h4>
+
+      {{#if help_is_enabled}}
+      <div class="ui olive message">
+        <div class="help_message_text">
+
+        In this last section you enter sample actual student answers ("poor", "mid-range", and "good"), one
+        in each of the three tabs below.
+      </div>
+      </div>
+      {{/if}}
+
+
+      <!--<div class="field">-->
+      <!--<label> Upload/Enter sample student answers for each of the three tabs below-->
+      <!--</label>-->
+      <!--</div>-->
+
+      <div class="ui top attached tabular menu">
+        <div class="active item" id="poor_tab" data-tab="poor_tab">Poor Answer &nbsp;
+          {{#if save_has_been_clicked_once}}
+          {{#if are_there_errors_in_poor_tab}} <i class="icon red warning"> </i> {{else}} <i class="icon green check"></i> {{/if}}
+          {{/if}}
+        </div>
+        <div class="item" id="medium_tab" data-tab="medium_tab">Mid-Range Answer &nbsp;
+          {{#if save_has_been_clicked_once}}
+          {{#if are_there_errors_in_medium_tab}} <i class="icon red warning"> </i> {{else}} <i class="icon green check"></i> {{/if}}
+          {{/if}}
+        </div>
+        <div class="item" id="good_tab" data-tab="good_tab">Good Answer &nbsp;
+          {{#if save_has_been_clicked_once}}
+          {{#if are_there_errors_in_good_tab}} <i class="icon red warning"> </i> {{else}} <i class="icon green check"></i> {{/if}}
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="ui active bottom attached tab segment" data-tab="poor_tab">
+        {{#if help_is_enabled}}
+
+        <div class="ui olive message">
+          <div class="help_message_text">
+
+          A poor answer is not an empty answer, but simply an answer in which the student made several (perhaps typical)
+          mistakes, which lead to overall poor performance for the selected performance indicator.
+        </div>
+        </div>
+        {{/if}}
+
+        {{> UploadFileEnterText context=sample_poor_answer_upload_context}}
+      </div>
+
+      <div class="ui bottom attached  tab segment" data-tab="medium_tab">
+        {{#if help_is_enabled}}
+
+        <div class="ui olive message ">
+          <div class="help_message_text">
+
+          A mid-range answer corresponds to a "middle of the pack" student (which, is of course <b>subjective</b>), with
+          some valid answer and demonstration that some knowledge
+          has been acquire, but still a significant margin for improvement.
+        </div>
+        </div>
+        {{/if}}
+        {{> UploadFileEnterText context=sample_medium_answer_upload_context}}
+      </div>
+
+      <div class="ui bottom attached  tab segment" data-tab="good_tab">
+        {{#if help_is_enabled}}
+
+        <div class="ui olive message">
+          <div class="help_message_text">
+
+          A good answer is one in which the student demonstrated that knowledge has been acquired. This can be by a
+          student who score 100%, but it actually does not need to be
+          100% correct. It just need to be a "this student got this" answer.
+        </div>
+        </div>
+        {{/if}}
+
+        {{> UploadFileEnterText context=sample_good_answer_upload_context}}
+      </div>
+
+
+      <br>
+      {{#if some_missing_sample_answers}}
+      <div class="ui  red basic label">
+        {{some_missing_sample_answers_warning}}
+      </div>
+      {{/if}}
+
+
+    </form>
+    <br>
+
+  </div>
+
+  <!-- COMMENTS -->
+  <div class="ui container raised padded text segment fluid">
+
+    <form class="ui fluid form">
+
+      <h4>Optional comments:</h4>
+      <div class="field">
+        <textarea rows=4 placeholder="Enter comments here about this assesment data, optionally..." id="comments">{{#if is_update}}{{existing_item_content "comments"}}{{/if}}</textarea>
+      </div>
+
+    </form>
+
+  </div>
+
+
+  <div class="ui container raised padded text fluid">
+
+    {{#if are_there_errors}}
+    <div class="ui  red basic label">
+      Correct the above errors
+    </div>
+    <br>
+    <br>
+    {{/if}}
+
+    {{#if is_add}}
+    <button class="ui button green" id="submit">Save</button>
+    {{else}}
+    <button class="ui button green" id="submit">Save</button>
+    {{/if}}
+
+    <button class="ui button red" id="cancel">Cancel</button>
+
+
+  </div>
+  <br>
+
+  {{else}}
+  NOT VISIBLE!!!
+  {{/if}}
+
+</template>

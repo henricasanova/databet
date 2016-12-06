@@ -1,3 +1,7 @@
+import { Meteor } from 'meteor/meteor';
+import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
+import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
+
 Template.UnreachableFiles.onCreated(function () {
   this.download_error = new ReactiveVar();
   this.waiting_for_list_of_unreachable_assessment_files = new ReactiveVar();

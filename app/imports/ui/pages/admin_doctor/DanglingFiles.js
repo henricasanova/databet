@@ -1,3 +1,7 @@
+import { Template } from 'meteor/templating';
+import { Meteor } from 'meteor/meteor';
+import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles'
+
 Template.DanglingFiles.onCreated(function () {
 
   this.download_error = new ReactiveVar();
@@ -77,6 +81,7 @@ Template.DanglingFileRow.onRendered(function () {
   ;
 });
 
+//noinspection JSUnusedLocalSymbols
 Template.DanglingFileRow.events({
 
   "click .manage_delete_item": function (e) {

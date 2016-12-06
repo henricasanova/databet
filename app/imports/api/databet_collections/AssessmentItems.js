@@ -1,4 +1,4 @@
-AssessmentItems = new Mongo.Collection("AssessmentItems");
+export var AssessmentItems = new Mongo.Collection("AssessmentItems");
 
 AssessmentItems.attachSchema(new SimpleSchema({
   offered_course: {

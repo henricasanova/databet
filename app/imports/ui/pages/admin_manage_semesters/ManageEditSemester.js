@@ -1,3 +1,11 @@
+import { Template } from 'meteor/templating';
+import { Semesters } from '../../../api/databet_collections/Semesters.js';
+import { Courses } from '../../../api/databet_collections/Courses.js';
+import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses.js';
+import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems.js';
+import { Meteor } from 'meteor/meteor';
+
+
 Template.ManageEditSemester.onCreated(function() {
   this.missing_instructor = new ReactiveVar();
   this.missing_alphanumeric = new ReactiveVar();
@@ -6,7 +14,6 @@ Template.ManageEditSemester.onCreated(function() {
   Template.instance().missing_instructor.set(false);
   Template.instance().missing_alphanumeric.set(false);
   Template.instance().already_exists.set(false);
-
 });
 
 Template.ManageEditSemester.helpers({
@@ -37,8 +44,7 @@ Template.ManageEditSemester.helpers({
     var semester_id = FlowRouter.getParam('_id');
     var semester = Semesters.findOne({"_id": semester_id});
     var curriculum_id = semester.curriculum;
-    var courses = Courses.find({"curriculum": curriculum_id}, {sort: {alphanumeric: 1}}).fetch();
-    return courses;
+    return Courses.find({"curriculum": curriculum_id}, {sort: {alphanumeric: 1}}).fetch();
   },
 
   "listOfUsers": function() {

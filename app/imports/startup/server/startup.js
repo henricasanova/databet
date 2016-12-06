@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import { Globals } from '../../api/databet_collections/Globals';
+
 console.log("SERVER-SIDE: ROOT_URL = ", process.env.ROOT_URL);
 
 Meteor.startup(function () {
@@ -47,7 +50,7 @@ function initialize_upload_server() {
     },
     getFileName: function(fileInfo, formData) {
       if (formData && formData.prefix != null) {
-        return formData.prefix + '_' + fileInfo.name;
+        return formData.prefix + '____' + fileInfo.name;
       }
       return fileInfo.name;
     },

@@ -1,4 +1,4 @@
-UploadedFiles = new Mongo.Collection("UploadedFiles");
+export var UploadedFiles = new Mongo.Collection("UploadedFiles");
 
 UploadedFiles.attachSchema(new SimpleSchema({
 

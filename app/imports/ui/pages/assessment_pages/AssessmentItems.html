@@ -1,0 +1,104 @@
+<template name="AssessmentItems">
+
+  <div class="ui container">
+
+    {{#if add_mode}}
+
+    {{> AddUpdateAssessmentItem action="add"
+    set_to_false_when_done=get_reference_to_reactive_var_add_assessment_item_mode}}
+
+    {{else}}
+
+    <div class="ui container center  raised segment padded">
+
+      <h2 class="ui dividing header">Assessment for {{course_offering_string}}</h2>
+
+      {{#if at_least_one_assessment_item}}
+
+      <table class="ui table">
+        <thead>
+        <tr>
+          <th>Date last modified</th>
+          <th>Type</th>
+          <th class="six wide"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each list_of_assessment_items}}
+        {{> AssessmentItemRow assessment_item=this._id set_to_modal_content=for_modal}}
+        {{/each}}
+        </tbody>
+      </table>
+
+      {{/if}}
+
+      <button class="ui button green" id="button_add_assessment_item">
+        <i class="ui icon add"></i>Add New Assessment Data
+      </button>
+      <br>
+
+    </div>
+
+    <!--<a href="{{pathFor 'Home'}}" class="ui button grey goback">Go back</a>-->
+
+    {{/if}}
+
+  </div>
+
+  {{> DeleteAssessmentItemModal modal_content=for_modal}}
+
+</template>
+
+
+<template name="DeleteAssessmentItemModal">
+
+  <div id="delete_assessment_item_modal" class="ui scrolling modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Are you sure you want to remove this assessment item?
+    </div>
+
+    <div class="description">
+
+      <div class="ui three wide container padded center raised segment">
+        <!--<h3>This assignment was last modified on {{trim_date this.date_last_modified}}</h3>-->
+        <!--<h3>It is of type '{{this.assessment_type}}'</h3>-->
+        <ul class="ui ul">
+          {{# each modal_content}}
+          <li class="ui item">{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+
+    <div class="actions">
+      <div class="ui red button cancel">
+        <i class="remove icon"></i>
+        No
+      </div>
+      <div class="ui green button ok">
+        <i class="checkmark icon"></i>
+        Remove Assessment Item
+      </div>
+    </div>
+  </div>
+
+</template>
+
+
+<template name="AssessmentItemRow">
+  <tr>
+    <td><b>{{date_last_modified}}</b></td>
+    <td><b>{{assessment_type}}</b></td>
+    <td class="right align">
+      <a class="button  ui  teal" href="{{pathFor 'EditAssessmentItem'}}/{{assessment_id}}">
+        <i class="icon edit"></i>Edit
+      </a>
+      <button class="button  ui  red" value="{{_id}}" id="button_delete_assessment_item">
+        <i class="icon delete"></i>Delete
+      </button>
+    </td>
+  </tr>
+
+
+</template>

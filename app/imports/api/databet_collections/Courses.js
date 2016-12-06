@@ -1,5 +1,4 @@
-
-Courses = new Mongo.Collection("Courses");
+export var Courses = new Mongo.Collection("Courses");
 
 Courses.attachSchema(new SimpleSchema({
   alphanumeric: {

@@ -1,5 +1,5 @@
 
-Semesters = new Mongo.Collection("Semesters");
+export var Semesters = new Mongo.Collection("Semesters");
 
 Semesters.attachSchema(new SimpleSchema({
   session: {

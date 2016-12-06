@@ -1,3 +1,11 @@
+import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses';
+import { Semesters } from '../../../api/databet_collections/Semesters';
+import { Courses } from '../../../api/databet_collections/Courses';
+import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
+import { _ } from 'meteor/underscore';
+import { get_current_user } from '../../../ui/global_helpers/users_and_usernames';
+import { Meteor } from 'meteor/meteor';
+
 Template.InstructorViewArchived.helpers({
 
   "listOfOfferedCourses": function () {

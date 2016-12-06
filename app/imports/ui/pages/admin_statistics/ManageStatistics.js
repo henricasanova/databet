@@ -1,3 +1,11 @@
+import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
+import { Courses } from '../../../api/databet_collections/Courses';
+import { Curricula } from '../../../api/databet_collections/Curricula';
+import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses';
+import { Semesters } from '../../../api/databet_collections/Semesters';
+import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
+import { trim_date } from '../../../ui/global_helpers/trim_date';
+
 Template.ManageStatistics.helpers({
   num_users: function() {
     return Meteor.users.find({}).count();

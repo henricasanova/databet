@@ -1,7 +1,15 @@
+import { Template } from 'meteor/templating';
+import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses';
+import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
+import { Meteor } from 'meteor/meteor';
+import { userid_to_username } from '../../../ui/global_helpers/users_and_usernames';
+
 Template.ManageUsers.onCreated(function () {
 
   this.add_user_mode = new ReactiveVar();
   Template.instance().add_user_mode.set(false);
+  this.update_user_mode = new ReactiveVar();
+  Template.instance().update_user_mode.set(false);
 
 });
 
@@ -26,6 +34,7 @@ Template.ManageUsers.helpers({
 });
 
 
+//noinspection JSUnusedLocalSymbols
 Template.ManageUsers.events({
 
   'click #button_add_user': function (e) {
@@ -37,11 +46,11 @@ Template.ManageUsers.events({
 
 /*  USER ROW */
 
-
 Template.userRow.onRendered(function () {
 
   this.$('.ui.checkbox').checkbox();
 
+  // TODO: FIX the closure problem below
   Tracker.autorun(function () {
     this.$('.ui.checkbox').checkbox();
 

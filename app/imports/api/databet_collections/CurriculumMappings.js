@@ -1,5 +1,4 @@
-
-CurriculumMappings = new Mongo.Collection("CurriculumMappings");
+export var CurriculumMappings = new Mongo.Collection("CurriculumMappings");
 
 CurriculumMappings.attachSchema(new SimpleSchema({
   curriculum: {

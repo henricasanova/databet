@@ -1,5 +1,5 @@
 
-OfferedCourses = new Mongo.Collection("OfferedCourses");
+export var OfferedCourses = new Mongo.Collection("OfferedCourses");
 
 OfferedCourses.attachSchema(new SimpleSchema({
   course: {

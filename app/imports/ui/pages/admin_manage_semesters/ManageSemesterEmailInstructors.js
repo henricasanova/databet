@@ -1,5 +1,8 @@
 import { _ } from 'meteor/underscore';
-// import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses.js';  // THIS BREAKS THINGS
+import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses.js';
+import { Meteor } from 'meteor/meteor';
+import { semesterid_to_semesterstring } from '../../../ui/global_helpers/semesters';
+
 
 Template.ManageSemesterEmailInstructors.helpers({
 
@@ -18,6 +21,7 @@ Template.ManageSemesterEmailInstructors.helpers({
 
 });
 
+//noinspection JSUnusedLocalSymbols
 Template.ManageSemesterEmailInstructors.events({
 
   "click #button_send_email": function(e) {

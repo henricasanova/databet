@@ -1,3 +1,12 @@
+import { Template } from 'meteor/templating';
+import { StudentOutcomes } from '../../../../api/databet_collections/StudentOutcomes';
+import { PerformanceIndicators } from '../../../../api/databet_collections/PerformanceIndicators';
+import { CurriculumMappings } from '../../../../api/databet_collections/CurriculumMappings';
+import { OfferedCourses } from '../../../../api/databet_collections/OfferedCourses';
+import { AssessmentItems } from '../../../../api/databet_collections/AssessmentItems';
+import { Meteor } from 'meteor/meteor';
+
+
 Template.ManageEditCurriculumOutcomes.onRendered(function() {
 
 });
@@ -11,6 +20,7 @@ Template.ManageEditCurriculumOutcomes.onCreated(function() {
 });
 
 
+//noinspection JSUnusedLocalSymbols
 Template.ManageEditCurriculumOutcomes.events({
 
   'click #button_add_outcome': function(e) {
@@ -69,12 +79,12 @@ Template.OutcomeRow.onCreated(function() {
 
 });
 
+//noinspection JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols
 Template.OutcomeRow.events({
 
   "click .outcome_delete": function(e) {
     var outcomeId = this._id;
-    var curriculumId = FlowRouter.getParam('_id');
-
+    //var curriculumId = FlowRouter.getParam('_id');
 
     $('#modal_delete_outcome_'+outcomeId).
       modal({
@@ -158,8 +168,7 @@ function get_courses_id_for_student_outcome(student_outcome_id) {
     }
   }
   return course_ids;
-};
-
+}
 Template.OutcomeRow.helpers({
   "update_outcome_mode": function() {
     return Template.instance().update_outcome_mode.get();

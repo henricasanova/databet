@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
+import { Template } from 'meteor/templating';
 
 Template.ManageAddUpdateUser.onRendered(function () {
   $('.ui.radio.checkbox').checkbox();
@@ -17,6 +20,7 @@ Template.ManageAddUpdateUser.onCreated(function () {
 
 });
 
+//noinspection JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols
 Template.ManageAddUpdateUser.events({
 
   'click .cancel': function (e) {

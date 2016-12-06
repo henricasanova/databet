@@ -1,5 +1,13 @@
-Template.InstructorView.helpers({
+import { Template } from 'meteor/templating';
+import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses';
+import { Courses } from '../../../api/databet_collections/Courses';
+import { Semesters } from '../../../api/databet_collections/Semesters';
+import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
+import { _ } from 'meteor/underscore';
+import { get_current_user } from '../../../ui/global_helpers/users_and_usernames';
+import { Meteor } from 'meteor/meteor';
 
+Template.InstructorView.helpers({
 
   "listOfOfferedCourses": function () {
     var offered_courses = OfferedCourses.find({"instructor": get_current_user(), "archived": false}).fetch();
@@ -38,6 +46,7 @@ Template.OfferedCourseRow.onRendered(function () {
     .popup();
 });
 
+//noinspection JSUnusedLocalSymbols
 Template.OfferedCourseRow.events({
 
   "click .archive_course": function (e) {
@@ -46,6 +55,7 @@ Template.OfferedCourseRow.events({
 
 });
 
+//noinspection JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols
 Template.OfferedCourseRow.helpers({
 
   "semester_string": function (e) {

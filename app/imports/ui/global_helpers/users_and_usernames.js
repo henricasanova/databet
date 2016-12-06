@@ -1,21 +1,23 @@
 /* Wrappers around the get/set global helpers */
+import { get_global, set_global } from '../../ui/global_helpers/set_get_globals';
+import { _ } from 'meteor/underscore';
 
-get_current_user = function () {
+export var get_current_user = function () {
   //console.log("Meteor.user=", Meteor.users.findOne({_id: get_global("currentUserId")}));
   return get_global("currentUserId");
 };
 
-get_current_username = function () {
+export var get_current_username = function () {
   var userId = get_global("currentUserId");
   return userid_to_username(userId);
 };
 
-set_current_user = function (id) {
+export var set_current_user = function (id) {
   set_global("currentUserId", id);
 };
 
 
-userid_to_username = function (userId) {
+export var userid_to_username = function (userId) {
   var user = Meteor.users.findOne({_id: userId});
 
   // CAS user
@@ -32,7 +34,7 @@ userid_to_username = function (userId) {
   return "unknownuser";
 };
 
-username_to_userid = function (username) {
+var username_to_userid = function (username) {
 
   var all_users = Meteor.users.find().fetch();
   var userId = null;

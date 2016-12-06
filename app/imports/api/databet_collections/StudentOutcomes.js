@@ -1,5 +1,5 @@
 
-StudentOutcomes = new Mongo.Collection("StudentOutcomes");
+export var StudentOutcomes = new Mongo.Collection("StudentOutcomes");
 
 StudentOutcomes.attachSchema(new SimpleSchema({
   description: {

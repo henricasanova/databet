@@ -1,3 +1,13 @@
+import { Template } from 'meteor/templating';
+import { Curricula } from '../../../../api/databet_collections/Curricula';
+import { Courses } from '../../../../api/databet_collections/Courses';
+import { StudentOutcomes } from '../../../../api/databet_collections/StudentOutcomes';
+import { PerformanceIndicators } from '../../../../api/databet_collections/PerformanceIndicators';
+import { CurriculumMappings } from '../../../../api/databet_collections/CurriculumMappings';
+import { Meteor } from 'meteor/meteor';
+import { Random } from 'meteor/random';
+
+
 Template.ManageAddCurriculum.onRendered(function () {
   $('.ui.radio.checkbox').checkbox();
 });

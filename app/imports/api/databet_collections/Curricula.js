@@ -1,5 +1,4 @@
-
-Curricula = new Mongo.Collection("Curricula");
+export var Curricula = new Mongo.Collection("Curricula");
 
 Curricula.attachSchema(new SimpleSchema({
   description: {

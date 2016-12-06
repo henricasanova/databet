@@ -1,9 +1,6 @@
-/**
- * Created by casanova on 2/4/16.
- */
+import { Globals } from '../../api/databet_collections/Globals.js';
 
-
-set_global = function (name, value) {
+export var set_global = function (name, value) {
   if (Globals.find({name: name}).count() == 0) {
     Globals.insert({name: name, value: value});
   } else {
@@ -17,7 +14,7 @@ Template.registerHelper('set_global', function (name, value) {
   set_global(name, value);
 });
 
-get_global = function (name) {
+export var get_global = function (name) {
   var global = Globals.findOne({name: name});
   if (global) {
     return global.value;

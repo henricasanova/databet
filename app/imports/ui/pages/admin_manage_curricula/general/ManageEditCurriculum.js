@@ -1,3 +1,7 @@
+import { Template } from 'meteor/templating';
+import { Meteor } from 'meteor/meteor';
+import { Curricula } from '../../../../api/databet_collections/Curricula';
+
 Template.ManageEditCurriculum.onRendered(function () {
   $('.tabular.menu .item').tab();
 
@@ -97,8 +101,4 @@ Template.ManageEditCurriculum.helpers({
 
 
 });
-
-
-// Template.ManageEditCurriculumOutcomes.onRendered(function () {
-// });
 

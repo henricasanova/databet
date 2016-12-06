@@ -28,7 +28,6 @@ FlowRouter.route('/FAQ', {
   },
 });
 
-
 FlowRouter.route('/archived', {
   name: 'InstructorViewArchived',
   action() {
@@ -42,7 +41,6 @@ FlowRouter.route('/manage_users', {
     BlazeLayout.render("App_Body", {main: "ManageUsers"});
   },
 });
-
 
 FlowRouter.route('/manage_statistics', {
   name: 'ManageStatistics',
@@ -111,5 +109,19 @@ FlowRouter.route('/manage_semester_email/:_id', {
   name: 'ManageSemesterEmailInstructors',
   action() {
     BlazeLayout.render("App_Body", {main: "ManageSemesterEmailInstructors"});
+  },
+});
+
+FlowRouter.route('/assessments_items/:_id', {
+  name: 'AssessmentItems',
+  action() {
+    BlazeLayout.render("App_Body", {main: "AssessmentItems"});
+  },
+});
+
+FlowRouter.route('/edit_assessment_item/:_id', {
+  name: 'EditAssessmentItem',
+  action() {
+    BlazeLayout.render("App_Body", {main: "EditAssessmentItem"});
   },
 });

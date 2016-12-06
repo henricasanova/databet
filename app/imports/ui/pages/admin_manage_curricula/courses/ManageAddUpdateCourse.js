@@ -1,3 +1,7 @@
+import { Template } from 'meteor/templating';
+import { Courses } from '../../../../api/databet_collections/Courses';
+import { Meteor } from 'meteor/meteor';
+
 Template.ManageAddUpdateCourse.onRendered(function () {
 });
 

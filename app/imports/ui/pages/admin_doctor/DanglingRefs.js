@@ -1,4 +1,5 @@
 import { collection_dictionary } from '../../../startup/both/collection_dictionary.js';
+import { Meteor } from 'meteor/meteor';
 
 Template.DanglingRefs.helpers({
 
@@ -59,7 +60,7 @@ Template.DanglingRefRow.events({
 
 // Returns documents that reference non-existing items
 
-get_dangling_refs = function () {
+export var get_dangling_refs = function () {
 
   var dangling_refs = [];
 
@@ -116,7 +117,7 @@ get_dangling_refs = function () {
 
   return dangling_refs;
 
-}
+};
 
 // Generic method that returns an error message
 function not_in_collection(doc, field_name, target_collection_name) {

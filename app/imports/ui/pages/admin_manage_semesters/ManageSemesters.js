@@ -1,3 +1,11 @@
+import { Meteor } from 'meteor/meteor';
+import { Semesters } from '../../../api/databet_collections/Semesters';
+import { Curricula } from '../../../api/databet_collections/Curricula';
+import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses';
+import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
+import { semesterid_to_semesterstring } from '../../../ui/global_helpers/semesters';
+
+
 Template.ManageSemesters.helpers({
 
   listOfSemesters: function() {
@@ -53,8 +61,6 @@ Template.semesterRow.events({
 
     return false;
   }
-
-
 });
 
 Template.semesterRow.helpers({
@@ -81,6 +87,4 @@ Template.semesterRow.helpers({
     }
     return num_assessment_items;
   }
-
-
 });

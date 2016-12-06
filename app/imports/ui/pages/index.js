@@ -8,3 +8,6 @@ import './admin_manage_curricula';
 import './admin_manage_semesters';
 import './admin_manage_backups';
 import './admin_doctor';
+import './admin_reports';
+import './assessment_pages';
+import './file_upload';

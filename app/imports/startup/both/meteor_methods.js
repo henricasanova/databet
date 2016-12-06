@@ -4,6 +4,16 @@
 
 import '../../api/databet_collections';
 import { collection_dictionary } from './collection_dictionary';
+import { Meteor } from 'meteor/meteor';
+import { AssessmentItems } from '../../api/databet_collections/AssessmentItems';
+import { Courses } from '../../api/databet_collections/Courses';
+import { Curricula } from '../../api/databet_collections/Curricula';
+import { CurriculumMappings } from '../../api/databet_collections/CurriculumMappings';
+import { OfferedCourses } from '../../api/databet_collections/OfferedCourses';
+import { PerformanceIndicators } from '../../api/databet_collections/PerformanceIndicators';
+import { Semesters } from '../../api/databet_collections/Semesters';
+import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
+import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
 
 Meteor.methods({
 
@@ -65,25 +75,17 @@ Meteor.methods({
       var path = Npm.require('path');                                                                            // 6
       var filesystem = Npm.require("fs");
 
-      console.log("HERE1");
-
       var upload_root = UploadServer.getOptions().uploadDir;
       // Add all uploads to the archive
       var cwd = process.env.PWD;
-      console.log("HERE2");
 
       var imagedir = upload_root + "/assessment_uploads";
-      console.log("HERE3", imagedir);
 
       var filelist = filesystem.readdirSync(imagedir);
-      console.log("HERE4", filelist);
 
       var now = new Date();
       var archive_name = "databet_archive_" + (now.getMonth() + 1) + "_" +
         (now.getDate()) + "_" + (now.getFullYear());
-
-      console.log("filelist = ", filelist);
-      console.log("archive_name = ", archive_name);
 
       var zipfile = new ZipZap();
       for (var i = 0; i < filelist.length; i++) {
@@ -255,16 +257,17 @@ function remove_from_collection(collection, doc_id) {
   // Third, do some collection-specific cleanup
   switch (collection) {
     case PerformanceIndicators:
+      var i;
       // Fix all orders
       var allPIs = PerformanceIndicators.find({"student_outcome": outcome_id}, {sort: {order: 1}}).fetch();
-      for (var i = 0; i < allPIs.length; i++) {
+      for (i = 0; i < allPIs.length; i++) {
         Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i]._id, {"order": i});
       }
       break;
     case StudentOutcomes:
       // Fix all orders
       var allOutcomes = StudentOutcomes.find({"curriculum": curriculum_id}, {sort: {order: 1}}).fetch();
-      for (var i = 0; i < allOutcomes.length; i++) {
+      for (i = 0; i < allOutcomes.length; i++) {
         Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i]._id, {"order": i});
       }
       break;
@@ -372,14 +375,16 @@ function remove_all_documents_referring_to_curriculum_mapping(curriculum_mapping
 }
 
 function remove_all_documents_referring_to_performance_indicator(performance_indicator_id) {
+  var i;
+
   // Assessment Items
   var assessment_items = AssessmentItems.find({"performance_indicator": performance_indicator_id}).fetch();
-  for (var i = 0; i < assessment_items.length; i++) {
+  for (i = 0; i < assessment_items.length; i++) {
     remove_from_collection(AssessmentItems, assessment_items[i]._id);
   }
   // Curriculum Mappings
   var curriculum_mappings = CurriculumMappings.find({"performance_indicator": performance_indicator_id}).fetch();
-  for (var i = 0; i < curriculum_mappings.length; i++) {
+  for (i = 0; i < curriculum_mappings.length; i++) {
     remove_from_collection(CurriculumMappings, curriculum_mappings[i]._id);
   }
 }

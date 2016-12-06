@@ -7,4 +7,4 @@ import './OfferedCourses.js';
 import './PerformanceIndicators.js';
 import './Semesters.js';
 import './StudentOutcomes.js';
-import './UploadedFile.js';
+import './UploadedFiles.js';

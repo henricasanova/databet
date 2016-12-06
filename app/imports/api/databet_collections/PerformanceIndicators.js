@@ -1,5 +1,5 @@
 
-PerformanceIndicators = new Mongo.Collection("PerformanceIndicators");
+export var PerformanceIndicators = new Mongo.Collection("PerformanceIndicators");
 
 PerformanceIndicators.attachSchema(new SimpleSchema({
   description: {

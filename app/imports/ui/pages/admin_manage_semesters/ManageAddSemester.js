@@ -1,3 +1,8 @@
+import { Template } from 'meteor/templating';
+import { Semesters } from '../../../api/databet_collections/Semesters';
+import { Curricula } from '../../../api/databet_collections/Curricula';
+import { Meteor } from 'meteor/meteor';
+import { _ } from 'meteor/underscore';
 
 Template.ManageAddSemester.onRendered(
   function() {
