@@ -51,6 +51,34 @@ FlowRouter.route('/manage_statistics', {
   },
 });
 
+FlowRouter.route('/manage_doctor', {
+  name: 'ManageDoctor',
+  action() {
+    BlazeLayout.render("App_Body", {main: "ManageDoctor"});
+  },
+});
+
+FlowRouter.route('/manage_reports', {
+  name: 'ManageReports',
+  action() {
+    BlazeLayout.render("App_Body", {main: "ManageReports"});
+  },
+});
+
+FlowRouter.route('/manage_doctor', {
+  name: 'ManageDoctor',
+  action() {
+    BlazeLayout.render("App_Body", {main: "ManageDoctor"});
+  },
+});
+
+FlowRouter.route('/manage_backups', {
+  name: 'ManageBackups',
+  action() {
+    BlazeLayout.render("App_Body", {main: "ManageBackups"});
+  },
+});
+
 FlowRouter.route('/manage_curricula', {
   name: 'ManageCurricula',
   action() {

@@ -3,18 +3,7 @@
 // infinite recursion :)
 
 import '../../api/databet_collections';
-
-var collection_dictionary = {};
-collection_dictionary["Meteor.users"] = Meteor.users;
-collection_dictionary["AssessmentItems"] = AssessmentItems;
-collection_dictionary["Courses"] = Courses;
-collection_dictionary["Curricula"] = Curricula;
-collection_dictionary["CurriculumMappings"] = CurriculumMappings;
-collection_dictionary["OfferedCourses"] = OfferedCourses;
-collection_dictionary["PerformanceIndicators"] = PerformanceIndicators;
-collection_dictionary["Semesters"] = Semesters;
-collection_dictionary["StudentOutcomes"] = StudentOutcomes;
-collection_dictionary["UploadedFiles"] = UploadedFiles;
+import { collection_dictionary } from './collection_dictionary';
 
 Meteor.methods({
 
@@ -76,11 +65,18 @@ Meteor.methods({
       var path = Npm.require('path');                                                                            // 6
       var filesystem = Npm.require("fs");
 
+      console.log("HERE1");
+
       var upload_root = UploadServer.getOptions().uploadDir;
       // Add all uploads to the archive
       var cwd = process.env.PWD;
+      console.log("HERE2");
+
       var imagedir = upload_root + "/assessment_uploads";
+      console.log("HERE3", imagedir);
+
       var filelist = filesystem.readdirSync(imagedir);
+      console.log("HERE4", filelist);
 
       var now = new Date();
       var archive_name = "databet_archive_" + (now.getMonth() + 1) + "_" +
@@ -140,7 +136,7 @@ Meteor.methods({
           }
 
           collection_name = data[j][0];
-          collection = global_collection_dictionary[collection_name];
+          collection = collection_dictionary[collection_name];
 
           // Deal with the case in which a single entry is entered
           if (data[j][1].length === undefined) {
@@ -186,7 +182,7 @@ Meteor.methods({
           }
 
           collection_name = data[j][0];
-          collection = global_collection_dictionary[collection_name];
+          collection = collection_dictionary[collection_name];
 
           console.log("  Updating collection ", collection_name);
           for (k = 0; k < data[j][1].length; k++) {
@@ -262,14 +258,14 @@ function remove_from_collection(collection, doc_id) {
       // Fix all orders
       var allPIs = PerformanceIndicators.find({"student_outcome": outcome_id}, {sort: {order: 1}}).fetch();
       for (var i = 0; i < allPIs.length; i++) {
-        Meteor.call("update_performance_indicator", allPIs[i]._id, {"order": i});
+        Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i]._id, {"order": i});
       }
       break;
     case StudentOutcomes:
       // Fix all orders
       var allOutcomes = StudentOutcomes.find({"curriculum": curriculum_id}, {sort: {order: 1}}).fetch();
       for (var i = 0; i < allOutcomes.length; i++) {
-        Meteor.call("update_student_outcome", allOutcomes[i]._id, {"order": i});
+        Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i]._id, {"order": i});
       }
       break;
     default:
@@ -408,8 +404,8 @@ function remove_uploaded_filepath(filepath) {
 function collections_2_string() {
   var string = "[ ";
 
-  for (var collection_name in global_collection_dictionary) {
-    if (global_collection_dictionary.hasOwnProperty(collection_name)) {
+  for (var collection_name in collection_dictionary) {
+    if (collection_dictionary.hasOwnProperty(collection_name)) {
       string += ' [ "' + collection_name + '" , ' +
         collection_2_string(collection_name) + " ],";
     }
@@ -422,7 +418,7 @@ function collections_2_string() {
 
 function collection_2_string(collection_name) {
 
-  var cursor = global_collection_dictionary[collection_name].find();
+  var cursor = collection_dictionary[collection_name].find();
   if (cursor.count() == 0) {
     return "[ ]";
   }

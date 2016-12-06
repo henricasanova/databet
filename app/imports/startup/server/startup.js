@@ -3,7 +3,7 @@ console.log("SERVER-SIDE: ROOT_URL = ", process.env.ROOT_URL);
 Meteor.startup(function () {
   try {
     configure_email();
-    //initialize_upload_server();
+    initialize_upload_server();
     reset_globals();
   } catch (e) {
     throw(e);
@@ -14,14 +14,14 @@ Meteor.startup(function () {
 
 
 function configure_email() {
-  smtp = {
+  var smtp_config = {
     username: 'icsdatabet@gmail.com',
     password: 'fg$341s351Sdw69',
     server:   'smtp.gmail.com',
     port: 465
   };
 
-  process.env.MAIL_URL = 'smtp://' + encodeURIComponent(smtp.username) + ':' + encodeURIComponent(smtp.password) + '@' + encodeURIComponent(smtp.server) + ':' + smtp.port;
+  process.env.MAIL_URL = 'smtp://' + encodeURIComponent(smtp_config.username) + ':' + encodeURIComponent(smtp_config.password) + '@' + encodeURIComponent(smtp_config.server) + ':' + smtp_config.port;
   console.log("====> ", process.env.MAIL_URL);
 }
 

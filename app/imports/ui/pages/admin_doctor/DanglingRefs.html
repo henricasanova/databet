@@ -1,0 +1,57 @@
+<template name="DanglingRefs">
+
+  <div class="ui container center segment raised padded">
+
+    <h3 class="center aligned">Dangling references in the database</h3>
+
+    {{#if list_of_dangling_refs.length}}
+    <hr>
+
+    <table class="ui table celled">
+      <thead>
+      <tr>
+        <th>Collection</th>
+        <th>Document Id</th>
+        <th>Errors</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each list_of_dangling_refs}}
+      {{> DanglingRefRow }}
+      {{/each}}
+      </tbody>
+
+    </table>
+    {{else}}
+    <h4>
+      None found <i class="ui icon smile large green"></i>
+    </h4>
+    {{/if}}
+  </div>
+
+
+</template>
+
+<template name="DanglingRefRow">
+
+  <tr>
+    <td>{{collection_name}}</td>
+    <td>{{doc_id}}</td>
+    <td>{{{error_message}}}</td>
+    <td>
+      <div class="ui circular icon grey button buttonpopup">
+        <i class="icon unhide"></i>
+      </div>
+      <div class="ui flowing popup top left transition hidden">
+        {{{object_json}}}
+      </div>
+
+
+      <div class="circular ui icon button red manage_delete_item">
+        <i class="icon delete"></i>
+      </div>
+    </td>
+  </tr>
+
+</template>

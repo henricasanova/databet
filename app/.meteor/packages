@@ -46,7 +46,6 @@ less@2.7.8
 fabienb4:autoform-semantic-ui
 
 # For prototyping purposes, enable autopublish and insecure
-insecure@1.0.7
 
 
 
@@ -59,3 +58,4 @@ tomi:upload-jquery
 useraccounts:semantic-ui
 reactive-var
 email
+udondan:zipzap

@@ -1,0 +1,65 @@
+<template name="DanglingFiles">
+  <div class="ui container center segment raised padded">
+
+    <h3 class="center aligned">Dangling file references in the database</h3>
+
+    {{construct_list_of_all_files}}
+
+    {{#if waiting_for_list_of_all_files}}
+
+    {{> Loading }}
+
+    {{else}}
+
+    {{#if list_of_dangling_files.length}}
+    <hr>
+
+    <table class="ui table celled">
+      <thead>
+      <tr>
+        <th>Collection</th>
+        <th>Document Id</th>
+        <th>Error</th>
+        <th class="two wide"></th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each list_of_dangling_files}}
+      {{> DanglingFileRow }}
+      {{/each}}
+      </tbody>
+
+    </table>
+    {{else}}
+    <h4>
+      None found <i class="ui icon green large smile"></i>
+    </h4>
+    {{/if}}
+
+    {{/if}}
+  </div>
+
+
+</template>
+
+<template name="DanglingFileRow">
+
+  <tr>
+    <td>UploadedFiles</td>
+    <td>{{this._id}}</td>
+    <td>{{{error_message}}}</td>
+    <td>
+      <div class="ui circular icon grey button buttonpopup">
+        <i class="icon unhide"></i>
+      </div>
+      <div class="ui flowing popup top left transition hidden very fluid  mini wide">
+        {{{object_json}}}
+      </div>
+
+      <div class="circular ui icon button red manage_delete_item">
+        <i class="icon delete"></i>
+      </div>
+    </td>
+  </tr>
+
+</template>

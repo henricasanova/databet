@@ -6,3 +6,5 @@ import './admin_manage_users';
 import './admin_statistics';
 import './admin_manage_curricula';
 import './admin_manage_semesters';
+import './admin_manage_backups';
+import './admin_doctor';

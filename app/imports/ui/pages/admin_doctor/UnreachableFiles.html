@@ -1,0 +1,47 @@
+<template name="UnreachableFiles">
+
+  <div class="ui container center segment raised padded">
+
+    {{construct_list_of_unreachable_assessment_files}}
+
+    {{#if waiting_for_list_of_unreachable_assessment_files}}
+
+    {{> Loading }}
+
+    {{else}}
+
+
+    <h3 class="center aligned">Un-referenced uploaded files</h3>
+
+
+    {{#if list_of_unreachable_assessment_files.length}}
+
+    <table class="ui table">
+      <thead>
+      <th>File name</th>
+      <th class="two wide"></th>
+      </thead>
+      {{#each list_of_unreachable_assessment_files}}
+      <tr>
+        <td><b>{{this}}</b></td>
+        <td class="two wide">
+          <a class="button circular ui icon button grey" href="{{this_url}}" target="_blank">
+            <i class="icon unhide"></i>
+          </a>
+          <div class="circular ui icon button red delete_file" value="{{this}}">
+            <i class="icon delete"></i>
+          </div>
+        </td>
+      </tr>
+      {{/each}}
+    </table>
+    {{else}}
+    <h4> None found <i class="ui icon smile large green"></i></h4>
+    {{/if}}
+
+    {{/if}}
+
+  </div>
+
+</template>
+
