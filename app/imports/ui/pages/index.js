@@ -6,7 +6,7 @@ import './statistics';
 import './manage_curricula';
 import './manage_users';
 import './manage_semesters';
-import './manage_backups';
+import './backups';
 import './doctor';
 import './reports';
 import './assessment_pages';

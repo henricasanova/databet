@@ -63,17 +63,10 @@ FlowRouter.route('/reports', {
   },
 });
 
-FlowRouter.route('/manage_doctor', {
-  name: 'ManageDoctor',
+FlowRouter.route('/backups', {
+  name: 'Backups',
   action() {
-    BlazeLayout.render("App_Body", {main: "ManageDoctor"});
-  },
-});
-
-FlowRouter.route('/manage_backups', {
-  name: 'ManageBackups',
-  action() {
-    BlazeLayout.render("App_Body", {main: "ManageBackups"});
+    BlazeLayout.render("App_Body", {main: "Backups"});
   },
 });
 
@@ -84,10 +77,10 @@ FlowRouter.route('/manage_curricula', {
   },
 });
 
-FlowRouter.route('/manage_edit_curriculum/:_id', {
-  name: 'ManageEditCurriculum',
+FlowRouter.route('/edit_curriculum/:_id', {
+  name: 'EditCurriculum',
   action() {
-    BlazeLayout.render("App_Body", {main: "ManageEditCurriculum"});
+    BlazeLayout.render("App_Body", {main: "EditCurriculum"});
   },
 });
 
@@ -98,17 +91,17 @@ FlowRouter.route('/manage_semesters', {
   },
 });
 
-FlowRouter.route('/manage_edit_semester/:_id', {
-  name: 'ManageEditSemester',
+FlowRouter.route('/edit_semester/:_id', {
+  name: 'EditSemester',
   action() {
-    BlazeLayout.render("App_Body", {main: "ManageEditSemester"});
+    BlazeLayout.render("App_Body", {main: "EditSemester"});
   },
 });
 
-FlowRouter.route('/manage_semester_email/:_id', {
-  name: 'ManageSemesterEmailInstructors',
+FlowRouter.route('/semester_email/:_id', {
+  name: 'SemesterEmailInstructors',
   action() {
-    BlazeLayout.render("App_Body", {main: "ManageSemesterEmailInstructors"});
+    BlazeLayout.render("App_Body", {main: "SemesterEmailInstructors"});
   },
 });
 

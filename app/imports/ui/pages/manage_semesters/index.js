@@ -7,5 +7,5 @@ import './EditSemester.html';
 import './EditSemester.js';
 import './SemesterEmailInstructors.html';
 import './SemesterEmailInstructors.js';
-import './Semesters.html';
-import '.Semesters.js';
+import './ManageSemesters.html';
+import './ManageSemesters.js';
