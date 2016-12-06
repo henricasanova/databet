@@ -1,0 +1,58 @@
+<template name="SemesterEmailInstructors">
+
+  <div class="ui container center">
+
+
+    <div class="ui container  raised segment">
+
+      {{> ListOfUsersEmails}}
+
+      <form class="ui fluid form">
+
+        <div class="field">
+          <b>Cc:</b><input id="cc" value={{default_cc_list}} type="text">
+        </div>
+
+        <div class="field">
+          <b>Subject:</b><input id="email_subject" value="DataBET: Assessment data needed for {{semester_string}}" type="text">
+        </div>
+
+        <div class="field">
+          <b>Body:</b><textarea rows=15 id="email_body">
+Greetings,
+
+you are teaching or have taught one or more courses in {{semester_string}}. Please log in to DataBET at {{get_root_url}} and enter your assessment data.
+
+Thanks!
+DataBET
+
+PS: Do not reply to this e-mail.
+          </textarea>
+        </div>
+
+    </form>
+      <br>
+
+      <button class="ui button blue" id="button_send_email"><i class="ui icon announcement"></i>Send e-mail</button>
+
+  </div>
+
+
+    <a href="{{pathFor 'EditSemester'}}/{{semester_id}}" class="ui button grey goback">Go back</a>
+
+  </div>
+
+</template>
+
+
+<template name="ListOfUsersEmails">
+
+  <b>To:</b><br>
+  {{#each list_of_user_emails}}
+    {{this}}<br>
+  {{/each}}
+  <!--{{list_of_user_emails}}-->
+  <br>
+  <br>
+
+</template>

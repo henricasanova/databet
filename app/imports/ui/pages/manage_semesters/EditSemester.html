@@ -1,0 +1,180 @@
+<template name="EditSemester">
+
+  <div class="ui container center">
+
+    <h3 class="ui dividing header">Editing an existing semester</h3>
+
+
+    <div id="unlock_modal" class="ui basic modal">
+      <i class="close icon"></i>
+      <div class="header">
+        Are you sure you want to unlock {{semester_string}}  ?
+      </div>
+
+      <div class="description">
+        <p>Modifying it may compromise the database if assessment data has been entered already.</p>
+      </div>
+      <div class="actions">
+        <div class="two fluid ui inverted buttons">
+          <div class="ui red basic inverted button cancel">
+            <i class="remove icon"></i>
+            No
+          </div>
+          <div class="ui green basic inverted button ok">
+            <i class="checkmark icon"></i>
+            Yes
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="ui container raised segment">
+      {{#if is_locked}}
+      <button class="button circular ui icon  red" id="button_unlock"><i class="icon lock"></i></button> &nbsp; <b>This semester is locked</b>
+      {{else}}
+      <button class="button circular ui icon  green" id="button_lock"><i class="icon unlock"></i></button> &nbsp;  <b>This semester is not locked</b>
+      {{/if}}
+    </div>
+
+
+    <h3>{{semester_string}}</h3>
+
+
+    <div class="ui container center">
+
+      <table class="ui table">
+        <thead>
+        <tr>
+          <th class="three wide">ID</th>
+          <th class="three wide">Course</th>
+          <th class="three wide">Instructor </th>
+          <th class="one wide"></th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each listOfCourseOfferings}}
+        {{> CourseOfferingsRow}}
+        {{/each}}
+        </tbody>
+      </table>
+
+    </div>
+
+    <br>
+
+    {{#if is_locked}}
+    {{else}}
+
+    <div class="ui container raised segment">
+
+      <div class="ui grid">
+        <div class="column four wide">
+          <select class="ui fluid dropdown course_select" id="course_select">
+            <option value="">Select a course</option>
+            {{#each listOfCourses}}
+            <option value="{{this._id}}">{{this.alphanumeric}}</option>
+            {{/each}}
+          </select><br>
+          {{#if missing_alphanumeric}}
+          <div class="ui pointing red basic label">
+            Please select a course
+          </div>
+          {{/if}}
+          {{#if already_exists}}
+          <div class="ui  red basic label">
+            This course offering already exists for this semester!
+          </div>
+          {{/if}}
+        </div>
+        <div class="column five wide">
+
+          <select class="ui fluid dropdown instructor_select" id="instructor_select">
+            <option selected value="">Select an instructor</option>
+            {{#each listOfUsers}}
+            <option value="{{this._id}}">{{this.name}}</option>
+            {{/each}}
+          </select><br>
+          {{#if missing_instructor}}
+          <div class="ui pointing red basic label">
+            Please select an instructor
+          </div>
+          {{/if}}
+        </div>
+        <div class="column five wide">
+          <button class="ui button green" id="button_add_course_offering"><i class="ui icon add"></i>Add Course Offering</button>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    {{/if}}
+
+    <a href="{{pathFor 'ManageSemesters'}}" class="ui button grey goback">Go back</a>&nbsp;&nbsp;&nbsp;
+    <a href="{{pathFor 'SemesterEmailInstructors'}}/{{semester_id}}" class="ui button blue"><i class="ui icon announcement"></i>E-mail all instructors</a>
+
+  </div>
+
+
+</template>
+
+<template name="CourseOfferingsRow">
+
+  <tr>
+    <td>
+      {{this._id}}
+    </td>
+    <td>
+      {{course_alphanumeric}}
+    </td>
+    <td>
+      {{instructor_name}}
+    </td>
+    <td>
+      {{#if semester_is_locked}}
+      <button class="circular ui icon button red delete_course_offering" disabled>
+        <i class="icon delete"></i>
+      </button>
+      {{else}}
+      <button class="circular ui icon button red delete_course_offering">
+        <i class="icon delete"></i>
+      </button>
+      {{/if}}
+    </td>
+
+  </tr>
+
+
+  <div id="delete_course_offering_modal" class="ui scrolling modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Are you sure you want to remove offering {{course_alphanumeric}}:{{instructor_name}}?
+    </div>
+
+    <div class="description">
+
+      <div class="ui three wide container padded center raised segment">
+        <h3>This course offering is linked to:</h3>
+        <ul class="ui list">
+          <li class="item"><h4>Assessment Items: <b>{{num_assessment_items}}</b></h4></li>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="actions">
+      <div class="ui red button cancel">
+        <i class="remove icon"></i>
+        No
+      </div>
+      <div class="ui green button ok">
+        <i class="checkmark icon"></i>
+        Remove Offered Course
+      </div>
+    </div>
+  </div>
+
+
+</template>

@@ -1,0 +1,115 @@
+<template name="ManageUsers">
+
+
+  <!--<h3 class="ui header center aligned">User account management</h3>-->
+  <br>
+
+
+  <div class="ui container center">
+
+    <table class="ui table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Account type</th>
+        <th>Admin?</th>
+        <th>Name</th>
+        <th class="two wide"></th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each listOfUsers}}
+      {{> userRow }}
+      {{/each}}
+      </tbody>
+    </table>
+
+    {{#if add_user_mode}}
+    {{> AddUpdateUser action="add" set_to_false_when_done=get_reference_to_reactive_var_add_user_mode}}
+    {{else}}
+    <button class="ui button green" id="button_add_user">
+      <i class="ui icon add user"></i>Add a new user
+    </button>
+    {{/if}}
+
+  </div>
+
+
+</template>
+
+
+<template name="userRow">
+
+
+  <div id="modal_{{this._id}}" class="ui scrolling modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Are you sure you want to remove user {{this.username}} ?
+    </div>
+
+    <div class="description">
+
+      <div class="ui three wide container padded center raised segment">
+        <h3>This user is linked to:</h3>
+        <ul class="ui list">
+          <li class="item"><h4>Offered Courses: <b>{{num_offered_courses}}</b></h4></li>
+          <li class="item"><h4>Assessment Items: <b>{{num_assessment_items}}</b></h4></li>
+        </ul>
+
+        {{#if this.is_admin}}<h3>This user is an administrator</h3> {{/if}}
+      </div>
+    </div>
+
+
+    <div class="actions">
+      <div class="ui red button cancel">
+        <i class="remove icon"></i>
+        No
+      </div>
+      <div class="ui green button ok">
+        <i class="checkmark icon"></i>
+        Remove User
+      </div>
+    </div>
+  </div>
+
+
+  {{#if edit_user_mode}}
+
+  <tr>
+    <td colspan="6">
+      {{> AddUpdateUser action="update" userId=userId
+      set_to_false_when_done=get_reference_to_reactive_var_update_user_mode}}
+    </td>
+  </tr>
+
+  {{else}}
+
+  <tr>
+    <td>{{ userId }}</td>
+    <td>{{ userName }}</td>
+    <td>{{ userType }}</td>
+    <td>{{ isAdmin }}</td>
+    <td>{{ name }}</td>
+    <td class="right align">
+      <button class="circular ui icon button teal edit_user">
+        <i class="icon edit"></i>
+      </button>
+      {{#if not_this_user }}
+      <button class="circular ui icon button red delete_user">
+        <i class="icon remove user"></i>
+      </button>
+      {{else}}
+      <button disabled class="circular ui icon button red">
+        <i class="icon remove user"></i>
+      </button>
+      {{/if}}
+    </td>
+
+  </tr>
+
+  {{/if}}
+
+
+</template>

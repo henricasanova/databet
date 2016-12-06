@@ -56,8 +56,19 @@ Meteor.methods({
       var path = Npm.require('path');                                                                            // 6
       var filesystem = Npm.require("fs");
 
-      var dir = UploadServer.getOptions().uploadDir + "/" + prefix;
-      return filesystem.readdirSync(dir);
+      // TODO: No longer using a subdirectory :(
+      //var dir = UploadServer.getOptions().uploadDir + "/" + prefix;
+      var dir = UploadServer.getOptions().uploadDir + "/";
+      var list = filesystem.readdirSync(dir);
+
+      // REALLY ugly hack to discount the tmp directory
+      var new_list = [];
+      for (var i=0; i < list.length; i++) {
+        if (list[i] != "tmp") {
+          new_list.push(list[i]);
+        }
+      }
+      return new_list;
     }
   },
 
@@ -391,8 +402,9 @@ function remove_all_documents_referring_to_performance_indicator(performance_ind
 
 function remove_all_documents_referring_to_uploaded_file(uploaded_file_id) {
   var uploaded_file = UploadedFiles.findOne({"_id": uploaded_file_id});
-  remove_uploaded_filepath(uploaded_file.fileinfo.path);
-
+  if (uploaded_file) {
+    remove_uploaded_filepath(uploaded_file.fileinfo.path);
+  }
 }
 
 function remove_uploaded_filepath(filepath) {
