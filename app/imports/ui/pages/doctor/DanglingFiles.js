@@ -83,7 +83,7 @@ function object_to_json(obj) {
   for (var p in obj) {
     var value ="";
     if (typeof(obj[p]) == 'object') {
-      value = "[ " + object_to_json(obj[p]) + " ]";
+      value =  object_to_json(obj[p]);
     } else {
       value = obj[p];
     }

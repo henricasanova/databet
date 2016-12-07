@@ -3,7 +3,7 @@ import { Semesters } from '../../../api/databet_collections/Semesters';
 import { Curricula } from '../../../api/databet_collections/Curricula';
 import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses';
 import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
-import { semesterid_to_semesterstring } from '../../../ui/global_helpers/semesters';
+import { semesterid_to_semesterstring } from '../../../ui/global_template_helpers/semesters';
 
 
 Template.ManageSemesters.helpers({

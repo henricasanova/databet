@@ -45,10 +45,6 @@ Meteor.methods({
     }
     remove_from_collection(collection, doc_id);
   },
-  
-  remove_uploaded_file: function (filepath) {
-    remove_uploaded_filepath(filepath);
-  },
 
   get_list_of_uploaded_files: function (prefix) {
 
@@ -406,12 +402,7 @@ function remove_all_documents_referring_to_uploaded_file(uploaded_file_id) {
 
 function remove_uploaded_filepath(filepath) {
   if (Meteor.isServer) {
-    console.log("Removing file ", filepath);
-    try {
-      UploadServer.delete(filepath);
-    } catch (e) {
-      console.log("Trying to remove a file that's already gone... no biggy.");
-    }
+    console.log("REMOVING A FILE BRUTALLY IS TOO UNSAFE - DO IT BY HAND!");
   }
 }
 

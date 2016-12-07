@@ -79,23 +79,24 @@ Template.UnreachableFiles.helpers({
 });
 
 
-Template.UnreachableFiles.events({
-
-  "click .delete_file": function () {
-    Meteor.call("remove_uploaded_file", "assessment_uploads/" + this.valueOf());
-
-    // Could not get list.splice to work!
-    var old_list = Template.instance().list_of_unreachable_assessment_files.get();
-    var new_list = [];
-    for (var i = 0; i < old_list.length; i++) {
-      if (old_list[i] != this.valueOf()) {
-        new_list.push(old_list[i]);
-      }
-    }
-    Template.instance().list_of_unreachable_assessment_files.set(new_list);
-
-  }
-
-});
+// Template.UnreachableFiles.events({
+//
+//   "click .delete_file": function () {
+//
+//     Meteor.call("bruteforce_remove_uploaded_file", this.valueOf());
+//
+//     // Could not get list.splice to work!
+//     var old_list = Template.instance().list_of_unreachable_assessment_files.get();
+//     var new_list = [];
+//     for (var i = 0; i < old_list.length; i++) {
+//       if (old_list[i] != this.valueOf()) {
+//         new_list.push(old_list[i]);
+//       }
+//     }
+//     Template.instance().list_of_unreachable_assessment_files.set(new_list);
+//
+//   }
+//
+// });
 
 

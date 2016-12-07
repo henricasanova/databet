@@ -1,7 +1,6 @@
 import './front_page';
 import './faq';
 import './archive_page';
-import './user_select';
 import './statistics';
 import './manage_curricula';
 import './manage_users';
@@ -10,5 +9,4 @@ import './backups';
 import './doctor';
 import './reports';
 import './assessment_pages';
-import './file_upload';
 import './todo_list';

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { set_current_user } from '../../ui/global_helpers/users_and_usernames';
-import { set_current_semester } from '../../ui/global_helpers/semesters';
+import { set_current_user } from '../../ui/global_template_helpers/users_and_usernames';
+import { set_current_semester } from '../../ui/global_template_helpers/semesters';
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_ONLY',

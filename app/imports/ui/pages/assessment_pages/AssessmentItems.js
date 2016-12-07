@@ -4,7 +4,7 @@ import { Courses } from '../../../api/databet_collections/Courses';
 import { Semesters } from '../../../api/databet_collections/Semesters';
 import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
 import { Meteor } from 'meteor/meteor';
-import { trim_date } from '../../../ui/global_helpers/trim_date';
+import { trim_date } from '../../../ui/global_template_helpers/trim_date';
 
 Template.AssessmentItems.onRendered(function () {
 
