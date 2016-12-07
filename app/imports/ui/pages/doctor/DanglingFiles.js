@@ -35,12 +35,20 @@ Template.DanglingFiles.helpers({
   "list_of_dangling_files": function () {
     var all_uploaded_files = UploadedFiles.find({}).fetch();
     var list = [];
+
     for (var i = 0; i < all_uploaded_files.length; i++) {
-      // console.log("Referenced file ", all_uploaded_files[i].fileinfo.name);
-      if (Template.instance().list_of_all_files.get().indexOf(all_uploaded_files[i].fileinfo.name) == -1) {
+      var original_name = all_uploaded_files[i].name;
+      var storage_path = all_uploaded_files[i].path;
+      var storage_name_tokens = storage_path.split("/");
+      var storage_name = storage_name_tokens[storage_name_tokens.length-1];
+      console.log("UPLOADED FILE", storage_name);
+      console.log("Looking for it in list", Template.instance().list_of_all_files.get());
+
+      if (Template.instance().list_of_all_files.get().indexOf(storage_name) == -1) {
         list.push(all_uploaded_files[i]);
       }
     }
+    console.log("Returning list of dangling files: ", list);
     return list;
   },
 
@@ -54,7 +62,12 @@ Template.DanglingFileRow.helpers({
   },
 
   error_message: function () {
-    return "Object references unknown file <b>" + this.fileinfo.name + "</b>";
+    console.log("IN ERROR MESSAGE", this);
+    var original_name = this.name;
+    var storage_path = this.path;
+    var storage_name_tokens = storage_path.split("/");
+    var storage_name = storage_name_tokens[storage_name_tokens.length-1];
+    return "Object references unknown file <b>" + storage_name + " </b> " + "(original name: " + original_name;
   },
 
   object_json: function () {
@@ -63,21 +76,26 @@ Template.DanglingFileRow.helpers({
 });
 
 function object_to_json(obj) {
-  var html_string = "<table>";
-  for (var p in obj) {
-    if (p == "fileinfo") {
-      html_string += "<tr><td>" + p + "</td><td>" + object_to_json(obj[p]) + "</td></tr>\n";
-    } else {
-      html_string += "<tr><td>" + p + "</td><td>" + obj[p] + "</td></tr>\n";
-    }
+  if (!obj) {
+    return "";
   }
-  html_string += "</table>";
+  var html_string = "[ ";
+  for (var p in obj) {
+    var value ="";
+    if (typeof(obj[p]) == 'object') {
+      value = "[ " + object_to_json(obj[p]) + " ]";
+    } else {
+      value = obj[p];
+    }
+    html_string += "<b>"+p+"</b>"+":"+value +", ";
+  }
+  html_string += " ]";
   return html_string;
 }
 
 Template.DanglingFileRow.onRendered(function () {
   $('.buttonpopup')
-    .popup()
+    .popup({lastResort: 'bottom right'})
   ;
 });
 

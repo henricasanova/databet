@@ -62,5 +62,6 @@ Meteor.publish("AssessmentItems", function() {
 
 // Publish the UploadedFiles collection
 Meteor.publish("UploadedFiles", function() {
-  return UploadedFiles.find({});
+    return UploadedFiles.find().cursor;  // Note the cursor here, as this is not
+                                         // a MongoDB collection (but looks like one)
 });

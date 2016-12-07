@@ -52,10 +52,12 @@
   {{/if}}
   <!--<h5 class="ui header">Select a file and click Upload</h5>-->
   <div class="field">
-    <label>Choose a file and click upload:</label>
+    <label>Select a file on your computer:</label>
   </div>
 
-  {{> upload_semanticUI fileTypes='.txt,.pdf,.jpg,.zip,.tgz,.tar' multiple=false callbacks=file_upload_callbacks}}
+  <!--{{> upload_semanticUI fileTypes='.txt,.pdf,.jpg,.zip,.tgz,.tar' multiple=false callbacks=file_upload_callbacks}}-->
+  <input id="fileInput" type="file" /><br>
+
   {{#if missing_file}}
   <div class="ui pointing red basic label">
     Select a file and upload it!

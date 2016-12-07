@@ -53,9 +53,8 @@ alanning:roles
 useraccounts:core
 atoy40:accounts-cas
 random
-tomi:upload-server
-tomi:upload-jquery
 useraccounts:semantic-ui
 reactive-var
 email
 udondan:zipzap
+ostrio:files

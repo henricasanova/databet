@@ -20,7 +20,11 @@ Template.DanglingRefRow.helpers({
   },
 
   error_message: function () {
+    console.log("IN ERROR MESSAGE");
+    console.log("IN ERROR MESSAGE: ", this.error_message);
     var error_messages = this.error_message.split("\n");
+    console.log("error_messages=", error_messages);
+
     var html_error_message = "<ul class=\"ui list\">\n";
     for (var i = 0; i < error_messages.length; i++) {
       if (error_messages[i] != "") {
@@ -28,16 +32,19 @@ Template.DanglingRefRow.helpers({
       }
     }
     html_error_message += "</ul>\n";
+    console.log("ERROR+MESSAGE = ", html_error_message);
     return html_error_message;
 
   },
 
   object_json: function () {
+    console.log("IN OBJECT_JSON");
     var html_string = "<table>";
     for (var p in this.doc) {
       html_string += "<tr><td>" + p + "</td><td>" + this.doc[p] + "</td></tr>\n";
     }
     html_string += "</table>";
+    console.log("JSON:", html_string);
     return html_string;
   }
 
@@ -45,7 +52,7 @@ Template.DanglingRefRow.helpers({
 
 Template.DanglingRefRow.onRendered(function () {
   $('.buttonpopup')
-    .popup()
+    .popup({lastResort: 'bottom right'})
   ;
 });
 
@@ -128,7 +135,13 @@ function not_in_collection(doc, field_name, target_collection_name) {
     return "";
   }
 
-  if (collection_dictionary[target_collection_name].find({"_id": doc[field_name]}).count() == 0) {
+  var query = {};
+  if (target_collection_name == "UploadedFiles") {
+    query = {"meta": {"databet_id": doc[field_name]}};
+  } else {
+    query = {"_id": doc[field_name]};
+  }
+  if (collection_dictionary[target_collection_name].find(query).count() == 0) {
     return "References non-existing "+field_name+" ("+doc[field_name]+") " +
       "in collection " + target_collection_name +"\n";
   } else {
@@ -138,6 +151,7 @@ function not_in_collection(doc, field_name, target_collection_name) {
 
 // Generic method that looks for dangling references
 function get_dangling_refs_in_collection(source_collection, reference_specs) {
+  console.log("GETTING DANGLING REF IN COLLECTION: ", source_collection);
   var dangling_refs = [];
   var docs = collection_dictionary[source_collection].find({}).fetch();
   for (var i=0; i < docs.length; i++) {

@@ -18,16 +18,13 @@
 
     <table class="ui table">
       <thead>
-      <th>File name</th>
+      <th>File name on the server</th>
       <th class="two wide"></th>
       </thead>
       {{#each list_of_unreachable_assessment_files}}
       <tr>
         <td><b>{{this}}</b></td>
-        <td class="two wide">
-          <a class="button circular ui icon button grey" href="{{this_url}}" target="_blank">
-            <i class="icon unhide"></i>
-          </a>
+        <td class="one wide">
           <div class="circular ui icon button red delete_file" value="{{this}}">
             <i class="icon delete"></i>
           </div>

@@ -14,6 +14,7 @@ import { PerformanceIndicators } from '../../api/databet_collections/Performance
 import { Semesters } from '../../api/databet_collections/Semesters';
 import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
 import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
+import { meteor_files_config } from '../../api/databet_collections/UploadedFiles';
 
 Meteor.methods({
 
@@ -56,19 +57,15 @@ Meteor.methods({
       var path = Npm.require('path');                                                                            // 6
       var filesystem = Npm.require("fs");
 
-      // TODO: No longer using a subdirectory :(
-      //var dir = UploadServer.getOptions().uploadDir + "/" + prefix;
-      var dir = UploadServer.getOptions().uploadDir + "/";
-      var list = filesystem.readdirSync(dir);
+      // The is an ugly way to get the config back
+      var dir = meteor_files_config["storagePath"];
+      console.log("DIR = ", dir);
 
-      // REALLY ugly hack to discount the tmp directory
-      var new_list = [];
-      for (var i=0; i < list.length; i++) {
-        if (list[i] != "tmp") {
-          new_list.push(list[i]);
-        }
-      }
-      return new_list;
+      //var dir = UploadServer.getOptions().uploadDir + "/" + prefix;
+      // var dir = UploadedFiles.
+      var list = filesystem.readdirSync(dir);
+      list.unshift(dir)
+      return list;
     }
   },
 
@@ -108,7 +105,7 @@ Meteor.methods({
       // Add the Collection dump to the archive
       zipfile.file(archive_name + "/collections.json", collections_2_string());
 
-      // Add a REAME to the archive
+      // Add a README to the archive
       zipfile.file(archive_name + "/README.txt", "Snapshot date: " + now.toString() +
         "\n\nThis archive contains:\n\t- this README.txt file\n" +
         "\t- collections.json, which contains a JSON array that contains all collection content, which " +

@@ -6,11 +6,14 @@ import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
 import { PerformanceIndicators } from '../../../api/databet_collections/PerformanceIndicators';
 import { Meteor } from 'meteor/meteor';
 import { semesterid_to_semesterstring } from '../../../ui/global_helpers/semesters';
+import { Random } from 'meteor/random';
 
 Template.AddUpdateAssessmentItem.onRendered(function () {
   // Initialize dropdown
   $('.ui.dropdown')
     .dropdown();
+
+  console.log("UPLOADED FILES", UploadedFiles.find({}).fetch());
 
   // Initialize radio and standard checkboxes
   $('.ui.radio.checkbox').checkbox();
@@ -118,26 +121,22 @@ Template.AddUpdateAssessmentItem.onCreated(function () {
   Template.instance().file_uploads["assessment_question"] = {
     "is_file": null,
     "text_area_id": null,
-    "fileinfo": null,
-    "file_id": null
+    "file": null,
   };
   Template.instance().file_uploads["sample_poor_answer"] = {
     "is_file": null,
     "text_area_id": null,
-    "fileinfo": null,
-    "file_id": null
+    "file": null,
   };
   Template.instance().file_uploads["sample_medium_answer"] = {
     "is_file": null,
     "text_area_id": null,
-    "fileinfo": null,
-    "file_id": null
+    "file": null,
   };
   Template.instance().file_uploads["sample_good_answer"] = {
     "is_file": null,
     "text_area_id": null,
-    "fileinfo": null,
-    "file_id": null
+    "file": null,
   };
 
 });
@@ -288,7 +287,7 @@ Template.AddUpdateAssessmentItem.helpers({
 
   "are_there_errors_in_poor_tab": function() {
     return (Template.instance().missing_content_reactive_vars["sample_poor_answer_text"].get() ||
-            Template.instance().missing_content_reactive_vars["sample_poor_answer_file"].get())
+    Template.instance().missing_content_reactive_vars["sample_poor_answer_file"].get())
   },
   "are_there_errors_in_medium_tab": function() {
     return (Template.instance().missing_content_reactive_vars["sample_medium_answer_text"].get() ||
@@ -444,26 +443,25 @@ Template.AddUpdateAssessmentItem.events({
 
   "click #cancel": function (e) {
 
+    // OLD TOMI STUFF
     // Delete files that were uploaded
-
-    if (Template.instance().file_uploads["assessment_question"]["fileinfo"]) {
-      Meteor.call("remove_uploaded_file", Template.instance().file_uploads["assessment_question"]["fileinfo"].path);
-    }
-    if (Template.instance().file_uploads["sample_poor_answer"]["fileinfo"]) {
-      Meteor.call("remove_uploaded_file", Template.instance().file_uploads["sample_poor_answer"]["fileinfo"].path);
-    }
-    if (Template.instance().file_uploads["sample_medium_answer"]["fileinfo"]) {
-      Meteor.call("remove_uploaded_file", Template.instance().file_uploads["sample_medium_answer"]["fileinfo"].path);
-    }
-    if (Template.instance().file_uploads["sample_good_answer"]["fileinfo"]) {
-      Meteor.call("remove_uploaded_file", Template.instance().file_uploads["sample_good_asnwer"]["fileinfo"].path);
-    }
+    // if (Template.instance().file_uploads["assessment_question"]["fileinfo"]) {
+    //   Meteor.call("remove_uploaded_file", Template.instance().file_uploads["assessment_question"]["fileinfo"].path);
+    // }
+    // if (Template.instance().file_uploads["sample_poor_answer"]["fileinfo"]) {
+    //   Meteor.call("remove_uploaded_file", Template.instance().file_uploads["sample_poor_answer"]["fileinfo"].path);
+    // }
+    // if (Template.instance().file_uploads["sample_medium_answer"]["fileinfo"]) {
+    //   Meteor.call("remove_uploaded_file", Template.instance().file_uploads["sample_medium_answer"]["fileinfo"].path);
+    // }
+    // if (Template.instance().file_uploads["sample_good_answer"]["fileinfo"]) {
+    //   Meteor.call("remove_uploaded_file", Template.instance().file_uploads["sample_good_asnwer"]["fileinfo"].path);
+    // }
 
     // Go back
     if (Template.currentData().action == "add") {
       Template.currentData().set_to_false_when_done.set(false);
     } else {
-
       FlowRouter.go('/assessment_items/' + Template.instance().offered_course._id);
     }
   },
@@ -551,7 +549,7 @@ Template.AddUpdateAssessmentItem.events({
       var final_state = Template.instance().file_uploads[name];
       if (!final_state.is_file) {  // Text
         tentative_doc[name + "_is_file"] = false;
-        tentative_doc[name + "_file"] = "null";
+        tentative_doc[name + "_file"] = null;
         tentative_doc[name + "_text"] = $('#' + final_state.text_area_id).val();
         if (tentative_doc[name + "_text"].length < 10) {
           Template.instance().missing_content_reactive_vars[name + "_text"].set(true);
@@ -560,8 +558,7 @@ Template.AddUpdateAssessmentItem.events({
       } else {  // Uploaded file input
         tentative_doc[name + "_is_file"] = true;
         tentative_doc[name + "_text"] = "";
-
-        if (final_state.fileinfo == null) {
+        if (final_state.file == null) {
           if (Template.currentData().action == "add") {
             Template.instance().missing_content_reactive_vars[name + "_file"].set(true);
             allGood = false;
@@ -571,9 +568,8 @@ Template.AddUpdateAssessmentItem.events({
               allGood = false;
             }
           }
-        } else {
-          tentative_doc[name + "_file"] = final_state["file_id"];
         }
+        tentative_doc[name + "_file"] = final_state["file"];  // perhaps null
       }
     }
 
@@ -581,34 +577,115 @@ Template.AddUpdateAssessmentItem.events({
       return false;
     }
 
+    console.log("ALL GOOD, LET'S DO IT!!!");
+
+    console.log("TENTATIVE DOC = ", tentative_doc);
+
     // console.log("*** ALL GOOD!!! ***");
     /**** After this point, we know we will successfully add the item ****/
 
     // disable the template to avoid race conditions
     Template.instance().is_visible.set(false);
 
-    /**** Create all newly updated files ****/
+    /**** Deal with files ****/
 
     var list_of_file_or_text_names = ["assessment_question", "sample_poor_answer", "sample_medium_answer", "sample_good_answer"];
 
     for (var i = 0; i < list_of_file_or_text_names.length; i++) {
       var name = list_of_file_or_text_names[i];
 
-      tentative_doc[name + "_file"] = null;  // In case we don't do anything below
-      var final_state = Template.instance().file_uploads[name];
-      if (tentative_doc[name + "_is_file"] && final_state["file_id"]) {
-        Meteor.call("insert_into_collection", "UploadedFiles",
-          {
-            _id: final_state["file_id"],  // We force the ID, which matches the file prefix
-            fileinfo: final_state["fileinfo"],
-            url: Meteor.absoluteUrl("upload") + "/" + final_state["fileinfo"].path
-          });
-        tentative_doc[name + "_file"] = final_state["file_id"];
+
+      console.log("TENTATIVE DOC NAME: ", name, "  ", tentative_doc[name + "_file"]);
+      // Remove the old file if necessary
+
+      var there_was_a_previously_uploaded_file;
+      var we_are_now_uploading_text;
+      var we_are_uploading_a_new_file;
+      var id_of_previously_uploaded_file = null;
+      var new_file_object = null;
+
+      there_was_a_previously_uploaded_file =
+        (Template.instance().existing_assessment_item != null) &&
+        (Template.instance().existing_assessment_item[name + "_is_file"] == true);
+      if (there_was_a_previously_uploaded_file) {
+        id_of_previously_uploaded_file = Template.instance().existing_assessment_item[name + "_file"];
       }
+
+      we_are_now_uploading_text = (tentative_doc[name + "_is_file"] == false);
+      we_are_uploading_a_new_file = (!we_are_now_uploading_text) &&
+        (tentative_doc[name + "_file"] != null);
+      if (we_are_uploading_a_new_file) {
+        new_file_object = tentative_doc[name + "_file"];
+      }
+
+      // Removing an old file?
+      if ( (there_was_a_previously_uploaded_file && we_are_now_uploading_text) ||
+        (there_was_a_previously_uploaded_file && we_are_uploading_a_new_file) ) {
+        console.log("   REMOVING FILE EXISTING ", id_of_previously_uploaded_file);
+        UploadedFiles.remove({meta: {"databet_id": id_of_previously_uploaded_file}});
+      }
+
+      // Dealing with a new file?
+      if (we_are_uploading_a_new_file) {
+        console.log("I SHOULD CREATE A NEW FILE for ", name, " ", new_file_object);
+        var fileObj = new_file_object;
+        tentative_doc[name + "_file"] = Random.id(); // fake it as an id
+        var uploadInstance = UploadedFiles.insert({
+          file: fileObj,
+          meta: { "databet_id": tentative_doc[name + "_file"] },
+          streams: 'dynamic',
+          chunkSize: 'dynamic'
+        }, false);
+        uploadInstance.on('start', function() {
+          //template.currentUpload.set(this);
+        });
+        uploadInstance.on('end', function(error, fileObj) {
+          console.log("END --->", fileObj);
+          if (error) {
+            alert('Error during upload: ' + error.reason);
+          } else {
+            alert('File "' + fileObj.name + '" successfully uploaded');
+          }
+          //template.currentUpload.set(false);
+        });
+        console.log("UPLOADING THE FILE ASYNCHRONOUSLY!!");
+        uploadInstance.start();
+      }
+
+      // Are we simply faking the previous file (doing a useless overwrite, but allowing us
+      // to use the same code for add and update
+      if (!we_are_now_uploading_text && there_was_a_previously_uploaded_file && !we_are_uploading_a_new_file) {
+        tentative_doc[name + "_file"] = id_of_previously_uploaded_file;
+      }
+
     }
 
-    // console.log("TENTATIVE DOC = ", tentative_doc);
+    // /*** Dealing with files ***/
+    //
+    // var list_of_file_or_text_names = ["assessment_question", "sample_poor_answer", "sample_medium_answer", "sample_good_answer"];
+    // for (var i = 0; i < list_of_file_or_text_names.length; i++) {
+    //   var name = list_of_file_or_text_names[i];
+    //
+    //   // Removing old files if necessary
+    //   if ((Template.instance().existing_assessment_item[name + "_is_file"] && !tentative_doc[name + "_is_file"]) ||
+    //     (Template.instance().existing_assessment_item[name + "_is_file"] && tentative_doc[name + "_is_file"] &&
+    //     (tentative_doc[name + "_file"] != null))) {
+    //
+    //     existing_uploaded_file = UploadedFiles.findOne({"_id": Template.instance().existing_assessment_item[name + "_file"]});
+    //     //Meteor.call("remove_uploaded_file", existing_uploaded_file.fileinfo.path);
+    //     Meteor.call("delete_from_collection", "UploadedFiles", existing_uploaded_file._id);
+    //   }
+    //
+    //   // Updating modifier
+    //   if ((Template.instance().existing_assessment_item[name + "_is_file"] && !tentative_doc[name + "_is_file"]) ||
+    //     (Template.instance().existing_assessment_item[name + "_is_file"] && tentative_doc[name + "_is_file"] &&
+    //     (tentative_doc[name + "_file"] != null)) ||
+    //     (!Template.instance().existing_assessment_item[name + "_is_file"] && tentative_doc[name + "_is_file"])) {
+    //     modifier[name + "_file"] = tentative_doc[name + "_file"];
+    //   }
+    // }
 
+    console.log("FINAL TENTATIVE DOC=", tentative_doc);
     if (Template.currentData().action == "add") {
 
       // Create the assessment item
@@ -648,44 +725,22 @@ Template.AddUpdateAssessmentItem.events({
         date_last_modified: new Date(),
         assessment_type: tentative_doc.assessment_item_type,
         assessment_question_is_file: tentative_doc.assessment_question_is_file,
+        assessment_question_file: tentative_doc.assessment_question_file,
         assessment_question_text: tentative_doc.assessment_question_text,
         grades: tentative_doc.grades,
         max_grade: Number(tentative_doc.max_grade),
         comments: tentative_doc.comments,
         sample_poor_answer_is_file: tentative_doc.sample_poor_answer_is_file,
+        sample_poor_answer_file: tentative_doc.sample_poor_answer_file,
         sample_poor_answer_text: tentative_doc.sample_poor_answer_text,
         sample_medium_answer_is_file: tentative_doc.sample_medium_answer_is_file,
+        sample_medium_answer_file: tentative_doc.sample_medium_answer_file,
         sample_medium_answer_text: tentative_doc.sample_medium_answer_text,
         sample_good_answer_is_file: tentative_doc.sample_good_answer_is_file,
+        sample_good_answer_file: tentative_doc.sample_good_answer_file,
         sample_good_answer_text: tentative_doc.sample_good_answer_text,
       };
 
-      var existing_uploaded_file;
-
-      /*** Dealing with files ***/
-
-      var list_of_file_or_text_names = ["assessment_question", "sample_poor_answer", "sample_medium_answer", "sample_good_answer"];
-      for (var i = 0; i < list_of_file_or_text_names.length; i++) {
-        var name = list_of_file_or_text_names[i];
-
-        // Removing old files if necessary
-        if ((Template.instance().existing_assessment_item[name + "_is_file"] && !tentative_doc[name + "_is_file"]) ||
-          (Template.instance().existing_assessment_item[name + "_is_file"] && tentative_doc[name + "_is_file"] &&
-          (tentative_doc[name + "_file"] != null))) {
-
-          existing_uploaded_file = UploadedFiles.findOne({"_id": Template.instance().existing_assessment_item[name + "_file"]});
-          //Meteor.call("remove_uploaded_file", existing_uploaded_file.fileinfo.path);
-          Meteor.call("delete_from_collection", "UploadedFiles", existing_uploaded_file._id);
-        }
-
-        // Updating modifier
-        if ((Template.instance().existing_assessment_item[name + "_is_file"] && !tentative_doc[name + "_is_file"]) ||
-          (Template.instance().existing_assessment_item[name + "_is_file"] && tentative_doc[name + "_is_file"] &&
-          (tentative_doc[name + "_file"] != null)) ||
-          (!Template.instance().existing_assessment_item[name + "_is_file"] && tentative_doc[name + "_is_file"])) {
-          modifier[name + "_file"] = tentative_doc[name + "_file"];
-        }
-      }
 
       // Somehow, putting the FlowRouter.go() statement in the callback makes it all work...
       // without seeing annoying (but harmless) exceptions in helpers that should no longer
@@ -694,6 +749,7 @@ Template.AddUpdateAssessmentItem.events({
       console.log("MODIFIER=", modifier);
 
       var url_to_return_to = "/assessment_items/" + Template.instance().offered_course._id;
+      console.log("URL=", url_to_return_to);
       Meteor.call("update_in_collection", "AssessmentItems", Template.instance().existing_assessment_item._id, modifier,
         function () {
           FlowRouter.go(url_to_return_to);

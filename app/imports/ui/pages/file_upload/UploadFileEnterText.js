@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
 import { Random } from 'meteor/random';
 
+
 Template.UploadFileEnterText.onCreated(function () {
 
   this.upload_method_is_file = new ReactiveVar();
@@ -25,8 +26,7 @@ Template.UploadFileEnterText.onCreated(function () {
 
   // Set final to initial (since we may not change anything)
   Template.currentData().context.final_state.is_file = Template.currentData().context.initial_method_is_file;
-  Template.currentData().context.final_state.file_id = null;
-  Template.currentData().context.final_state.fileinfo = null;
+  Template.currentData().context.final_state.file = null;
   Template.currentData().context.final_state.text_area_id = Template.currentData().context.text_area_id;
 
   // To remember text
@@ -89,15 +89,20 @@ Template.UploadFileEnterText.helpers({
   "previously_uploaded_file_url": function () {
     var previously_uploaded_file_id = Template.currentData().context.initial_file;
     if (previously_uploaded_file_id != null) {
-      return UploadedFiles.findOne({"_id": previously_uploaded_file_id}).url;
+      console.log("LOOKING FOR A PREVIOUSLY UPLOADED FILE");
+      var found_file = UploadedFiles.findOne({"meta": {"databet_id": previously_uploaded_file_id}});
+      console.log("FOUND FILE: ", found_file);
+      console.log("SHOULD RETURN URL!!!", found_file.link());
+      return found_file.link();
+      //return UploadedFiles.findOne({"_id": previously_uploaded_file_id}).url;
     } else {
       return "";
     }
   },
 
-  "file_upload_callbacks": function () {
-    return my_file_upload_callbacks();
-  }
+  // "file_upload_callbacks": function () {
+  //   return my_file_upload_callbacks();
+  // }
 
 });
 
@@ -126,8 +131,7 @@ Template.UploadFileEnterText.events({
 
     // Update final state
     Template.currentData().context.final_state.is_file = true;
-    Template.currentData().context.final_state.fileinfo = null;
-    Template.currentData().context.final_state.file_id = null;
+    Template.currentData().context.final_state.file = null;
 
   },
 
@@ -144,44 +148,57 @@ Template.UploadFileEnterText.events({
 
     // Update final state
     Template.currentData().context.final_state.is_file = false;
-    Template.currentData().context.final_state.fileinfo = null;
-    Template.currentData().context.final_state.file_id = null;
+    Template.currentData().context.final_state.file = null;
+  },
+
+  "change #fileInput": function (e) {
+    console.log("New file selection");
+    if (e.currentTarget.files && e.currentTarget.files[0]) {
+      // We upload only one file, in case
+      // there was multiple files selected
+      Template.currentData().context.final_state.file = e.currentTarget.files[0];
+      Template.currentData().context.missing_file_reactive_var.set(false);
+
+
+    } else {
+      Template.currentData().context.missing_file_reactive_var.set(true);
+    }
   },
 
 });
 
 // Generic-ish callback for file upload
 
-function my_file_upload_callbacks() {
-
-  var set_to_false_when_uploaded = Template.currentData().context.missing_file_reactive_var;
-  var file_info_bookkeeping = Template.currentData().context.final_state;
-
-  return {
-    formData: function () {
-
-      // set the id
-      var uploaded_file_id = Random.id();
-      file_info_bookkeeping.file_id = uploaded_file_id;
-
-      return {
-        directoryName: 'assessment_uploads',
-        prefix: uploaded_file_id
-      };
-    },
-
-    finished: function (index, fileInfo, context) {
-
-      // There was already an image, so I remove it
-      if (file_info_bookkeeping.fileinfo) {
-        Meteor.call("remove_uploaded_file", file_info_bookkeeping.fileinfo.path);
-      }
-      file_info_bookkeeping.fileinfo = fileInfo;
-
-      if (set_to_false_when_uploaded) {
-        set_to_false_when_uploaded.set(false);
-      }
-    }
-  }
-}
+// function my_file_upload_callbacks() {
+//
+//   var set_to_false_when_uploaded = Template.currentData().context.missing_file_reactive_var;
+//   var file_info_bookkeeping = Template.currentData().context.final_state;
+//
+//   return {
+//     formData: function () {
+//
+//       // set the id
+//       var uploaded_file_id = Random.id();
+//       file_info_bookkeeping.file_id = uploaded_file_id;
+//
+//       return {
+//         directoryName: 'assessment_uploads',
+//         prefix: uploaded_file_id
+//       };
+//     },
+//
+//     finished: function (index, fileInfo, context) {
+//
+//       // There was already an image, so I remove it
+//       if (file_info_bookkeeping.fileinfo) {
+//         Meteor.call("remove_uploaded_file", file_info_bookkeeping.fileinfo.path);
+//       }
+//       file_info_bookkeeping.fileinfo = fileInfo;
+//
+//       if (set_to_false_when_uploaded) {
+//         set_to_false_when_uploaded.set(false);
+//       }
+//     }
+//   }
+// }
 

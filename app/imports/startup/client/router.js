@@ -105,7 +105,7 @@ FlowRouter.route('/semester_email/:_id', {
   },
 });
 
-FlowRouter.route('/assessments_items/:_id', {
+FlowRouter.route('/assessment_items/:_id', {
   name: 'AssessmentItems',
   action() {
     BlazeLayout.render("App_Body", {main: "AssessmentItems"});

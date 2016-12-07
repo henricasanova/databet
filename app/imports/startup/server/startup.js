@@ -36,29 +36,32 @@ function initialize_upload_server() {
   if (upload_root == undefined) {
     throw new Meteor.Error("UPLOAD_DIR environment variable must be defined");
   }
+
+  console.log("IN INITIALIZE UPLOAD SERVER");
   //var upload_root = process.env.PWD + '/.uploads/';
 
-  UploadServer.init({
-    tmpDir: upload_root+'/tmp',
-    uploadDir: upload_root,
-    uploadUrl: "/upload",  // Seems to work with a custom ROOT_URL (see Client startup) - with some hacking
-    checkCreateDirectories: true,
-    getDirectory: function(fileInfo, formData) {
-      if (formData && formData.directoryName != null) {
-        // TODO: This seems useless now :(
-        return formData.directoryName;
-      }
-      return "";
-    },
-    getFileName: function(fileInfo, formData) {
-      if (formData && formData.prefix != null) {
-        return formData.prefix + '::' + fileInfo.name;
-      }
-      return fileInfo.name;
-    },
-    finished: function(fileInfo, formData) {
-    }
-  });
+    // OLD TOMI STUFF
+  // UploadServer.init({
+  //   tmpDir: upload_root+'/tmp',
+  //   uploadDir: upload_root,
+  //   uploadUrl: "/upload",  // Seems to work with a custom ROOT_URL (see Client startup) - with some hacking
+  //   checkCreateDirectories: true,
+  //   getDirectory: function(fileInfo, formData) {
+  //     if (formData && formData.directoryName != null) {
+  //       // TODO: This seems useless now :(
+  //       return formData.directoryName;
+  //     }
+  //     return "";
+  //   },
+  //   getFileName: function(fileInfo, formData) {
+  //     if (formData && formData.prefix != null) {
+  //       return formData.prefix + '::' + fileInfo.name;
+  //     }
+  //     return fileInfo.name;
+  //   },
+  //   finished: function(fileInfo, formData) {
+  //   }
+  // });
 
   // TODO: The thing below no longer is useful since it seems the
   // TODO: tomi-upload package no longer creates a sub-directory
