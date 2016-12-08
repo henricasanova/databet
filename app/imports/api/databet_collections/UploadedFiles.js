@@ -5,6 +5,7 @@
 
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
+import { fs_create_dir } from '../util/file_system';
 
 export var meteor_files_config = {};
 
@@ -16,20 +17,7 @@ if (Meteor.server) {
   }
 
   console.log("Creating Directory " + upload_root + "/assessment_uploads/ ...");
-  var Future = Npm.require("fibers/future");
-  var exec = Npm.require("child_process").exec;
-  var future = new Future();
-  var dir = process.env.PWD;
-  var command = "mkdir -p " + upload_root + "/assessment_uploads/";
-  //noinspection JSUnusedLocalSymbols
-  exec(command, {cwd: dir}, function (error, stdout, stderr) {
-    if (error) {
-      console.log(error);
-      throw new Meteor.Error(500, command + " failed");
-    }
-    future.return(stdout.toString());
-  });
-  future.wait();
+  fs_create_dir(upload_root + "/assessment_uploads/");
 
   meteor_files_config["storagePath"] = upload_root + "/assessment_uploads/";
   console.log("UPLOAD STORAGE PATH =", meteor_files_config["storagePath"]);
@@ -53,7 +41,7 @@ export class UploadedFilesCollection {
     this.MeteorFiles = new Meteor.Files(config);
   }
 
-  insert_document(fileObj, databet_id) {
+  insert_document(fileObj, databet_id, prefix) {
     var uploadInstance = this.MeteorFiles.insert({
       file: fileObj,
       meta: { "databet_id": databet_id },
@@ -70,6 +58,14 @@ export class UploadedFilesCollection {
         alert('Error during upload: ' + error.reason);
       } else {
         alert('File "' + fileObj.name + '" successfully uploaded');
+        // This is a terrible hack to impose particular filenames in Meteor-Files
+        //console.log("Should try to rename File: fileObj", fileObj);
+        var search_pattern = new RegExp(fileObj._id, "g");
+        var replace_with = prefix + "::" + fileObj._id;
+        var new_path = fileObj.path.replace(search_pattern, replace_with);
+        console.log("IN insert_documnet OLD", fileObj.path);
+        console.log("IN insert_documnet NEW", new_path);
+        Meteor.call("rename_uploaded_file", fileObj._id, new_path);
       }
     });
 

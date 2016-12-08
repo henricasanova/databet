@@ -92,7 +92,7 @@ Template.UploadFileEnterText.helpers({
       console.log("LOOKING FOR A PREVIOUSLY UPLOADED FILE");
       var found_file = UploadedFiles.findOne({"meta": {"databet_id": previously_uploaded_file_id}});
       console.log("FOUND FILE: ", found_file);
-      console.log("SHOULD RETURN URL!!!", found_file.link());
+      console.log(" RETURNING  URL!!!", found_file.link());
       return found_file.link();
       //return UploadedFiles.findOne({"_id": previously_uploaded_file_id}).url;
     } else {

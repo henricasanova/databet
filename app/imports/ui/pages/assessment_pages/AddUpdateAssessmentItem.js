@@ -1,4 +1,5 @@
 import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses';
+import { Semesters } from '../../../api/databet_collections/Semesters';
 import { Courses } from '../../../api/databet_collections/Courses';
 import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
 import { CurriculumMappings } from '../../../api/databet_collections/CurriculumMappings';
@@ -7,6 +8,7 @@ import { PerformanceIndicators } from '../../../api/databet_collections/Performa
 import { Meteor } from 'meteor/meteor';
 import { semesterid_to_semesterstring } from '../../../ui/global_template_helpers/semesters';
 import { Random } from 'meteor/random';
+import { get_current_username } from '../../global_template_helpers/users_and_usernames';
 
 Template.AddUpdateAssessmentItem.onRendered(function () {
   // Initialize dropdown
@@ -601,7 +603,15 @@ Template.AddUpdateAssessmentItem.events({
         var fileObj = new_file_object;
         tentative_doc[name + "_file"] = Random.id(); // fake it as an id
 
-        UploadedFiles.insert_document(fileObj, tentative_doc[name + "_file"]);
+        var semester_string = semesterid_to_semesterstring(Template.instance().offered_course.semester);
+        semester_string = semester_string.replace(/ /g,'_');
+        var course_alpha = Courses.findOne({"_id": Template.instance().offered_course.course}).alphanumeric;
+        course_alpha = course_alpha.replace(/ /g,'_');
+        var username =get_current_username();
+
+        var prefix = semester_string+":"+course_alpha+":"+username;
+        //console.log("PREFIX = ", prefix);
+        UploadedFiles.insert_document(fileObj, tentative_doc[name + "_file"], prefix);
       }
 
       // Are we simply faking the previous file (doing a useless overwrite, but allowing us
@@ -611,7 +621,7 @@ Template.AddUpdateAssessmentItem.events({
       }
     }
 
-    console.log("FINAL TENTATIVE DOC=", tentative_doc);
+    //console.log("FINAL TENTATIVE DOC=", tentative_doc);
     if (Template.currentData().action == "add") {
 
       // Create the assessment item

@@ -6,15 +6,10 @@ import '../../api/databet_collections';
 import { collection_dictionary } from '../../startup/both/collection_dictionary';
 import { Meteor } from 'meteor/meteor';
 import { AssessmentItems } from '../databet_collections/AssessmentItems';
-import { Courses } from '../databet_collections/Courses';
 import { Curricula } from '../databet_collections/Curricula';
-import { CurriculumMappings } from '../databet_collections/CurriculumMappings';
-import { OfferedCourses } from '../databet_collections/OfferedCourses';
-import { PerformanceIndicators } from '../databet_collections/PerformanceIndicators';
-import { Semesters } from '../databet_collections/Semesters';
-import { StudentOutcomes } from '../databet_collections/StudentOutcomes';
 import { UploadedFiles } from '../databet_collections/UploadedFiles';
 import { meteor_files_config } from '../databet_collections/UploadedFiles';
+import { fs_move_file_path } from '../util/file_system';
 
 Meteor.methods({
 
@@ -206,9 +201,28 @@ Meteor.methods({
           }
         }
       }
-      return;
     }
   },
+
+  rename_uploaded_file: function(doc_id, new_path) {
+    var doc = UploadedFiles.MeteorFiles.findOne({"_id": doc_id});
+    if (!doc) { return; }
+
+    //console.log(doc);
+    var old_path = doc.path;
+
+    //console.log("Should mv ", old_path, " ", new_path);
+
+    // Update the collection
+    var modifier = {"path": new_path, "versions.original.path": new_path };
+    //console.log("MODIFIER = ", modifier);
+    UploadedFiles.MeteorFiles.update({"_id": doc._id}, {$set: modifier});
+    //console.log("UPDATED:", UploadedFiles.MeteorFiles.findOne({"_id": doc._id}));
+
+    // Update the file system
+    fs_move_file_path(old_path, new_path);
+
+  }
 
 });
 
@@ -474,3 +488,21 @@ function check_against_schema(document, schema) {
   // Check against the schema
   check(document, schema);
 }
+
+// function move_file_path(old_path, new_path) {
+//
+//   var Future = Npm.require("fibers/future");
+//   var exec = Npm.require("child_process").exec;
+//   var future = new Future();
+//   var dir = process.env.PWD;
+//   var command = "mv " + old_path + " " + new_path;
+//   //noinspection JSUnusedLocalSymbols
+//   exec(command, {cwd: dir}, function (error, stdout, stderr) {
+//     if (error) {
+//       console.log(error);
+//       throw new Meteor.Error(500, command + " failed");
+//     }
+//     future.return(stdout.toString());
+//   });
+//   future.wait();
+// }
