@@ -32,7 +32,6 @@ Template.EditCurriculumMap.helpers({
     }
     return false;
   }
-
 });
 
 
@@ -129,15 +128,13 @@ Template.CheckBoxes.events({
     if (checked) {
       // Create mapping
       if (!CurriculumMappings.findOne(mapping)) {
-	CurriculumMappings.insert_document(mapping);
-        //Meteor.call("insert_into_collection", "CurriculumMappings", mapping);
+        CurriculumMappings.insert_document(mapping);
       }
 
     } else {
       // Remove mapping
       var to_remove = CurriculumMappings.findOne(mapping);
       CurriculumMappings.remove_document(to_remove._id);
-      //Meteor.call("delete_from_collection", "CurriculumMappings", to_remove._id);
 
     }
 

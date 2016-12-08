@@ -76,7 +76,6 @@ Template.AddUpdateCourse.events({
       };
 
       Courses.insert_document(course);
-      //Meteor.call("insert_into_collection", "Courses", course);
 
       // Clear the fields
       $('#alphanumeric').val("");
@@ -91,12 +90,6 @@ Template.AddUpdateCourse.events({
 	                "alphanumeric": alphanumeric,
 	                "title": title
 	              });
-
-     // Meteor.call("update_in_collection", "Courses", courseId,
-     //   {
-     //     "alphanumeric": alphanumeric,
-     //     "title": title
-     //   });
     }
 
 

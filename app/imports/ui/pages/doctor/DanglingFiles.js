@@ -84,7 +84,6 @@ Template.DanglingFileRow.events({
 
   "click .manage_delete_item": function (e) {
     UploadedFiles.remove_document(this.meta.databet_id);
-    //Meteor.call("delete_from_collection", "UploadedFiles", this._id);
   },
 
 });

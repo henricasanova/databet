@@ -34,8 +34,7 @@ Template.EditCurriculum.events({
       },
       onApprove: function () {
         $('#unlock_modal').modal('hide');
-	Curricula.update_document(curriculumId, {"locked": false});
-        //Meteor.call("update_in_collection", "Curricula", curriculumId, {"locked": false});
+        Curricula.update_document(curriculumId, {"locked": false});
         return true;
       }
     }).modal('show');
@@ -70,7 +69,6 @@ Template.EditCurriculum.events({
 
     // Update curriculum description
     Curricula.update_document(curriculumId, {"description": description});
-//    Meteor.call("update_in_collection", "Curricula", curriculumId, {"description": description});
 
     return false;
   }

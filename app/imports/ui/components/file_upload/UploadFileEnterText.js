@@ -120,11 +120,6 @@ Template.UploadFileEnterText.events({
 
     Template.instance().upload_method_is_file.set(true);
     Template.instance().upload_method_is_text.set(false);
-    // if (Template.instance().uploaded_file) {
-    //   Meteor.call("remove_uploaded_file", Template.instance().uploaded_file.path);
-    // }
-    // Template.instance().uploaded_file = null;
-    // Template.instance().uploaded_file_id = null;
 
     // Update missing content var for text
     Template.currentData().context.missing_text_reactive_var.set(false);
@@ -164,39 +159,4 @@ Template.UploadFileEnterText.events({
   },
 
 });
-
-// Generic-ish callback for file upload
-
-// function my_file_upload_callbacks() {
-//
-//   var set_to_false_when_uploaded = Template.currentData().context.missing_file_reactive_var;
-//   var file_info_bookkeeping = Template.currentData().context.final_state;
-//
-//   return {
-//     formData: function () {
-//
-//       // set the id
-//       var uploaded_file_id = Random.id();
-//       file_info_bookkeeping.file_id = uploaded_file_id;
-//
-//       return {
-//         directoryName: 'assessment_uploads',
-//         prefix: uploaded_file_id
-//       };
-//     },
-//
-//     finished: function (index, fileInfo, context) {
-//
-//       // There was already an image, so I remove it
-//       if (file_info_bookkeeping.fileinfo) {
-//         Meteor.call("remove_uploaded_file", file_info_bookkeeping.fileinfo.path);
-//       }
-//       file_info_bookkeeping.fileinfo = fileInfo;
-//
-//       if (set_to_false_when_uploaded) {
-//         set_to_false_when_uploaded.set(false);
-//       }
-//     }
-//   }
-// }
 

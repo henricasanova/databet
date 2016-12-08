@@ -11,7 +11,6 @@ export var meteor_files_config = {};
 if (Meteor.server) {
 
   var upload_root = process.env.UPLOAD_DIR;
-  console.log("UPLOAD_DIR = ", upload_root);
   if (upload_root == undefined) {
     throw new Meteor.Error("UPLOAD_DIR environment variable must be defined");
   }
@@ -92,30 +91,5 @@ export class UploadedFilesCollection {
 }
 
 
-console.log("CREATING METEOR.FILES");
-
 export var UploadedFiles = new UploadedFilesCollection(meteor_files_config);
-
-
-
-
-
-// OLD TOMI STUFF
-// export var UploadedFiles = new Mongo.Collection("UploadedFiles");
-//
-// UploadedFiles.attachSchema(new SimpleSchema({
-//
-//     // Object with all file info
-//     fileinfo: {
-//       type: Object,
-//       optional: false,
-//       blackbox: true
-//     },
-//
-//     url: { // Needed since URL-crafting is necessary with a custom ROOT_URL
-//       type: String,
-//       optional: false
-//     }
-//   })
-// );
 

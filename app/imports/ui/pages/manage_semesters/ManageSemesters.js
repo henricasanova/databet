@@ -54,7 +54,6 @@ Template.semesterRow.events({
         onApprove : function() {
           $('#modal_'+semesterId).modal('hide');
 	  Semesters.remove_document(semesterId);
-          //Meteor.call("delete_from_collection", "Semesters", semesterId);
           return true;
         }
       })

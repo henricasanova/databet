@@ -91,8 +91,6 @@ Template.AddCurriculum.events({
     };
 
     Curricula.insert_document(new_curriculum);
-    //Meteor.call("insert_into_collection", "Curricula", new_curriculum);
-
 
     if (Template.instance().cloning.get()) {
       clone_curriculum(cloned_curriculum, new_curriculum._id);
@@ -128,7 +126,6 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
       "curriculum": destCurriculumId
     };
     Courses.insert_document(cloned_course);
-    //Meteor.call("insert_into_collection", "Courses", cloned_course);
     course_cloning_map[to_clone_courses[i]._id] = cloned_course._id;
   }
 
@@ -144,7 +141,6 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
       "order": to_clone_outcomes[i].order
     };
     StudentOutcomes.insert_document(cloned_outcome);
-    //Meteor.call("insert_into_collection", "StudentOutcomes", cloned_outcome);
     // Clone performance indicators
     var to_clone_pis = PerformanceIndicators.find({"student_outcome": to_clone_outcomes[i]._id}).fetch();
     for (j = 0; j < to_clone_pis.length; j++) {
@@ -155,7 +151,6 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
         "order": to_clone_pis[j].order
       };
       PerformanceIndicators.insert_document(cloned_pi);
-      //Meteor.call("insert_into_collection", "PerformanceIndicators", cloned_pi);
       pi_cloning_map[to_clone_pis[j]._id] = cloned_pi._id;
     }
   }
@@ -170,7 +165,6 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
       "performance_indicator": pi_cloning_map[to_clone_mappings[i].performance_indicator]
     };
     CurriculumMappings.insert_document(cloned_mapping);
-    //Meteor.call("insert_into_collection", "CurriculumMappings", cloned_mapping);
   }
 
 }

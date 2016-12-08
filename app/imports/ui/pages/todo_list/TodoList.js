@@ -51,7 +51,6 @@ Template.OfferedCourseRow.events({
 
   "click .archive_course": function (e) {
 	  OfferedCourses.update_document(this._id, {"archived": true});
-    //Meteor.call("update_in_collection", "OfferedCourses", this._id, {"archived": true});
   }
 
 });

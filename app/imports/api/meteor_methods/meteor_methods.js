@@ -46,7 +46,6 @@ Meteor.methods({
     collection.remove({"_id": doc_id});
   },
 
-
   get_list_of_uploaded_files: function (prefix) {
 
     if (Meteor.isServer) {
@@ -217,194 +216,194 @@ Meteor.methods({
 /***** HELPERS *****/
 
 
-function remove_from_collection(collection, doc_id) {
-  console.log("REMOVE_FROM_COLLECTION: ", collection._name, doc_id);
-  // First remove all linked documents
-  switch (collection) {
-    case Meteor.users:
-      remove_all_documents_referring_to_user(doc_id);
-      break;
-    case OfferedCourses:
-      remove_all_documents_referring_to_offered_course(doc_id);
-      break;
-    case AssessmentItems:
-      remove_all_documents_referring_to_assessment_item(doc_id);
-      break;
-    case Semesters:
-      remove_all_documents_referring_to_semester(doc_id);
-      break;
-    case Curricula:
-      remove_all_documents_referring_to_curriculum(doc_id);
-      break;
-    case StudentOutcomes:
-      var curriculum_id = StudentOutcomes.findOne({"_id": doc_id}).curriculum;
-      remove_all_documents_referring_to_student_outcome(doc_id);
-      break;
-    case Courses:
-      remove_all_documents_referring_to_course(doc_id);
-      break;
-    case CurriculumMappings:
-      remove_all_documents_referring_to_curriculum_mapping(doc_id);
-      break;
-    case PerformanceIndicators:
-      var outcome_id = PerformanceIndicators.findOne({"_id": doc_id}).student_outcome;
-      remove_all_documents_referring_to_performance_indicator(doc_id);
-      break;
-    case UploadedFiles:
-      remove_all_documents_referring_to_uploaded_file(doc_id);
-      break;
-  }
+// function remove_from_collection(collection, doc_id) {
+//   console.log("REMOVE_FROM_COLLECTION: ", collection._name, doc_id);
+//   // First remove all linked documents
+//   switch (collection) {
+//     case Meteor.users:
+//       remove_all_documents_referring_to_user(doc_id);
+//       break;
+//     case OfferedCourses:
+//       remove_all_documents_referring_to_offered_course(doc_id);
+//       break;
+//     case AssessmentItems:
+//       remove_all_documents_referring_to_assessment_item(doc_id);
+//       break;
+//     case Semesters:
+//       remove_all_documents_referring_to_semester(doc_id);
+//       break;
+//     case Curricula:
+//       remove_all_documents_referring_to_curriculum(doc_id);
+//       break;
+//     case StudentOutcomes:
+//       var curriculum_id = StudentOutcomes.findOne({"_id": doc_id}).curriculum;
+//       remove_all_documents_referring_to_student_outcome(doc_id);
+//       break;
+//     case Courses:
+//       remove_all_documents_referring_to_course(doc_id);
+//       break;
+//     case CurriculumMappings:
+//       remove_all_documents_referring_to_curriculum_mapping(doc_id);
+//       break;
+//     case PerformanceIndicators:
+//       var outcome_id = PerformanceIndicators.findOne({"_id": doc_id}).student_outcome;
+//       remove_all_documents_referring_to_performance_indicator(doc_id);
+//       break;
+//     case UploadedFiles:
+//       remove_all_documents_referring_to_uploaded_file(doc_id);
+//       break;
+//   }
+//
+//   // Second, remove the document itself
+//   collection.remove({"_id": doc_id});
+//
+//   // Third, do some collection-specific cleanup
+//   switch (collection) {
+//     case PerformanceIndicators:
+//       var i;
+//       // Fix all orders
+//       var allPIs = PerformanceIndicators.find({"student_outcome": outcome_id}, {sort: {order: 1}}).fetch();
+//       for (i = 0; i < allPIs.length; i++) {
+// 	      PerformanceIndicators.update_document( allPIs[i]._id, {"order": i});
+//       }
+//       break;
+//     case StudentOutcomes:
+//       // Fix all orders
+//       var allOutcomes = StudentOutcomes.find({"curriculum": curriculum_id}, {sort: {order: 1}}).fetch();
+//       for (i = 0; i < allOutcomes.length; i++) {
+// 	      StudentOutcomes.update_document(allOutcomes[i]._id, {"order": i});
+//       }
+//       break;
+//     default:
+//       break;
+//   }
+// }
 
-  // Second, remove the document itself
-  collection.remove({"_id": doc_id});
-
-  // Third, do some collection-specific cleanup
-  switch (collection) {
-    case PerformanceIndicators:
-      var i;
-      // Fix all orders
-      var allPIs = PerformanceIndicators.find({"student_outcome": outcome_id}, {sort: {order: 1}}).fetch();
-      for (i = 0; i < allPIs.length; i++) {
-        Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i]._id, {"order": i});
-      }
-      break;
-    case StudentOutcomes:
-      // Fix all orders
-      var allOutcomes = StudentOutcomes.find({"curriculum": curriculum_id}, {sort: {order: 1}}).fetch();
-      for (i = 0; i < allOutcomes.length; i++) {
-        Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i]._id, {"order": i});
-      }
-      break;
-    default:
-      break;
-  }
-}
-
-function remove_all_documents_referring_to_user(user_id) {
-  var offered_courses = OfferedCourses.find({"instructor": user_id}).fetch();
-  for (var i = 0; i < offered_courses.length; i++) {
-    remove_from_collection(OfferedCourses, offered_courses[i]._id);
-  }
-}
-
-function remove_all_documents_referring_to_offered_course(offered_course_id) {
-  var assessment_items = AssessmentItems.find({"offered_course": offered_course_id}).fetch();
-  for (var i = 0; i < assessment_items.length; i++) {
-    remove_from_collection(AssessmentItems, assessment_items[i]._id);
-  }
-}
-
-function remove_all_documents_referring_to_assessment_item(assessment_item_id) {
-  var assessment_item = AssessmentItems.findOne({"_id": assessment_item_id});
-
-  var assessment_question_file_id = assessment_item.assessment_question_file;
-  if (assessment_question_file_id) {
-    remove_from_collection(UploadedFiles, assessment_question_file_id);
-  }
-
-  var sample_poor_answer_file_id = assessment_item.sample_poor_answer_file;
-  if (sample_poor_answer_file_id) {
-    remove_from_collection(UploadedFiles, sample_poor_answer_file_id);
-  }
-
-  var sample_medium_answer_file_id = assessment_item.sample_medium_answer_file;
-  if (sample_medium_answer_file_id) {
-    remove_from_collection(UploadedFiles, sample_medium_answer_file_id);
-  }
-
-  var sample_good_answer_file_id = assessment_item.sample_good_answer_file;
-  if (sample_good_answer_file_id) {
-    remove_from_collection(UploadedFiles, sample_good_answer_file_id);
-  }
-}
-
-function remove_all_documents_referring_to_semester(semester_id) {
-  var offered_courses = OfferedCourses.find({"semester": semester_id}).fetch();
-  for (var i = 0; i < offered_courses.length; i++) {
-    remove_from_collection(OfferedCourses, offered_courses[i]._id);
-  }
-}
-
-function remove_all_documents_referring_to_curriculum(curriculum_id) {
-
-  // Student Outcomes
-  var student_outcomes = StudentOutcomes.find({"curriculum": curriculum_id}).fetch();
-  for (var i = 0; i < student_outcomes.length; i++) {
-    remove_from_collection(StudentOutcomes, student_outcomes[i]._id);
-  }
-
-  // Courses
-  var courses = Courses.find({"curriculum": curriculum_id}).fetch();
-  for (i = 0; i < courses.length; i++) {
-    remove_from_collection(Courses, courses[i]._id);
-  }
-
-  // CurriculumMappings
-  var curriculum_mappings = CurriculumMappings.find({"curriculum": curriculum_id}).fetch();
-  for (i = 0; i < curriculum_mappings.length; i++) {
-    remove_from_collection(CurriculumMappings, curriculum_mappings[i]._id);
-  }
-
-  // Semesters
-  var semesters = Semesters.find({"curriculum": curriculum_id}).fetch();
-  for (i = 0; i < semesters.length; i++) {
-    remove_from_collection(Semesters, semesters[i]._id);
-  }
-}
-
-function remove_all_documents_referring_to_student_outcome(student_outcome_id) {
-  var performance_indicators = PerformanceIndicators.find({"student_outcome": student_outcome_id}).fetch();
-  for (var i = 0; i < performance_indicators.length; i++) {
-    remove_from_collection(PerformanceIndicators, performance_indicators[i]._id);
-  }
-}
-
-function remove_all_documents_referring_to_course(course_id) {
-
-  // Offered Courses
-  var offered_courses = OfferedCourses.find({"course": course_id}).fetch();
-  for (var i = 0; i < offered_courses.length; i++) {
-    remove_from_collection(OfferedCourses, offered_courses[i]._id);
-  }
-
-  //  CurriculumMappings
-  var curriculum_mappings = CurriculumMappings.find({"course": course_id}).fetch();
-  for (i = 0; i < curriculum_mappings.length; i++) {
-    remove_from_collection(CurriculumMappings, curriculum_mappings[i]._id);
-  }
-}
-
-function remove_all_documents_referring_to_curriculum_mapping(curriculum_mapping_id) {
-  // Nothing to do
-}
-
-function remove_all_documents_referring_to_performance_indicator(performance_indicator_id) {
-  var i;
-
-  // Assessment Items
-  var assessment_items = AssessmentItems.find({"performance_indicator": performance_indicator_id}).fetch();
-  for (i = 0; i < assessment_items.length; i++) {
-    remove_from_collection(AssessmentItems, assessment_items[i]._id);
-  }
-  // Curriculum Mappings
-  var curriculum_mappings = CurriculumMappings.find({"performance_indicator": performance_indicator_id}).fetch();
-  for (i = 0; i < curriculum_mappings.length; i++) {
-    remove_from_collection(CurriculumMappings, curriculum_mappings[i]._id);
-  }
-}
-
-function remove_all_documents_referring_to_uploaded_file(uploaded_file_id) {
-  var uploaded_file = UploadedFiles.findOne({"_id": uploaded_file_id});
-  if (uploaded_file) {
-    remove_uploaded_filepath(uploaded_file.fileinfo.path);
-  }
-}
-
-function remove_uploaded_filepath(filepath) {
-  if (Meteor.isServer) {
-    console.log("REMOVING A FILE BRUTALLY IS TOO UNSAFE - DO IT BY HAND!");
-  }
-}
+// function remove_all_documents_referring_to_user(user_id) {
+//   var offered_courses = OfferedCourses.find({"instructor": user_id}).fetch();
+//   for (var i = 0; i < offered_courses.length; i++) {
+//     remove_from_collection(OfferedCourses, offered_courses[i]._id);
+//   }
+// }
+//
+// function remove_all_documents_referring_to_offered_course(offered_course_id) {
+//   var assessment_items = AssessmentItems.find({"offered_course": offered_course_id}).fetch();
+//   for (var i = 0; i < assessment_items.length; i++) {
+//     remove_from_collection(AssessmentItems, assessment_items[i]._id);
+//   }
+// }
+//
+// function remove_all_documents_referring_to_assessment_item(assessment_item_id) {
+//   var assessment_item = AssessmentItems.findOne({"_id": assessment_item_id});
+//
+//   var assessment_question_file_id = assessment_item.assessment_question_file;
+//   if (assessment_question_file_id) {
+//     remove_from_collection(UploadedFiles, assessment_question_file_id);
+//   }
+//
+//   var sample_poor_answer_file_id = assessment_item.sample_poor_answer_file;
+//   if (sample_poor_answer_file_id) {
+//     remove_from_collection(UploadedFiles, sample_poor_answer_file_id);
+//   }
+//
+//   var sample_medium_answer_file_id = assessment_item.sample_medium_answer_file;
+//   if (sample_medium_answer_file_id) {
+//     remove_from_collection(UploadedFiles, sample_medium_answer_file_id);
+//   }
+//
+//   var sample_good_answer_file_id = assessment_item.sample_good_answer_file;
+//   if (sample_good_answer_file_id) {
+//     remove_from_collection(UploadedFiles, sample_good_answer_file_id);
+//   }
+// }
+//
+// function remove_all_documents_referring_to_semester(semester_id) {
+//   var offered_courses = OfferedCourses.find({"semester": semester_id}).fetch();
+//   for (var i = 0; i < offered_courses.length; i++) {
+//     remove_from_collection(OfferedCourses, offered_courses[i]._id);
+//   }
+// }
+//
+// function remove_all_documents_referring_to_curriculum(curriculum_id) {
+//
+//   // Student Outcomes
+//   var student_outcomes = StudentOutcomes.find({"curriculum": curriculum_id}).fetch();
+//   for (var i = 0; i < student_outcomes.length; i++) {
+//     remove_from_collection(StudentOutcomes, student_outcomes[i]._id);
+//   }
+//
+//   // Courses
+//   var courses = Courses.find({"curriculum": curriculum_id}).fetch();
+//   for (i = 0; i < courses.length; i++) {
+//     remove_from_collection(Courses, courses[i]._id);
+//   }
+//
+//   // CurriculumMappings
+//   var curriculum_mappings = CurriculumMappings.find({"curriculum": curriculum_id}).fetch();
+//   for (i = 0; i < curriculum_mappings.length; i++) {
+//     remove_from_collection(CurriculumMappings, curriculum_mappings[i]._id);
+//   }
+//
+//   // Semesters
+//   var semesters = Semesters.find({"curriculum": curriculum_id}).fetch();
+//   for (i = 0; i < semesters.length; i++) {
+//     remove_from_collection(Semesters, semesters[i]._id);
+//   }
+// }
+//
+// function remove_all_documents_referring_to_student_outcome(student_outcome_id) {
+//   var performance_indicators = PerformanceIndicators.find({"student_outcome": student_outcome_id}).fetch();
+//   for (var i = 0; i < performance_indicators.length; i++) {
+//     remove_from_collection(PerformanceIndicators, performance_indicators[i]._id);
+//   }
+// }
+//
+// function remove_all_documents_referring_to_course(course_id) {
+//
+//   // Offered Courses
+//   var offered_courses = OfferedCourses.find({"course": course_id}).fetch();
+//   for (var i = 0; i < offered_courses.length; i++) {
+//     remove_from_collection(OfferedCourses, offered_courses[i]._id);
+//   }
+//
+//   //  CurriculumMappings
+//   var curriculum_mappings = CurriculumMappings.find({"course": course_id}).fetch();
+//   for (i = 0; i < curriculum_mappings.length; i++) {
+//     remove_from_collection(CurriculumMappings, curriculum_mappings[i]._id);
+//   }
+// }
+//
+// function remove_all_documents_referring_to_curriculum_mapping(curriculum_mapping_id) {
+//   // Nothing to do
+// }
+//
+// function remove_all_documents_referring_to_performance_indicator(performance_indicator_id) {
+//   var i;
+//
+//   // Assessment Items
+//   var assessment_items = AssessmentItems.find({"performance_indicator": performance_indicator_id}).fetch();
+//   for (i = 0; i < assessment_items.length; i++) {
+//     remove_from_collection(AssessmentItems, assessment_items[i]._id);
+//   }
+//   // Curriculum Mappings
+//   var curriculum_mappings = CurriculumMappings.find({"performance_indicator": performance_indicator_id}).fetch();
+//   for (i = 0; i < curriculum_mappings.length; i++) {
+//     remove_from_collection(CurriculumMappings, curriculum_mappings[i]._id);
+//   }
+// }
+//
+// function remove_all_documents_referring_to_uploaded_file(uploaded_file_id) {
+//   var uploaded_file = UploadedFiles.findOne({"_id": uploaded_file_id});
+//   if (uploaded_file) {
+//     remove_uploaded_filepath(uploaded_file.fileinfo.path);
+//   }
+// }
+//
+// function remove_uploaded_filepath(filepath) {
+//   if (Meteor.isServer) {
+//     console.log("REMOVING A FILE BRUTALLY IS TOO UNSAFE - DO IT BY HAND!");
+//   }
+// }
 
 function collections_2_string() {
   var string = "[ ";

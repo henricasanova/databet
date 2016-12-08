@@ -114,15 +114,14 @@ Template.AssessmentItemRow.events({
     ]);
 
     $('#delete_assessment_item_modal').modal({
-        onDeny: function () {
-          return true;
-        },
-        onApprove: function () {
-	  AssessmentItems.remove_document(assessment_item_id);
-          //Meteor.call("delete_from_collection", "AssessmentItems", assessment_item_id);
-          return true;
-        }
-      })
+      onDeny: function () {
+        return true;
+      },
+      onApprove: function () {
+        AssessmentItems.remove_document(assessment_item_id);
+        return true;
+      }
+    })
       .modal('show');
 
     return false;

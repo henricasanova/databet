@@ -53,8 +53,6 @@ Template.AddUpdateAssessmentItem.onCreated(function () {
     this.existing_assessment_item = null;
   }
 
-  // console.log("Template.instance() = ", Template.instance());
-  // console.log("existing_assessment_item = ", Template.instance().existing_assessment_item);
   // Relevant offered_course
   if (Template.currentData().action == "update") {
     this.offered_course = OfferedCourses.findOne({"_id": Template.instance().existing_assessment_item.offered_course});
@@ -429,21 +427,6 @@ Template.AddUpdateAssessmentItem.events({
 
   "click #cancel": function (e) {
 
-    // OLD TOMI STUFF
-    // Delete files that were uploaded
-    // if (Template.instance().file_uploads["assessment_question"]["fileinfo"]) {
-    //   Meteor.call("remove_uploaded_file", Template.instance().file_uploads["assessment_question"]["fileinfo"].path);
-    // }
-    // if (Template.instance().file_uploads["sample_poor_answer"]["fileinfo"]) {
-    //   Meteor.call("remove_uploaded_file", Template.instance().file_uploads["sample_poor_answer"]["fileinfo"].path);
-    // }
-    // if (Template.instance().file_uploads["sample_medium_answer"]["fileinfo"]) {
-    //   Meteor.call("remove_uploaded_file", Template.instance().file_uploads["sample_medium_answer"]["fileinfo"].path);
-    // }
-    // if (Template.instance().file_uploads["sample_good_answer"]["fileinfo"]) {
-    //   Meteor.call("remove_uploaded_file", Template.instance().file_uploads["sample_good_asnwer"]["fileinfo"].path);
-    // }
-
     // Go back
     if (Template.currentData().action == "add") {
       Template.currentData().set_to_false_when_done.set(false);
@@ -619,26 +602,6 @@ Template.AddUpdateAssessmentItem.events({
         tentative_doc[name + "_file"] = Random.id(); // fake it as an id
 
         UploadedFiles.insert_document(fileObj, tentative_doc[name + "_file"]);
-        // var uploadInstance = UploadedFiles.insert({
-        //   file: fileObj,
-        //   meta: { "databet_id": tentative_doc[name + "_file"] },
-        //   streams: 'dynamic',
-        //   chunkSize: 'dynamic'
-        // }, false);
-        // uploadInstance.on('start', function() {
-        //   //template.currentUpload.set(this);
-        // });
-        // uploadInstance.on('end', function(error, fileObj) {
-        //   console.log("END --->", fileObj);
-        //   if (error) {
-        //     alert('Error during upload: ' + error.reason);
-        //   } else {
-        //     alert('File "' + fileObj.name + '" successfully uploaded');
-        //   }
-        //   //template.currentUpload.set(false);
-        // });
-        // console.log("UPLOADING THE FILE ASYNCHRONOUSLY!!");
-        // uploadInstance.start();
       }
 
       // Are we simply faking the previous file (doing a useless overwrite, but allowing us
@@ -646,33 +609,7 @@ Template.AddUpdateAssessmentItem.events({
       if (!we_are_now_uploading_text && there_was_a_previously_uploaded_file && !we_are_uploading_a_new_file) {
         tentative_doc[name + "_file"] = id_of_previously_uploaded_file;
       }
-
     }
-
-    // /*** Dealing with files ***/
-    //
-    // var list_of_file_or_text_names = ["assessment_question", "sample_poor_answer", "sample_medium_answer", "sample_good_answer"];
-    // for (var i = 0; i < list_of_file_or_text_names.length; i++) {
-    //   var name = list_of_file_or_text_names[i];
-    //
-    //   // Removing old files if necessary
-    //   if ((Template.instance().existing_assessment_item[name + "_is_file"] && !tentative_doc[name + "_is_file"]) ||
-    //     (Template.instance().existing_assessment_item[name + "_is_file"] && tentative_doc[name + "_is_file"] &&
-    //     (tentative_doc[name + "_file"] != null))) {
-    //
-    //     existing_uploaded_file = UploadedFiles.findOne({"_id": Template.instance().existing_assessment_item[name + "_file"]});
-    //     //Meteor.call("remove_uploaded_file", existing_uploaded_file.fileinfo.path);
-    //     Meteor.call("delete_from_collection", "UploadedFiles", existing_uploaded_file._id);
-    //   }
-    //
-    //   // Updating modifier
-    //   if ((Template.instance().existing_assessment_item[name + "_is_file"] && !tentative_doc[name + "_is_file"]) ||
-    //     (Template.instance().existing_assessment_item[name + "_is_file"] && tentative_doc[name + "_is_file"] &&
-    //     (tentative_doc[name + "_file"] != null)) ||
-    //     (!Template.instance().existing_assessment_item[name + "_is_file"] && tentative_doc[name + "_is_file"])) {
-    //     modifier[name + "_file"] = tentative_doc[name + "_file"];
-    //   }
-    // }
 
     console.log("FINAL TENTATIVE DOC=", tentative_doc);
     if (Template.currentData().action == "add") {
@@ -702,7 +639,6 @@ Template.AddUpdateAssessmentItem.events({
 
       // console.log("CREATING ASSESSMENT ITEM ", assessment_item);
       AssessmentItems.insert_document(assessment_item);
-      // Meteor.call("insert_into_collection", "AssessmentItems", assessment_item);
 
       Template.currentData().set_to_false_when_done.set(false);
 
@@ -743,16 +679,9 @@ Template.AddUpdateAssessmentItem.events({
       AssessmentItems.update_document(Template.instance().existing_assessment_item._id, modifier, function () {
         FlowRouter.go(url_to_return_to);
       });
-
-      // Meteor.call("update_in_collection", "AssessmentItems", Template.instance().existing_assessment_item._id, modifier,
-      //   function () {
-      //     FlowRouter.go(url_to_return_to);
-      //   });
-
     }
 
     return false;
-
   },
 
 });
