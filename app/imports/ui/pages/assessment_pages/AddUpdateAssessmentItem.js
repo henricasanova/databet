@@ -548,9 +548,9 @@ Template.AddUpdateAssessmentItem.events({
       return false;
     }
 
-    console.log("ALL GOOD, LET'S DO IT!!!");
+    // console.log("ALL GOOD, LET'S DO IT!!!");
 
-    console.log("TENTATIVE DOC = ", tentative_doc);
+    // console.log("TENTATIVE DOC = ", tentative_doc);
 
     // console.log("*** ALL GOOD!!! ***");
     /**** After this point, we know we will successfully add the item ****/
@@ -566,7 +566,7 @@ Template.AddUpdateAssessmentItem.events({
       var name = list_of_file_or_text_names[i];
 
 
-      console.log("TENTATIVE DOC NAME: ", name, "  ", tentative_doc[name + "_file"]);
+      // console.log("TENTATIVE DOC NAME: ", name, "  ", tentative_doc[name + "_file"]);
       // Remove the old file if necessary
 
       var there_was_a_previously_uploaded_file;
@@ -592,14 +592,14 @@ Template.AddUpdateAssessmentItem.events({
       // Removing an old file?
       if ( (there_was_a_previously_uploaded_file && we_are_now_uploading_text) ||
         (there_was_a_previously_uploaded_file && we_are_uploading_a_new_file) ) {
-        console.log("   REMOVING FILE EXISTING ", id_of_previously_uploaded_file);
+        // console.log("   REMOVING FILE EXISTING ", id_of_previously_uploaded_file);
         UploadedFiles.remove_document(id_of_previously_uploaded_file);
         // UploadedFiles.remove({meta: {"databet_id": id_of_previously_uploaded_file}});
       }
 
       // Dealing with a new file?
       if (we_are_uploading_a_new_file) {
-        console.log("I SHOULD CREATE A NEW FILE for ", name, " ", new_file_object);
+        // console.log("I SHOULD CREATE A NEW FILE for ", name, " ", new_file_object);
         var fileObj = new_file_object;
         tentative_doc[name + "_file"] = Random.id(); // fake it as an id
 

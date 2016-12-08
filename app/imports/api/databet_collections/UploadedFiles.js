@@ -23,7 +23,7 @@ if (Meteor.server) {
   console.log("UPLOAD STORAGE PATH =", meteor_files_config["storagePath"]);
 }
 
-meteor_files_config["debug"] = true;
+meteor_files_config["debug"] = false;
 meteor_files_config["collectionName"] = 'UploadedFiles';
 meteor_files_config["allowClientCode"] = true;  // to allow file removal
 meteor_files_config["onBeforeUpload"] = function (file) {
@@ -63,8 +63,6 @@ export class UploadedFilesCollection {
         var search_pattern = new RegExp(fileObj._id, "g");
         var replace_with = prefix + "::" + fileObj._id;
         var new_path = fileObj.path.replace(search_pattern, replace_with);
-        console.log("IN insert_documnet OLD", fileObj.path);
-        console.log("IN insert_documnet NEW", new_path);
         Meteor.call("rename_uploaded_file", fileObj._id, new_path);
       }
     });
@@ -74,7 +72,7 @@ export class UploadedFilesCollection {
 
   remove_document(databet_id) {
     console.log("Removing in UploadFiles");
-    this.MeteorFiles.remove({meta: {"databet_id": databet_id}});
+    this.MeteorFiles.remove({"meta.databet_id": databet_id});
   }
 
   find(selector) {
