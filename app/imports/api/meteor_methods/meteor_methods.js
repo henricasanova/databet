@@ -49,8 +49,6 @@ Meteor.methods({
 
 
 
-
-
   get_list_of_uploaded_files: function (prefix) {
 
     if (Meteor.isServer) {

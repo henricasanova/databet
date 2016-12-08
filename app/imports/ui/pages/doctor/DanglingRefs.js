@@ -35,8 +35,6 @@ Template.DanglingRefRow.helpers({
   },
 
   object_json: function () {
-    console.log("IBJECT = ", this.doc);
-    console.log("HTML = ", object_to_json_html(this.doc));
 
     return object_to_json_html(this.doc);
   }
@@ -52,7 +50,7 @@ Template.DanglingRefRow.onRendered(function () {
 Template.DanglingRefRow.events({
 
   "click .manage_delete_item": function (e) {
-    Meteor.call("remove_document_from_collection", this.collection_name, this.doc._id);
+    collection_dictionary[this.collection_name].remove_document(this.doc._id);
   },
 
 });

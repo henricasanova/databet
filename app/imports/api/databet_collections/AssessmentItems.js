@@ -4,7 +4,7 @@ import { DatabetCollection} from './DatabetCollection';
 class AssessmentItemsCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
-    console.log("Removing in ", this._name, " (Meteor.client = ", Meteor.client);
+    console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
     // TODO:  Collection-specific side-removes!!!
     console.log("TODO: Implement implied removes in other collections!!");
