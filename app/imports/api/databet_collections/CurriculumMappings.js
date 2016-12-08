@@ -4,7 +4,6 @@ import { DatabetCollection} from './DatabetCollection';
 class CurriculumMappingsCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
-    console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
     // Not removing of referencing documents
 

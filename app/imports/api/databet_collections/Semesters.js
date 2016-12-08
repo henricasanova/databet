@@ -6,7 +6,6 @@ import { _ } from 'meteor/underscore';
 class SemestersCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
-    console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
     // Removing referencing OfferedCourses
     var referencing_ids = OfferedCourses.get_selected_doc_ids({semester: doc_id});

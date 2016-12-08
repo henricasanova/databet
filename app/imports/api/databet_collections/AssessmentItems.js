@@ -5,7 +5,6 @@ import { UploadedFiles } from './UploadedFiles';
 class AssessmentItemsCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
-    console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
     // Remove referenced Uploaded Files!
     var doc = this.findOne({"_id": doc_id});

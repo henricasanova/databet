@@ -9,7 +9,6 @@ import { CurriculumMappings} from './CurriculumMappings';
 class CurriculaCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
-    console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
     // Removing referencing Semesters
     var referencing_ids = Semesters.get_selected_doc_ids({curriculum: doc_id});

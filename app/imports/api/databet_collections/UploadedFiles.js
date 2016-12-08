@@ -76,6 +76,7 @@ export class UploadedFilesCollection {
   }
 
   remove_document(databet_id) {
+    console.log("Removing in UploadFiles");
     this.MeteorFiles.remove({meta: {"databet_id": databet_id}});
   }
 

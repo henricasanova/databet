@@ -6,7 +6,6 @@ import { PerformanceIndicators} from './PerformanceIndicators';
 class StudentOutcomesCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
-    console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
     // Removing referencing PerformanceIndicators
     var referencing_ids = PerformanceIndicators.get_selected_doc_ids({student_outcome: doc_id});
@@ -16,9 +15,7 @@ class StudentOutcomesCollection extends DatabetCollection {
   }
 }
 
-
 export var StudentOutcomes = new StudentOutcomesCollection("StudentOutcomes");
-
 
 StudentOutcomes.attachSchema(new SimpleSchema({
   description: {

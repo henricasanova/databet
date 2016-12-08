@@ -6,7 +6,6 @@ import { CurriculumMappings} from './CurriculumMappings';
 class PerformanceIndicatorsCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
-    console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
     // Removing referencing CurriculumMappings
     var referencing_ids = CurriculumMappings.get_selected_doc_ids({performance_indicator: doc_id});
