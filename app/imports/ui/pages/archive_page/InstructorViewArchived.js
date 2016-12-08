@@ -48,7 +48,8 @@ Template.OfferedCourseRowArchived.onRendered(function () {
 Template.OfferedCourseRowArchived.events({
 
   "click .unarchive_course": function (e) {
-    Meteor.call("update_in_collection", "OfferedCourses", this._id, {"archived": false});
+    OfferedCourses.update_document(this._id, {"archived": false});
+    //Meteor.call("update_in_collection", "OfferedCourses", this._id, {"archived": false});
   }
 
 });

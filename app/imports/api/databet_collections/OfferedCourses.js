@@ -1,5 +1,20 @@
+import { Meteor } from 'meteor/meteor';
+import { DatabetCollection} from './DatabetCollection';
 
-export var OfferedCourses = new Mongo.Collection("OfferedCourses");
+class OfferedCoursesCollection extends DatabetCollection {
+
+  remove_document(doc_id, callback) {
+    console.log("Removing in ", this._name, " (Meteor.client = ", Meteor.client);
+
+    // TODO:  Collection-specific side-removes!!!
+    console.log("TODO: Implement implied removes in other collections!!");
+
+    super.remove_document(doc_id, callback);
+  }
+}
+
+export var OfferedCourses = new OfferedCoursesCollection("OfferedCourses");
+
 
 OfferedCourses.attachSchema(new SimpleSchema({
   course: {

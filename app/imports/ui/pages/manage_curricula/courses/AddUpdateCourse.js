@@ -75,7 +75,8 @@ Template.AddUpdateCourse.events({
         "curriculum": curriculumId
       };
 
-      Meteor.call("insert_into_collection", "Courses", course);
+      Courses.insert_document(course);
+      //Meteor.call("insert_into_collection", "Courses", course);
 
       // Clear the fields
       $('#alphanumeric').val("");
@@ -86,11 +87,16 @@ Template.AddUpdateCourse.events({
       console.log("UPDATING A COURSE");
 
       var courseId = Template.currentData().courseId;
-      Meteor.call("update_in_collection", "Courses", courseId,
-        {
-          "alphanumeric": alphanumeric,
-          "title": title
-        });
+      Courses.update(courseId, {
+	                "alphanumeric": alphanumeric,
+	                "title": title
+	              });
+
+     // Meteor.call("update_in_collection", "Courses", courseId,
+     //   {
+     //     "alphanumeric": alphanumeric,
+     //     "title": title
+     //   });
     }
 
 

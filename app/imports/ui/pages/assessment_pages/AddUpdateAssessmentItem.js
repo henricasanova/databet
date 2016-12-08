@@ -712,7 +712,8 @@ Template.AddUpdateAssessmentItem.events({
       };
 
       // console.log("CREATING ASSESSMENT ITEM ", assessment_item);
-      Meteor.call("insert_into_collection", "AssessmentItems", assessment_item);
+      AssessmentItems.insert_document(assessment_item);
+      // Meteor.call("insert_into_collection", "AssessmentItems", assessment_item);
 
       Template.currentData().set_to_false_when_done.set(false);
 
@@ -750,10 +751,14 @@ Template.AddUpdateAssessmentItem.events({
 
       var url_to_return_to = "/assessment_items/" + Template.instance().offered_course._id;
       console.log("URL=", url_to_return_to);
-      Meteor.call("update_in_collection", "AssessmentItems", Template.instance().existing_assessment_item._id, modifier,
-        function () {
-          FlowRouter.go(url_to_return_to);
-        });
+      AssessmentItems.update_document(Template.instance().existing_assessment_item._id, modifier, function () {
+        FlowRouter.go(url_to_return_to);
+      });
+
+      // Meteor.call("update_in_collection", "AssessmentItems", Template.instance().existing_assessment_item._id, modifier,
+      //   function () {
+      //     FlowRouter.go(url_to_return_to);
+      //   });
 
     }
 

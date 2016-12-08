@@ -38,7 +38,8 @@ Template.AddUpdateOutcome.events({
 
     console.log("SHOULD DO A POPUP");
 
-    Meteor.call("delete_from_collection", "PerformanceIndicators", piId);
+    PerformanceIndicators.remove_document(piId);
+ //   Meteor.call("delete_from_collection", "PerformanceIndicators", piId);
     return false;
   },
 
@@ -59,8 +60,10 @@ Template.AddUpdateOutcome.events({
         var i_order = allPIs[i].order;
         var i_minus_1_order = allPIs[i-1].order;
 
-        Meteor.call("update_in_collection", "PerformanceIndicators",  allPIs[i]._id, {"order": i_minus_1_order});
-        Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i-1]._id, {"order": i_order});
+	PerformanceIndicators.update( allPIs[i]._id, {"order": i_minus_1_order});
+	PerformanceIndicators.update( allPIs[i-1]._id, {"order": i_order});
+//        Meteor.call("update_in_collection", "PerformanceIndicators",  allPIs[i]._id, {"order": i_minus_1_order});
+        //Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i-1]._id, {"order": i_order});
         break;
       }
     }
@@ -84,8 +87,10 @@ Template.AddUpdateOutcome.events({
         var i_order = allPIs[i].order;
         var i_plus_1_order = allPIs[i+1].order;
 
-        Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i]._id, {"order": i_plus_1_order});
-        Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i+1]._id, {"order": i_order});
+	PerformanceIndicators.update( allPIs[i]._id, {"order": i_plus_1_order});
+	PerformanceIndicators.update( allPIs[i+1]._id, {"order": i_order});
+        //Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i]._id, {"order": i_plus_1_order});
+        //Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i+1]._id, {"order": i_order});
         break;
       }
     }
@@ -113,7 +118,8 @@ Template.AddUpdateOutcome.events({
       "order": order
     };
 
-    Meteor.call("insert_into_collection", "PerformanceIndicators", pi);
+    PerformanceIndicators.insert(pi);
+//    Meteor.call("insert_into_collection", "PerformanceIndicators", pi);
     $('#new_pi_description_'+outcomeId).val("");
 
     return false;
@@ -164,15 +170,17 @@ Template.AddUpdateOutcome.events({
         "order": order
       };
 
-      Meteor.call("insert_into_collection", "StudentOutcomes", outcome);
+      StudentOutcomes.insert(outcome);
+      //Meteor.call("insert_into_collection", "StudentOutcomes", outcome);
 
       // Clear the fields
       $('#description_new').val("");
 
     } else {
       // Update the outcome
-      Meteor.call("update_in_collection", "StudentOutcomes", outcomeId,
-        {"description": description});
+	    StudentOutcomes.update(outcomeId, {"description": description});
+      //Meteor.call("update_in_collection", "StudentOutcomes", outcomeId,
+        //{"description": description});
 
       // Update the PIs
 
@@ -180,11 +188,14 @@ Template.AddUpdateOutcome.events({
         var description = $('#pi_' + doc._id).val();
 
         if (description) {
-          Meteor.call("update_in_collection", "PerformanceIndicators", doc._id,
-            {"description": description});
+		PerformanceIndicators.update(doc._id, {"description": description});
+          //Meteor.call("update_in_collection", "PerformanceIndicators", doc._id,
+            //{"description": description});
+
         } else {
           // If the user erased the description, then we remove the whole thing!
-          Meteor.call("delete_from_collection", "PerformanceIndicators", doc._id);
+		PerformanceIndicators.remove(doc._id);
+          //Meteor.call("delete_from_collection", "PerformanceIndicators", doc._id);
         }
       });
     }

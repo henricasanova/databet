@@ -80,7 +80,7 @@ Template.userRow.events({
         },
         onApprove: function () {
           $('#modal_' + userId).modal('hide');
-          Meteor.call("delete_from_collection", "Meteor.users", userId);
+          Meteor.call("remove_document_from_collection", "Meteor.users", userId);
           return true;
         }
       })

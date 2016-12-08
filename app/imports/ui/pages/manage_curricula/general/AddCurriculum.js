@@ -90,7 +90,8 @@ Template.AddCurriculum.events({
       "locked": false
     };
 
-    Meteor.call("insert_into_collection", "Curricula", new_curriculum);
+    Curricula.insert_document(new_curriculum);
+    //Meteor.call("insert_into_collection", "Curricula", new_curriculum);
 
 
     if (Template.instance().cloning.get()) {
@@ -126,7 +127,8 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
       "title": to_clone_courses[i].title,
       "curriculum": destCurriculumId
     };
-    Meteor.call("insert_into_collection", "Courses", cloned_course);
+    Courses.insert_document(cloned_course);
+    //Meteor.call("insert_into_collection", "Courses", cloned_course);
     course_cloning_map[to_clone_courses[i]._id] = cloned_course._id;
   }
 
@@ -141,7 +143,8 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
       "curriculum": destCurriculumId,
       "order": to_clone_outcomes[i].order
     };
-    Meteor.call("insert_into_collection", "StudentOutcomes", cloned_outcome);
+    StudentOutcomes.insert_document(cloned_outcome);
+    //Meteor.call("insert_into_collection", "StudentOutcomes", cloned_outcome);
     // Clone performance indicators
     var to_clone_pis = PerformanceIndicators.find({"student_outcome": to_clone_outcomes[i]._id}).fetch();
     for (j = 0; j < to_clone_pis.length; j++) {
@@ -151,7 +154,8 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
         "description": to_clone_pis[j].description,
         "order": to_clone_pis[j].order
       };
-      Meteor.call("insert_into_collection", "PerformanceIndicators", cloned_pi);
+      PerformanceIndicators.insert_document(cloned_pi);
+      //Meteor.call("insert_into_collection", "PerformanceIndicators", cloned_pi);
       pi_cloning_map[to_clone_pis[j]._id] = cloned_pi._id;
     }
   }
@@ -165,7 +169,8 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
       "course": course_cloning_map[to_clone_mappings[i].course],
       "performance_indicator": pi_cloning_map[to_clone_mappings[i].performance_indicator]
     };
-    Meteor.call("insert_into_collection", "CurriculumMappings", cloned_mapping);
+    CurriculumMappings.insert_document(cloned_mapping);
+    //Meteor.call("insert_into_collection", "CurriculumMappings", cloned_mapping);
   }
 
 }

@@ -93,7 +93,8 @@ Template.AddSemester.events({
       "order": order
     };
 
-    Meteor.call("insert_into_collection", "Semesters", semester);
+    Semesters.insert_document(semester);
+    //Meteor.call("insert_into_collection", "Semesters", semester);
 
     Template.currentData().set_to_false_when_done.set(false);
 

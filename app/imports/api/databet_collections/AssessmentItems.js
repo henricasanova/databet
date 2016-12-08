@@ -1,4 +1,20 @@
-export var AssessmentItems = new Mongo.Collection("AssessmentItems");
+import { Meteor } from 'meteor/meteor';
+import { DatabetCollection} from './DatabetCollection';
+
+class AssessmentItemsCollection extends DatabetCollection {
+
+  remove_document(doc_id, callback) {
+    console.log("Removing in ", this._name, " (Meteor.client = ", Meteor.client);
+
+    // TODO:  Collection-specific side-removes!!!
+    console.log("TODO: Implement implied removes in other collections!!");
+
+    super.remove_document(doc_id, callback);
+  }
+}
+
+export var AssessmentItems = new AssessmentItemsCollection("AssessmentItems");
+
 
 AssessmentItems.attachSchema(new SimpleSchema({
   offered_course: {

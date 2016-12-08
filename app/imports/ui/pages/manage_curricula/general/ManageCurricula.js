@@ -51,7 +51,8 @@ Template.curriculumRow.events({
       },
       onApprove: function () {
         $('#modal_' + curriculumId).modal('hide');
-        Meteor.call("delete_from_collection", "Curricula", curriculumId);
+	Curricula.remove_document(curriculumId);
+//        Meteor.call("delete_from_collection", "Curricula", curriculumId);
         return true;
       }
     }).modal('show');

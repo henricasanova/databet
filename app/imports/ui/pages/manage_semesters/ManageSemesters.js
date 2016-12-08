@@ -53,7 +53,8 @@ Template.semesterRow.events({
         },
         onApprove : function() {
           $('#modal_'+semesterId).modal('hide');
-          Meteor.call("delete_from_collection", "Semesters", semesterId);
+	  Semesters.remove_document(semesterId);
+          //Meteor.call("delete_from_collection", "Semesters", semesterId);
           return true;
         }
       })

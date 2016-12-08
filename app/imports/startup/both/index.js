@@ -1,1 +1,1 @@
-import './meteor_methods.js';
+import './collection_dictionary.js';

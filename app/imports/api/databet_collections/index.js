@@ -1,3 +1,4 @@
+import './DatabetCollection.js';
 import './AssessmentItems.js';
 import './Courses.js';
 import './Curricula.js';

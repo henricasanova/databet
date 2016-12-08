@@ -50,7 +50,8 @@ Template.OfferedCourseRow.onRendered(function () {
 Template.OfferedCourseRow.events({
 
   "click .archive_course": function (e) {
-    Meteor.call("update_in_collection", "OfferedCourses", this._id, {"archived": true});
+	  OfferedCourses.update_document(this._id, {"archived": true});
+    //Meteor.call("update_in_collection", "OfferedCourses", this._id, {"archived": true});
   }
 
 });

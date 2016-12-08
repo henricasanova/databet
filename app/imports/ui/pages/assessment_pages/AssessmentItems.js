@@ -118,7 +118,8 @@ Template.AssessmentItemRow.events({
           return true;
         },
         onApprove: function () {
-          Meteor.call("delete_from_collection", "AssessmentItems", assessment_item_id);
+	  AssessmentItems.remove_document(assessment_item_id);
+          //Meteor.call("delete_from_collection", "AssessmentItems", assessment_item_id);
           return true;
         }
       })

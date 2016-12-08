@@ -3,22 +3,22 @@
 // infinite recursion :)
 
 import '../../api/databet_collections';
-import { collection_dictionary } from './collection_dictionary';
+import { collection_dictionary } from '../../startup/both/collection_dictionary';
 import { Meteor } from 'meteor/meteor';
-import { AssessmentItems } from '../../api/databet_collections/AssessmentItems';
-import { Courses } from '../../api/databet_collections/Courses';
-import { Curricula } from '../../api/databet_collections/Curricula';
-import { CurriculumMappings } from '../../api/databet_collections/CurriculumMappings';
-import { OfferedCourses } from '../../api/databet_collections/OfferedCourses';
-import { PerformanceIndicators } from '../../api/databet_collections/PerformanceIndicators';
-import { Semesters } from '../../api/databet_collections/Semesters';
-import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
-import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
-import { meteor_files_config } from '../../api/databet_collections/UploadedFiles';
+import { AssessmentItems } from '../databet_collections/AssessmentItems';
+import { Courses } from '../databet_collections/Courses';
+import { Curricula } from '../databet_collections/Curricula';
+import { CurriculumMappings } from '../databet_collections/CurriculumMappings';
+import { OfferedCourses } from '../databet_collections/OfferedCourses';
+import { PerformanceIndicators } from '../databet_collections/PerformanceIndicators';
+import { Semesters } from '../databet_collections/Semesters';
+import { StudentOutcomes } from '../databet_collections/StudentOutcomes';
+import { UploadedFiles } from '../databet_collections/UploadedFiles';
+import { meteor_files_config } from '../databet_collections/UploadedFiles';
 
 Meteor.methods({
 
-  insert_into_collection: function(collection_name, doc) {
+  insert_document_into_collection: function(collection_name, doc) {
 
     var collection = collection_dictionary[collection_name];
 
@@ -29,22 +29,27 @@ Meteor.methods({
     collection.insert(doc);
   },
 
-  update_in_collection: function(collection_name, doc_id, modifier) {
+  update_document_in_collection: function(collection_name, doc_id, modifier) {
     var collection = collection_dictionary[collection_name];
     if (collection == null) {
-      throw new Meteor.Error("Unknown Collection "+collection_name);
+      throw new Meteor.Error("Unknown Collection " + collection_name);
     }
-    console.log("Updating document", doc_id, "in collection", collection_name);
+    console.log("Updating document", doc_id, "in collection", collection_name, "modifier = ", modifier);
     collection.update({"_id": doc_id}, {$set: modifier});
   },
 
-  delete_from_collection: function(collection_name, doc_id) {
+  remove_document_from_collection: function(collection_name, doc_id) {
     var collection = collection_dictionary[collection_name];
     if (collection == null) {
       throw new Meteor.Error("Unknown Collection "+collection_name);
     }
-    remove_from_collection(collection, doc_id);
+    collection.remove({"_id": doc_id});
   },
+
+
+
+
+
 
   get_list_of_uploaded_files: function (prefix) {
 

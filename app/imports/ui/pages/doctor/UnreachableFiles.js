@@ -33,15 +33,12 @@ Template.UnreachableFiles.helpers({
         set_to_true_if_error.set(true);
       } else {
 
-        console.log("YAY!  result=", result);
-
         // Build the list of known filenames (note that we don't simply looked at the UploadedFiles collection)
         var list_of_assessment_items = AssessmentItems.find({}).fetch();
         var list_of_known_filenames = [];
         for (var i = 0; i < list_of_assessment_items.length; i++) {
           var file_fields = ["assessment_question_file", "sample_poor_answer_file", "sample_medium_answer_file", "sample_good_answer_file"];
           for (var j = 0; j < file_fields.length; j++) {
-            console.log("  --->", list_of_assessment_items[i][file_fields[j]]);
             if (list_of_assessment_items[i][file_fields[j]]) {
               var uploaded_file = UploadedFiles.findOne({"meta": {"databet_id": list_of_assessment_items[i][file_fields[j]]}});
               if (uploaded_file) {
@@ -55,20 +52,15 @@ Template.UnreachableFiles.helpers({
           }
         }
 
-        console.log(" KNOWN FILENAMES = ", list_of_known_filenames);
 
         // Build list of unreachable filenames
         var list_of_unreachable_filenames = [];
         for (var j = 1; j < result.length; j++) {
-          console.log("j=", j, "====> result[j]", result[j]);
           if (list_of_known_filenames.indexOf(result[j]) < 0) {
-            console.log("A-HA!!!", result[0] + result[j]);
             list_of_unreachable_filenames.push(result[0] + result[j]);
           } else {
-            console.log("THIS ONE IS OK");
           }
         }
-        console.log("LIST: ", list_of_unreachable_filenames);
         set_to_results.set(list_of_unreachable_filenames);
         set_to_false_when_done.set(false);
       }

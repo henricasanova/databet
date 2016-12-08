@@ -93,7 +93,8 @@ Template.OutcomeRow.events({
         },
         onApprove : function() {
           $('#modal_delete_outcome_'+outcomeId).modal('hide');
-          Meteor.call("delete_from_collection", "StudentOutcomes", outcomeId);
+	  StudentOutcomes.remove_document(outcomeId);
+          //Meteor.call("delete_from_collection", "StudentOutcomes", outcomeId);
 
           return true;
         }
@@ -121,8 +122,10 @@ Template.OutcomeRow.events({
         var i_order = allOutcomes[i].order;
         var i_minus_1_order = allOutcomes[i-1].order;
 
-        Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i]._id, {"order": i_minus_1_order});
-        Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i-1]._id, {"order": i_order});
+	StudentOutcomes.update_document(allOutcomes[i]._id, {"order": i_minus_1_order});
+	StudentOutcomes.update_document(allOutcomes[i-1]._id, {"order": i_order});
+        //Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i]._id, {"order": i_minus_1_order});
+        //Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i-1]._id, {"order": i_order});
         break;
       }
     }
@@ -143,8 +146,10 @@ Template.OutcomeRow.events({
         var i_order = allOutcomes[i].order;
         var i_plus_1_order = allOutcomes[i+1].order;
 
-        Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i]._id, {"order": i_plus_1_order});
-        Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i+1]._id, {"order": i_order});
+	StudentOutcomes.update_document(allOutcomes[i]._id, {"order": i_plus_1_order});
+	StudentOutcomes.update_document(allOutcomes[i+1]._id, {"order": i_order});
+        //Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i]._id, {"order": i_plus_1_order});
+        //Meteor.call("update_in_collection", "StudentOutcomes", allOutcomes[i+1]._id, {"order": i_order});
         break;
       }
     }

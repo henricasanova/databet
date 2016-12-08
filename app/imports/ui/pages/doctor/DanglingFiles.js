@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
-import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles'
+import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
+import { object_to_json_html } from '../../../ui/global_helpers/object_to_json';
 
 Template.DanglingFiles.onCreated(function () {
 
@@ -41,14 +42,11 @@ Template.DanglingFiles.helpers({
       var storage_path = all_uploaded_files[i].path;
       var storage_name_tokens = storage_path.split("/");
       var storage_name = storage_name_tokens[storage_name_tokens.length-1];
-      console.log("UPLOADED FILE", storage_name);
-      console.log("Looking for it in list", Template.instance().list_of_all_files.get());
 
       if (Template.instance().list_of_all_files.get().indexOf(storage_name) == -1) {
         list.push(all_uploaded_files[i]);
       }
     }
-    console.log("Returning list of dangling files: ", list);
     return list;
   },
 
@@ -56,13 +54,11 @@ Template.DanglingFiles.helpers({
 
 Template.DanglingFileRow.helpers({
 
-
   doc_id: function () {
     return this._id;
   },
 
   error_message: function () {
-    console.log("IN ERROR MESSAGE", this);
     var original_name = this.name;
     var storage_path = this.path;
     var storage_name_tokens = storage_path.split("/");
@@ -71,27 +67,27 @@ Template.DanglingFileRow.helpers({
   },
 
   object_json: function () {
-    return object_to_json(this);
+    return object_to_json_html(this);
   }
 });
 
-function object_to_json(obj) {
-  if (!obj) {
-    return "";
-  }
-  var html_string = "[ ";
-  for (var p in obj) {
-    var value ="";
-    if (typeof(obj[p]) == 'object') {
-      value =  object_to_json(obj[p]);
-    } else {
-      value = obj[p];
-    }
-    html_string += "<b>"+p+"</b>"+":"+value +", ";
-  }
-  html_string += " ]";
-  return html_string;
-}
+// function object_to_json(obj) {
+//   if (!obj) {
+//     return "";
+//   }
+//   var html_string = "[ ";
+//   for (var p in obj) {
+//     var value ="";
+//     if (typeof(obj[p]) == 'object') {
+//       value =  object_to_json(obj[p]);
+//     } else {
+//       value = obj[p];
+//     }
+//     html_string += "<b>"+p+"</b>"+":"+value +", ";
+//   }
+//   html_string += " ]";
+//   return html_string;
+// }
 
 Template.DanglingFileRow.onRendered(function () {
   $('.buttonpopup')
@@ -103,7 +99,8 @@ Template.DanglingFileRow.onRendered(function () {
 Template.DanglingFileRow.events({
 
   "click .manage_delete_item": function (e) {
-    Meteor.call("delete_from_collection", "UploadedFiles", this._id);
+    UploadedFiles.remove_document(this._id); 
+    //Meteor.call("delete_from_collection", "UploadedFiles", this._id);
   },
 
 });

@@ -75,7 +75,8 @@ Template.EditSemester.events({
           return true;
         },
         onApprove: function () {
-          Meteor.call("update_in_collection", "Semesters", semester_id, {"locked": false});
+			   Semesters.update_document(semester_id, {"locked": false});
+          //Meteor.call("update_in_collection", "Semesters", semester_id, {"locked": false});
           return true;
         }
       }).
@@ -84,7 +85,9 @@ Template.EditSemester.events({
 
   'click #button_lock': function (e) {
     var semester_id = FlowRouter.getParam('_id');
-    Meteor.call("update_in_collection", "Semesters", semester_id, {"locked": true});
+    Semesters.update_document(semester_id, {"locked": true});
+
+    //Meteor.call("update_in_collection", "Semesters", semester_id, {"locked": true});
   },
 
   'click #button_add_course_offering': function(e) {
@@ -122,7 +125,8 @@ Template.EditSemester.events({
       return false;
     }
 
-    Meteor.call("insert_into_collection", "OfferedCourses", offered_course);
+    OfferedCourses.insert_document(offered_course);
+    //Meteor.call("insert_into_collection", "OfferedCourses", offered_course);
 
     $('#course_select>option:eq(0)').prop('selected', true);
     $('#instructor_select>option:eq(0)').prop('selected', true);
@@ -180,7 +184,8 @@ Template.CourseOfferingsRow.events({
         },
         onApprove: function () {
           $('#delete_course_offering_modal').modal('hide');
-          Meteor.call("delete_from_collection", "OfferedCourses", course_offering_id);
+	  OfferedCourses.remove_document(course_offering_id);
+          //Meteor.call("delete_from_collection", "OfferedCourses", course_offering_id);
           return true;
         }
       }).

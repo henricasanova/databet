@@ -73,7 +73,8 @@ Template.courseRow.events({
       },
       onApprove: function () {
         $('#modal_delete_course_' + courseId).modal('hide');
-        Meteor.call("delete_from_collection", "Courses", courseId);
+        Courses.remove_document(courseId);
+        //Meteor.call("delete_from_collection", "Courses", courseId);
         return true;
       }
     }).modal('show');

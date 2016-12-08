@@ -129,13 +129,15 @@ Template.CheckBoxes.events({
     if (checked) {
       // Create mapping
       if (!CurriculumMappings.findOne(mapping)) {
-        Meteor.call("insert_into_collection", "CurriculumMappings", mapping);
+	CurriculumMappings.insert_document(mapping);
+        //Meteor.call("insert_into_collection", "CurriculumMappings", mapping);
       }
 
     } else {
       // Remove mapping
       var to_remove = CurriculumMappings.findOne(mapping);
-      Meteor.call("delete_from_collection", "CurriculumaMappings", to_remove._id);
+      CurriculumMappings.remove_document(to_remove._id);
+      //Meteor.call("delete_from_collection", "CurriculumMappings", to_remove._id);
 
     }
 

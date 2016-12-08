@@ -1,3 +1,8 @@
+/*
+ * THIS IS NOT A BASE MONGO COLLECTION - IT'S A METEOR-FILES COLLECTION
+ */
+
+
 import { Meteor } from 'meteor/meteor';
 
 export var meteor_files_config = {};

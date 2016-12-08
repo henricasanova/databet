@@ -1,5 +1,6 @@
 import { collection_dictionary } from '../../../startup/both/collection_dictionary.js';
 import { Meteor } from 'meteor/meteor';
+import { object_to_json_html } from '../../../ui/global_helpers/object_to_json';
 
 Template.DanglingRefs.helpers({
 
@@ -20,10 +21,7 @@ Template.DanglingRefRow.helpers({
   },
 
   error_message: function () {
-    console.log("IN ERROR MESSAGE");
-    console.log("IN ERROR MESSAGE: ", this.error_message);
     var error_messages = this.error_message.split("\n");
-    console.log("error_messages=", error_messages);
 
     var html_error_message = "<ul class=\"ui list\">\n";
     for (var i = 0; i < error_messages.length; i++) {
@@ -32,20 +30,15 @@ Template.DanglingRefRow.helpers({
       }
     }
     html_error_message += "</ul>\n";
-    console.log("ERROR+MESSAGE = ", html_error_message);
     return html_error_message;
 
   },
 
   object_json: function () {
-    console.log("IN OBJECT_JSON");
-    var html_string = "<table>";
-    for (var p in this.doc) {
-      html_string += "<tr><td>" + p + "</td><td>" + this.doc[p] + "</td></tr>\n";
-    }
-    html_string += "</table>";
-    console.log("JSON:", html_string);
-    return html_string;
+    console.log("IBJECT = ", this.doc);
+    console.log("HTML = ", object_to_json_html(this.doc));
+
+    return object_to_json_html(this.doc);
   }
 
 });
@@ -59,7 +52,7 @@ Template.DanglingRefRow.onRendered(function () {
 Template.DanglingRefRow.events({
 
   "click .manage_delete_item": function (e) {
-    Meteor.call("delete_from_collection", this.collection_name, this.doc._id);
+    Meteor.call("remove_document_from_collection", this.collection_name, this.doc._id);
   },
 
 });
@@ -151,7 +144,6 @@ function not_in_collection(doc, field_name, target_collection_name) {
 
 // Generic method that looks for dangling references
 function get_dangling_refs_in_collection(source_collection, reference_specs) {
-  console.log("GETTING DANGLING REF IN COLLECTION: ", source_collection);
   var dangling_refs = [];
   var docs = collection_dictionary[source_collection].find({}).fetch();
   for (var i=0; i < docs.length; i++) {

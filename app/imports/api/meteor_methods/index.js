@@ -1,0 +1,1 @@
+import './meteor_methods.js';

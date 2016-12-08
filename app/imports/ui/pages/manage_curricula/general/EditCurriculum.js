@@ -34,7 +34,8 @@ Template.EditCurriculum.events({
       },
       onApprove: function () {
         $('#unlock_modal').modal('hide');
-        Meteor.call("update_in_collection", "Curricula", curriculumId, {"locked": false});
+	Curricula.update_document(curriculumId, {"locked": false});
+        //Meteor.call("update_in_collection", "Curricula", curriculumId, {"locked": false});
         return true;
       }
     }).modal('show');
@@ -42,7 +43,7 @@ Template.EditCurriculum.events({
 
   'click #button_lock': function (e) {
     var curriculumId = FlowRouter.getParam('_id');
-    Meteor.call("update_in_collection", "Curricula", curriculumId, {"locked": true});
+    Curricula.update(curriculumId, {"locked": true});
   },
 
   'click #curriculum_description_update': function (e) {
@@ -68,7 +69,8 @@ Template.EditCurriculum.events({
     }
 
     // Update curriculum description
-    Meteor.call("update_in_collection", "Curricula", curriculumId, {"description": description});
+    Curricula.update_document(curriculumId, {"description": description});
+//    Meteor.call("update_in_collection", "Curricula", curriculumId, {"description": description});
 
     return false;
   }
