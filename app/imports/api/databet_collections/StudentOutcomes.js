@@ -1,13 +1,16 @@
 import { Meteor } from 'meteor/meteor';
+import { _ } from 'meteor/underscore';
 import { DatabetCollection} from './DatabetCollection';
+import { PerformanceIndicators} from './PerformanceIndicators';
 
 class StudentOutcomesCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
     console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
-    // TODO:  Collection-specific side-removes!!!
-    console.log("TODO: Implement implied removes in other collections!!");
+    // Removing referencing PerformanceIndicators
+    var referencing_ids = PerformanceIndicators.get_selected_doc_ids({student_outcome: doc_id});
+    _.each(referencing_ids, function(e) { PerformanceIndicators.remove_document(e); });
 
     super.remove_document(doc_id, callback);
   }

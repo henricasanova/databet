@@ -47,8 +47,6 @@ Meteor.methods({
   },
 
 
-
-
   get_list_of_uploaded_files: function (prefix) {
 
     if (Meteor.isServer) {
@@ -58,7 +56,6 @@ Meteor.methods({
 
       // The is an ugly way to get the config back
       var dir = meteor_files_config["storagePath"];
-      console.log("DIR = ", dir);
 
       //var dir = UploadServer.getOptions().uploadDir + "/" + prefix;
       // var dir = UploadedFiles.

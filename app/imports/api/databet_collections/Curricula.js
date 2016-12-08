@@ -1,13 +1,29 @@
 import { Meteor } from 'meteor/meteor';
+import { _ } from 'meteor/underscore';
 import { DatabetCollection} from './DatabetCollection';
+import { Semesters} from './Semesters';
+import { StudentOutcomes} from './StudentOutcomes';
+import { Courses} from './Courses';
+import { CurriculumMappings} from './CurriculumMappings';
 
 class CurriculaCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
     console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
-    // TODO:  Collection-specific side-removes!!!
-    console.log("TODO: Implement implied removes in other collections!!");
+    // Removing referencing Semesters
+    var referencing_ids = Semesters.get_selected_doc_ids({curriculum: doc_id});
+    _.each(referencing_ids, function(e) { Semesters.remove_document(e); });
+    // Removing referencing StudentOutcomes
+    referencing_ids = StudentOutcomes.get_selected_doc_ids({curriculum: doc_id});
+    _.each(referencing_ids, function(e) { StudentOutcomes.remove_document(e); });
+    // Removing referencing Courses
+    referencing_ids = Courses.get_selected_doc_ids({curriculum: doc_id});
+    _.each(referencing_ids, function(e) { Courses.remove_document(e); });
+    // Removing referencing CurriculumMappings
+    referencing_ids = CurriculumMappings.get_selected_doc_ids({curriculum: doc_id});
+    _.each(referencing_ids, function(e) { CurriculumMappings.remove_document(e); });
+
 
     super.remove_document(doc_id, callback);
   }

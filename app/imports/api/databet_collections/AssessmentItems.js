@@ -1,13 +1,28 @@
 import { Meteor } from 'meteor/meteor';
 import { DatabetCollection} from './DatabetCollection';
+import { UploadedFiles } from './UploadedFiles';
 
 class AssessmentItemsCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
     console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
-    // TODO:  Collection-specific side-removes!!!
-    console.log("TODO: Implement implied removes in other collections!!");
+    // Remove referenced Uploaded Files!
+    var doc = this.findOne({"_id": doc_id});
+    if (doc) {
+      if (doc.assessment_question_is_file) {
+        UploadedFiles.remove_document(doc.assessment_question_file);
+      }
+      if (doc.sample_poor_answer_is_file) {
+        UploadedFiles.remove_document(doc.sample_poor_answer_is_file);
+      }
+      if (doc.sample_medium_answer_is_file) {
+        UploadedFiles.remove_document(doc.sample_medium_answer_is_file);
+      }
+      if (doc.sample_good_answer_is_file) {
+        UploadedFiles.remove_document(doc.sample_good_answer_is_file);
+      }
+    }
 
     super.remove_document(doc_id, callback);
   }

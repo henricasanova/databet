@@ -1,13 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import { DatabetCollection} from './DatabetCollection';
+import { AssessmentItems} from './AssessmentItems';
 
 class OfferedCoursesCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
     console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
-    // TODO:  Collection-specific side-removes!!!
-    console.log("TODO: Implement implied removes in other collections!!");
+    // Removing referencing AssessmentItems
+    var referencing_ids = AssessmentItems.get_selected_doc_ids({offered_course: doc_id});
+    _.each(referencing_ids, function(e) { AssessmentItems.remove_document(e); });
 
     super.remove_document(doc_id, callback);
   }

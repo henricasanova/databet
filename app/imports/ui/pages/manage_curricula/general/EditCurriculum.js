@@ -43,7 +43,7 @@ Template.EditCurriculum.events({
 
   'click #button_lock': function (e) {
     var curriculumId = FlowRouter.getParam('_id');
-    Curricula.update(curriculumId, {"locked": true});
+    Curricula.update_document(curriculumId, {"locked": true});
   },
 
   'click #curriculum_description_update': function (e) {

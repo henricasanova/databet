@@ -215,17 +215,12 @@ Template.AddUpdateAssessmentItem.helpers({
     switch (name) {
       case "upload_method_is_file":
         return (existing_assessment_item.assessment_question_is_file);
-      // return (existing_assessment_item.assessment_question_is_file ? "checked": "");
       case "upload_method_is_text":
         return (!existing_assessment_item.assessment_question_is_file);
-      // return (existing_assessment_item.assessment_question_is_file ? "": "checked");
       case "assessment_question_text":
         return (existing_assessment_item.assessment_question_text);
       case "uploaded_question_file":
         return (existing_assessment_item.assessment_question_file == "null" ? null : existing_assessment_item.assessment_question_file);
-      case "uploaded_question_file_url":
-        return (existing_assessment_item.assessment_question_file != "null" ?
-          UploadedFiles.findOne({"_id": Template.instance().existing_assessment_item.assessment_question_file}).url : "");
       case "grades":
         return existing_assessment_item.grades;
       case "max_grade":
@@ -238,15 +233,6 @@ Template.AddUpdateAssessmentItem.helpers({
         return (existing_assessment_item.sample_medium_answer == "null" ? null : existing_assessment_item.sample_medium_answer);
       case "uploaded_sample_good_answer":
         return (existing_assessment_item.sample_good_answer == "null" ? null : existing_assessment_item.sample_good_answer);
-      case "uploaded_sample_poor_answer_url":
-        return (Template.instance().existing_assessment_item.sample_poor_answer != "null" ?
-          UploadedFiles.findOne({"_id": Template.instance().existing_assessment_item.sample_poor_answer}).url : "");
-      case "uploaded_sample_medium_answer_url":
-        return (Template.instance().existing_assessment_item.sample_medium_answer != "null" ?
-          UploadedFiles.findOne({"_id": Template.instance().existing_assessment_item.sample_medium_answer}).url : "");
-      case "uploaded_sample_good_answer_url":
-        return (Template.instance().existing_assessment_item.sample_good_answer != "null" ?
-          UploadedFiles.findOne({"_id": Template.instance().existing_assessment_item.sample_good_answer}).url : "");
       default:
         return "[INTERNAL ERROR - existing_item_content]";
     }
@@ -622,7 +608,8 @@ Template.AddUpdateAssessmentItem.events({
       if ( (there_was_a_previously_uploaded_file && we_are_now_uploading_text) ||
         (there_was_a_previously_uploaded_file && we_are_uploading_a_new_file) ) {
         console.log("   REMOVING FILE EXISTING ", id_of_previously_uploaded_file);
-        UploadedFiles.remove({meta: {"databet_id": id_of_previously_uploaded_file}});
+        UploadedFiles.remove_document(id_of_previously_uploaded_file);
+        // UploadedFiles.remove({meta: {"databet_id": id_of_previously_uploaded_file}});
       }
 
       // Dealing with a new file?
@@ -630,26 +617,28 @@ Template.AddUpdateAssessmentItem.events({
         console.log("I SHOULD CREATE A NEW FILE for ", name, " ", new_file_object);
         var fileObj = new_file_object;
         tentative_doc[name + "_file"] = Random.id(); // fake it as an id
-        var uploadInstance = UploadedFiles.insert({
-          file: fileObj,
-          meta: { "databet_id": tentative_doc[name + "_file"] },
-          streams: 'dynamic',
-          chunkSize: 'dynamic'
-        }, false);
-        uploadInstance.on('start', function() {
-          //template.currentUpload.set(this);
-        });
-        uploadInstance.on('end', function(error, fileObj) {
-          console.log("END --->", fileObj);
-          if (error) {
-            alert('Error during upload: ' + error.reason);
-          } else {
-            alert('File "' + fileObj.name + '" successfully uploaded');
-          }
-          //template.currentUpload.set(false);
-        });
-        console.log("UPLOADING THE FILE ASYNCHRONOUSLY!!");
-        uploadInstance.start();
+
+        UploadedFiles.insert_document(fileObj, tentative_doc[name + "_file"]);
+        // var uploadInstance = UploadedFiles.insert({
+        //   file: fileObj,
+        //   meta: { "databet_id": tentative_doc[name + "_file"] },
+        //   streams: 'dynamic',
+        //   chunkSize: 'dynamic'
+        // }, false);
+        // uploadInstance.on('start', function() {
+        //   //template.currentUpload.set(this);
+        // });
+        // uploadInstance.on('end', function(error, fileObj) {
+        //   console.log("END --->", fileObj);
+        //   if (error) {
+        //     alert('Error during upload: ' + error.reason);
+        //   } else {
+        //     alert('File "' + fileObj.name + '" successfully uploaded');
+        //   }
+        //   //template.currentUpload.set(false);
+        // });
+        // console.log("UPLOADING THE FILE ASYNCHRONOUSLY!!");
+        // uploadInstance.start();
       }
 
       // Are we simply faking the previous file (doing a useless overwrite, but allowing us

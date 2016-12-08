@@ -1,22 +1,23 @@
 import { Meteor } from 'meteor/meteor';
 import { DatabetCollection} from './DatabetCollection';
+import { OfferedCourses} from './OfferedCourses';
+import { _ } from 'meteor/underscore';
 
 class SemestersCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
     console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
-    // TODO:  Collection-specific side-removes!!!
-    console.log("TODO: Implement implied removes in other collections!!");
+    // Removing referencing OfferedCourses
+    var referencing_ids = OfferedCourses.get_selected_doc_ids({semester: doc_id});
+    _.each(referencing_ids, function(e) { OfferedCourses.remove_document(e); });
+
 
     super.remove_document(doc_id, callback);
   }
 }
 
-console.log("CALLING CONSTRUCTOR");
 export var Semesters = new SemestersCollection("Semesters");
-console.log("CALLED CONSTRUCTOR");
-
 
 Semesters.attachSchema(new SimpleSchema({
   session: {

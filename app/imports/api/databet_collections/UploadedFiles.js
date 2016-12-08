@@ -7,7 +7,6 @@ import { Meteor } from 'meteor/meteor';
 
 export var meteor_files_config = {};
 
-
 if (Meteor.server) {
 
   var upload_root = process.env.UPLOAD_DIR;
@@ -47,10 +46,52 @@ meteor_files_config["onBeforeUpload"] = function (file) {
   }
 };
 
+export class UploadedFilesCollection {
+
+  constructor(config) {
+    this.MeteorFiles = new Meteor.Files(config);
+  }
+
+  insert_document(fileObj, databet_id) {
+    var uploadInstance = this.MeteorFiles.insert({
+      file: fileObj,
+      meta: { "databet_id": databet_id },
+      streams: 'dynamic',
+      chunkSize: 'dynamic'
+    }, false);
+
+    uploadInstance.on('start', function() {
+      // nothing
+    });
+
+    uploadInstance.on('end', function(error, fileObj) {
+      if (error) {
+        alert('Error during upload: ' + error.reason);
+      } else {
+        alert('File "' + fileObj.name + '" successfully uploaded');
+      }
+    });
+
+    uploadInstance.start();
+  }
+
+  remove_document(databet_id) {
+    this.MeteorFiles.remove({meta: {"databet_id": databet_id}});
+  }
+
+  find(selector) {
+    return this.MeteorFiles.find(selector);
+  }
+
+  findOne(selector) {
+    return this.MeteorFiles.findOne(selector);
+  }
+}
+
 
 console.log("CREATING METEOR.FILES");
 
-export var UploadedFiles = new Meteor.Files(meteor_files_config);
+export var UploadedFiles = new UploadedFilesCollection(meteor_files_config);
 
 
 

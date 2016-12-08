@@ -60,8 +60,8 @@ Template.AddUpdateOutcome.events({
         var i_order = allPIs[i].order;
         var i_minus_1_order = allPIs[i-1].order;
 
-	PerformanceIndicators.update( allPIs[i]._id, {"order": i_minus_1_order});
-	PerformanceIndicators.update( allPIs[i-1]._id, {"order": i_order});
+	PerformanceIndicators.update_document( allPIs[i]._id, {"order": i_minus_1_order});
+	PerformanceIndicators.update_document( allPIs[i-1]._id, {"order": i_order});
 //        Meteor.call("update_in_collection", "PerformanceIndicators",  allPIs[i]._id, {"order": i_minus_1_order});
         //Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i-1]._id, {"order": i_order});
         break;
@@ -87,8 +87,8 @@ Template.AddUpdateOutcome.events({
         var i_order = allPIs[i].order;
         var i_plus_1_order = allPIs[i+1].order;
 
-	PerformanceIndicators.update( allPIs[i]._id, {"order": i_plus_1_order});
-	PerformanceIndicators.update( allPIs[i+1]._id, {"order": i_order});
+	PerformanceIndicators.update_document( allPIs[i]._id, {"order": i_plus_1_order});
+	PerformanceIndicators.update_document( allPIs[i+1]._id, {"order": i_order});
         //Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i]._id, {"order": i_plus_1_order});
         //Meteor.call("update_in_collection", "PerformanceIndicators", allPIs[i+1]._id, {"order": i_order});
         break;
@@ -118,7 +118,7 @@ Template.AddUpdateOutcome.events({
       "order": order
     };
 
-    PerformanceIndicators.insert(pi);
+    PerformanceIndicators.insert_document(pi);
 //    Meteor.call("insert_into_collection", "PerformanceIndicators", pi);
     $('#new_pi_description_'+outcomeId).val("");
 
@@ -170,7 +170,7 @@ Template.AddUpdateOutcome.events({
         "order": order
       };
 
-      StudentOutcomes.insert(outcome);
+      StudentOutcomes.insert_document(outcome);
       //Meteor.call("insert_into_collection", "StudentOutcomes", outcome);
 
       // Clear the fields
@@ -178,7 +178,7 @@ Template.AddUpdateOutcome.events({
 
     } else {
       // Update the outcome
-	    StudentOutcomes.update(outcomeId, {"description": description});
+	    StudentOutcomes.update_document(outcomeId, {"description": description});
       //Meteor.call("update_in_collection", "StudentOutcomes", outcomeId,
         //{"description": description});
 
@@ -188,13 +188,13 @@ Template.AddUpdateOutcome.events({
         var description = $('#pi_' + doc._id).val();
 
         if (description) {
-		PerformanceIndicators.update(doc._id, {"description": description});
+		PerformanceIndicators.update_document(doc._id, {"description": description});
           //Meteor.call("update_in_collection", "PerformanceIndicators", doc._id,
             //{"description": description});
 
         } else {
           // If the user erased the description, then we remove the whole thing!
-		PerformanceIndicators.remove(doc._id);
+		PerformanceIndicators.remove_document(doc._id);
           //Meteor.call("delete_from_collection", "PerformanceIndicators", doc._id);
         }
       });

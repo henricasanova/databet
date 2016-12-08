@@ -120,11 +120,11 @@ Template.UploadFileEnterText.events({
 
     Template.instance().upload_method_is_file.set(true);
     Template.instance().upload_method_is_text.set(false);
-    if (Template.instance().uploaded_file) {
-      Meteor.call("remove_uploaded_file", Template.instance().uploaded_file.path);
-    }
-    Template.instance().uploaded_file = null;
-    Template.instance().uploaded_file_id = null;
+    // if (Template.instance().uploaded_file) {
+    //   Meteor.call("remove_uploaded_file", Template.instance().uploaded_file.path);
+    // }
+    // Template.instance().uploaded_file = null;
+    // Template.instance().uploaded_file_id = null;
 
     // Update missing content var for text
     Template.currentData().context.missing_text_reactive_var.set(false);
@@ -158,8 +158,6 @@ Template.UploadFileEnterText.events({
       // there was multiple files selected
       Template.currentData().context.final_state.file = e.currentTarget.files[0];
       Template.currentData().context.missing_file_reactive_var.set(false);
-
-
     } else {
       Template.currentData().context.missing_file_reactive_var.set(true);
     }

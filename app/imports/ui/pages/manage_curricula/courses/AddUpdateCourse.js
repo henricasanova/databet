@@ -87,7 +87,7 @@ Template.AddUpdateCourse.events({
       console.log("UPDATING A COURSE");
 
       var courseId = Template.currentData().courseId;
-      Courses.update(courseId, {
+      Courses.update_document(courseId, {
 	                "alphanumeric": alphanumeric,
 	                "title": title
 	              });

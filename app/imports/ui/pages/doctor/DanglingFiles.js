@@ -34,6 +34,7 @@ Template.DanglingFiles.helpers({
   },
 
   "list_of_dangling_files": function () {
+
     var all_uploaded_files = UploadedFiles.find({}).fetch();
     var list = [];
 
@@ -99,7 +100,7 @@ Template.DanglingFileRow.onRendered(function () {
 Template.DanglingFileRow.events({
 
   "click .manage_delete_item": function (e) {
-    UploadedFiles.remove_document(this._id); 
+    UploadedFiles.remove_document(this.meta.databet_id);
     //Meteor.call("delete_from_collection", "UploadedFiles", this._id);
   },
 

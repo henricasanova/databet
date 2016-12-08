@@ -6,8 +6,7 @@ class CurriculumMappingsCollection extends DatabetCollection {
   remove_document(doc_id, callback) {
     console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient);
 
-    // TODO:  Collection-specific side-removes!!!
-    console.log("TODO: Implement implied removes in other collections!!");
+    // Not removing of referencing documents
 
     super.remove_document(doc_id, callback);
   }

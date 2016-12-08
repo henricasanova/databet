@@ -25,14 +25,17 @@ export class DatabetCollection extends Mongo.Collection {
   remove_document(doc_id, callback) {
     // console.log("Removing in ", this._name, " (Meteor.isClient = ", Meteor.isClient, ", Meteor.isServer = ", Meteor.isServer);
 
-    // TODO:  Collection-specific side-removes!!!
-    console.log("TODO: Implement implied removes in other collections!!");
-
     if (Meteor.isClient) {
       Meteor.call("remove_document_from_collection", this._name, doc_id, callback);
     } else {
       super.remove({"_id": doc_id});
     }
+  }
+
+  get_selected_doc_ids(selector) {
+    var docs = super.find(selector).fetch();
+    console.log("SELECTOR = ", selector, "RESULTS = ", docs);
+    return _.map(docs, function(e) { return e._id; });
   }
 }
 
