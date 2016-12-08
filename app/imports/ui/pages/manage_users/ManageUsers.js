@@ -49,10 +49,10 @@ Template.ManageUsers.events({
 Template.userRow.onRendered(function () {
 
   this.$('.ui.checkbox').checkbox();
+  var closure_this = this;
 
-  // TODO: FIX the closure problem below
   Tracker.autorun(function () {
-    this.$('.ui.checkbox').checkbox();
+    closure_this.$('.ui.checkbox').checkbox();
 
   });
 

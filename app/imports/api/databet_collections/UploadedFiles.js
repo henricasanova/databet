@@ -4,6 +4,7 @@
 
 
 import { Meteor } from 'meteor/meteor';
+import { _ } from 'meteor/underscore';
 
 export var meteor_files_config = {};
 
@@ -21,6 +22,7 @@ if (Meteor.server) {
   var future = new Future();
   var dir = process.env.PWD;
   var command = "mkdir -p " + upload_root + "/assessment_uploads/";
+  //noinspection JSUnusedLocalSymbols
   exec(command, {cwd: dir}, function (error, stdout, stderr) {
     if (error) {
       console.log(error);

@@ -1,0 +1,71 @@
+
+
+
+INSTRUCTORS:  Additional fields to Meteor.users
+	username:
+	email:
+	name:
+
+
+SEMESTERS:
+	_id
+	spring_or_fall: string
+	year: int
+	curriculum (foreign key)
+
+CURRICULA:
+	_id
+	date_created:
+	description
+
+STUDENT_OUTCOMES:
+	_id
+	order
+	curriculum  (foreign key)
+	description
+
+PERFORMANCE_INDICATORS:
+	_id
+	order
+	student_outcome  (foreign key)
+	description
+
+COURSES:
+	_id
+	curriculum (foreign key)
+	alphanumeric
+	title
+
+
+CURRICULUM_MAPPPINGS:
+	_id
+	curriculum (foreign key)  - not really needed, but likely a good idea
+	course (foreign key)
+	performance indicator
+	elementary
+	proficient
+
+OFFERED_COURSES:
+	_id
+	course 	(foreign key)
+	semester (foreign key)
+	instructor (foreign key)
+
+--------------------------------------
+
+
+ASSESSMENT_ITEMS:
+	_id
+	offered_course (foreign key)
+	performance_indicator (foreign key)
+	data...
+
+UPLOADED_FILE:
+    _id
+    path
+
+	
+---------------------------------------------------------------------------------
+
+
+
