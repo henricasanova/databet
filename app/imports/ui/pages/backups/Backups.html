@@ -14,6 +14,7 @@
       </form>
 
       {{#if zip_file_requested}}
+      {{#if download_button_clicked}}
       {{#if waiting_for_server_download}}
       {{> Loading}}
       {{else}}
@@ -23,6 +24,10 @@
       </div>
       {{else}}
       <h3><a href="{{zip_file_url}}" download>Click this link to download the archive</a></h3>
+      <div class="circular ui icon button red" id="delete_archive">
+        <i class="icon delete"></i>
+      </div>
+      {{/if}}
       {{/if}}
       {{/if}}
       {{/if}}

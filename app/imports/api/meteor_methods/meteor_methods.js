@@ -74,8 +74,14 @@ Meteor.methods({
 
       // Construct archive name
       var now = new Date();
-      var archive_name = "databet_archive_" + (now.getMonth() + 1) + "_" +
-        (now.getDate()) + "_" + (now.getFullYear());
+      var archive_name = "databet_archive_" +
+        (now.getFullYear()) + "_" +
+        (now.getMonth() + 1) + "_" +
+        (now.getDate()) + "_" +
+        (now.getHours()) + "_" +
+        (now.getMinutes()) + "_" +
+        (now.getSeconds()) + "_" +
+        (now.getMilliseconds());
 
       // Add files to the archive
       var zipfile = new ZipZap();
@@ -109,21 +115,20 @@ Meteor.methods({
           meta: {databet_id: random_key}
         },
         function(error, fileRef) {
-          console.log("ARCHIVE UPLOADED: ", fileRef._id);
         }
       );
 
-      // Look for the record in a BUSU LOOP (ugly, but fuck callbacks)
+      // Look for the record in a BUSY LOOP (ugly, but fuck callbacks)
       var doc = undefined;
       while (!doc) {
-        console.log("BUSY LOOP");
+        console.log("In short-lived busyloop");
         doc = UploadedFiles.MeteorFiles.findOne({"meta.databet_id": random_key});
       }
 
 
       // Note that this it "upload" (the route from the upload package), rather
       // than "uploads", the directory...
-      return doc.link()
+      return doc.link()+"|"+doc.meta.databet_id;
     }
   },
 

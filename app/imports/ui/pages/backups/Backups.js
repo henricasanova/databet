@@ -1,12 +1,15 @@
 import { collection_dictionary } from '../../../startup/both/collection_dictionary.js';
 import { Meteor } from 'meteor/meteor';
+import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
 
 Template.Backups.onCreated(function () {
   this.zip_file_requested = new ReactiveVar();
+  this.download_button_clicked = new ReactiveVar();
   this.waiting_for_download = new ReactiveVar();
   this.waiting_for_upload = new ReactiveVar();
   this.upload_successful = new ReactiveVar();
   this.zip_file_url = new ReactiveVar();
+  this.zip_file_id = new ReactiveVar();
   this.download_error = new ReactiveVar();
   this.is_json_parse_error = new ReactiveVar();
   this.json_parse_error = new ReactiveVar();
@@ -14,10 +17,12 @@ Template.Backups.onCreated(function () {
   this.server_error = new ReactiveVar();
 
   Template.instance().zip_file_requested.set(false);
+  Template.instance().download_button_clicked.set(true);
   Template.instance().waiting_for_download.set(true);
   Template.instance().waiting_for_upload.set(false);
   Template.instance().upload_successful.set(false);
   Template.instance().zip_file_url.set(null);
+  Template.instance().zip_file_id.set(null);
   Template.instance().download_error.set(false);
   Template.instance().is_json_parse_error.set(false);
   Template.instance().json_parse_error.set("");
@@ -80,6 +85,10 @@ Template.Backups.helpers({
     return Template.instance().waiting_for_upload.get();
   },
 
+  "download_button_clicked": function () {
+    return Template.instance().download_button_clicked.get();
+  },
+
   "server_error": function () {
     return Template.instance().server_error.get();
   },
@@ -92,10 +101,12 @@ Template.Backups.events({
 
   "click #button_download_archive": function (e) {
 
+    Template.instance().download_button_clicked.set(true);
     Template.instance().zip_file_requested.set(true);
 
     var set_to_true_on_error = Template.instance().download_error;
     var set_to_url = Template.instance().zip_file_url;
+    var set_to_id = Template.instance().zip_file_id;
     var set_to_false_when_downloaded = Template.instance().waiting_for_download;
     var set_to_error = Template.instance().server_error;
 
@@ -105,12 +116,21 @@ Template.Backups.events({
           set_to_true_on_error.set(true);
           set_to_error.set(error);
         } else {
+
           // NOTE THE USE OF Meteor.absoluteUrl (to handle custom ROOT_URL)
-          set_to_url.set(Meteor.absoluteUrl(result));
+          var url=null, id=null;
+          [url, id] = result.split("|");
+          set_to_url.set(Meteor.absoluteUrl(url));
+          set_to_id.set(id);
           set_to_false_when_downloaded.set(false);
         }
       });
     return false;
+  },
+
+  "click #delete_archive": function (e) {
+     UploadedFiles.remove_document(Template.instance().zip_file_id.get());
+     Template.instance().download_button_clicked.set(false);
   },
 
   "click #button_upload_json": function (e) {

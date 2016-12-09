@@ -56,7 +56,7 @@ Template.MissingFileRow.helpers({
   },
 
   this_id: function () {
-    return this.meta.databet_id;
+    return this.meta.databet_id + ": " + this.name;
   },
 
   object_json: function () {

@@ -51,7 +51,11 @@ Template.UnreferencedDocRow.helpers({
   },
 
   this_id: function () {
-    return this[1]._id;
+    if (this[0] == UploadedFiles) {
+      return this[1].meta.databet_id + ": " + this[1].name;
+    } else {
+      return this[1]._id;
+    }
   },
 
   object_json: function () {
