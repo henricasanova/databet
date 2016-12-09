@@ -16,7 +16,7 @@ if (Meteor.server) {
     throw new Meteor.Error("UPLOAD_DIR environment variable must be defined");
   }
 
-  console.log("Creating Directory " + upload_root + "/assessment_uploads/ ...");
+  // console.log("Creating Directory " + upload_root + "/assessment_uploads/ ...");
   fs_create_dir(upload_root + "/assessment_uploads/");
 
   meteor_files_config["storagePath"] = upload_root + "/assessment_uploads/";

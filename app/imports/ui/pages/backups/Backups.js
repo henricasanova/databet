@@ -8,7 +8,6 @@ Template.Backups.onCreated(function () {
   this.waiting_for_download = new ReactiveVar();
   this.waiting_for_upload = new ReactiveVar();
   this.upload_successful = new ReactiveVar();
-  this.zip_file_url = new ReactiveVar();
   this.zip_file_id = new ReactiveVar();
   this.download_error = new ReactiveVar();
   this.is_json_parse_error = new ReactiveVar();
@@ -21,7 +20,6 @@ Template.Backups.onCreated(function () {
   Template.instance().waiting_for_download.set(true);
   Template.instance().waiting_for_upload.set(false);
   Template.instance().upload_successful.set(false);
-  Template.instance().zip_file_url.set(null);
   Template.instance().zip_file_id.set(null);
   Template.instance().download_error.set(false);
   Template.instance().is_json_parse_error.set(false);
@@ -47,8 +45,17 @@ Template.Backups.helpers({
     return Template.instance().waiting_for_download.get();
   },
 
-  "zip_file_url": function () {
-    return Template.instance().zip_file_url.get();
+  "fileRef": function () {
+    return UploadedFiles.findOne({"meta.databet_id": Template.instance().zip_file_id.get()});
+  },
+
+  "fuckingUrl": function() {
+    var doc = UploadedFiles.findOne({"meta.databet_id": Template.instance().zip_file_id.get()});
+    if (doc) {
+      return doc.link();
+    } else {
+      return "not_ready_yet";
+    }
   },
 
   "list_of_collections": function () {
@@ -105,24 +112,31 @@ Template.Backups.events({
     Template.instance().zip_file_requested.set(true);
 
     var set_to_true_on_error = Template.instance().download_error;
-    var set_to_url = Template.instance().zip_file_url;
     var set_to_id = Template.instance().zip_file_id;
     var set_to_false_when_downloaded = Template.instance().waiting_for_download;
     var set_to_error = Template.instance().server_error;
 
     Meteor.call("download_zipped_backup",
-      function (error, result) {
+      async function (error, result) {
         if (error) {
           set_to_true_on_error.set(true);
           set_to_error.set(error);
         } else {
+          set_to_id.set(result);
+          // console.log("RESULT = ", result);
+          var doc = null;
 
-          // NOTE THE USE OF Meteor.absoluteUrl (to handle custom ROOT_URL)
-          var url=null, id=null;
-          [url, id] = result.split("|");
-          set_to_url.set(Meteor.absoluteUrl(url));
-          set_to_id.set(id);
+          // Busy loop since although I got the ID from the server,
+          // it may be a while before I actually can get the object!
+          while (!doc) {
+            await sleep(1000);
+            doc = UploadedFiles.findOne({"meta.databet_id": result});
+            // console.log("==> ", UploadedFiles.find({}).fetch());
+            // console.log("DOC ===> ", doc);
+          }
+          // console.log("===>", doc.link());
           set_to_false_when_downloaded.set(false);
+          // console.log("RETURNING!");
         }
       });
     return false;
@@ -214,3 +228,8 @@ Template.Backups.events({
   }
 
 });
+
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}

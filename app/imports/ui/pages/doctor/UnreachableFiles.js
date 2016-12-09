@@ -33,15 +33,11 @@ Template.UnreachableFiles.helpers({
         set_to_true_if_error.set(true);
       } else {
 
-        // console.log("RESULT = ", result);
-
         var list_of_known_files = UploadedFiles.find({}).fetch();
         var list_of_known_filenames = [];
         for (var i=0; i < list_of_known_files.length; i++) {
           list_of_known_filenames.push(list_of_known_files[i].path.replace(result[0]+"/",""));
         }
-
-        // console.log("LIST OF KNOWN FILENAMES = ", list_of_known_filenames);
 
         // Build list of unreachable filenames
         var list_of_unreachable_filenames = [];

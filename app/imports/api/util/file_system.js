@@ -1,6 +1,4 @@
-/**
- * Created by casanova on 12/8/16.
- */
+import { Meteor } from 'meteor/meteor';
 
 export function fs_move_file_path(old_path, new_path) {
 
@@ -25,7 +23,6 @@ export function fs_move_file_path(old_path, new_path) {
 
 export function fs_create_dir(path) {
   if (Meteor.isServer) {
-    console.log("Creating Directory " + path);
     var Future = Npm.require("fibers/future");
     var exec = Npm.require("child_process").exec;
     var future = new Future();

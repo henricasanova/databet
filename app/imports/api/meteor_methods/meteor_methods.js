@@ -65,7 +65,6 @@ Meteor.methods({
 
   download_zipped_backup: function () {
 
-    console.log("HERE");
     if (Meteor.server) {
 
       // Get all files
@@ -106,29 +105,49 @@ Meteor.methods({
       console.log("Saving archive to: " + archive_path);
       zipfile.saveAs(archive_path);
 
-      // Add this as member of the UploadedFiles collection
+      // DEBUG: foo.jpg (for the .zip)
+      // archive_name = "foo";
+      // archive_path = upload_root + "/" + "foo.jpg";
       var random_key = Random.id();
+
       UploadedFiles.MeteorFiles.addFile(archive_path,
         {
           fileName: archive_name + ".zip",
-          type: 'archive/zip',
+          type: 'binary',
+          isBase64: true,
           meta: {databet_id: random_key}
         },
         function(error, fileRef) {
+          // console.log("===>", fileRef);
         }
       );
+
+      // var fs = Npm.require("fs");
+      // fs.readFile(archive_path,
+      //   function(error, data) {
+      //     UploadedFiles.MeteorFiles.write(data,
+      //       {
+      //         fileName: archive_name + ".zip",
+      //         isBase64: true,
+      //         type: 'binary',
+      //         meta: {databet_id: random_key}
+      //       }, function (error, fileRef) {
+      //         console.log("===>", fileRef);
+      //       });
+      //   }
+      // );
+
 
       // Look for the record in a BUSY LOOP (ugly, but fuck callbacks)
       var doc = undefined;
       while (!doc) {
-        console.log("In short-lived busyloop");
+        console.log("In short-lived busy loop");
         doc = UploadedFiles.MeteorFiles.findOne({"meta.databet_id": random_key});
       }
 
-
-      // Note that this it "upload" (the route from the upload package), rather
-      // than "uploads", the directory...
-      return doc.link()+"|"+doc.meta.databet_id;
+      console.log("URL=", doc.link());
+      console.log("RETURNING", doc.meta.databet_id);
+      return doc.meta.databet_id;
     }
   },
 

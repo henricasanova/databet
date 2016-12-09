@@ -23,7 +23,15 @@
         <b>Download Error: {{server_error}}</b>
       </div>
       {{else}}
-      <h3><a href="{{zip_file_url}}" download>Click this link to download the archive</a></h3>
+
+      <h3><a href="{{fuckingUrl}}?download=true" target="_parent" download="{{fileRef.name}}">
+        Click this link to download the archive
+      </a></h3>
+
+      <!--<h3><a href="{{fileURL fileRef}}?download=true" target="_parent" download="{{fileRef.name}}">-->
+        <!--Click this link to download the archive-->
+      <!--</a></h3>-->
+
       <div class="circular ui icon button red" id="delete_archive">
         <i class="icon delete"></i>
       </div>
