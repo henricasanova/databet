@@ -105,16 +105,13 @@ Meteor.methods({
       console.log("Saving archive to: " + archive_path);
       zipfile.saveAs(archive_path);
 
-      // DEBUG: foo.jpg (for the .zip)
-      // archive_name = "foo";
-      // archive_path = upload_root + "/" + "foo.jpg";
       var random_key = Random.id();
 
       UploadedFiles.MeteorFiles.addFile(archive_path,
         {
           fileName: archive_name + ".zip",
-          type: 'binary',
-          isBase64: true,
+          type: 'binary', // not needed
+          isBase64: true, // not needed
           meta: {databet_id: random_key}
         },
         function(error, fileRef) {
@@ -122,6 +119,7 @@ Meteor.methods({
         }
       );
 
+      // FS-based version (behaves the same)
       // var fs = Npm.require("fs");
       // fs.readFile(archive_path,
       //   function(error, data) {
