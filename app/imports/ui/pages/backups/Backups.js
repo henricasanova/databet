@@ -1,31 +1,49 @@
-import { collection_dictionary } from '../../../startup/both/collection_dictionary.js';
-import { Meteor } from 'meteor/meteor';
-import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
+import {collection_dictionary} from '../../../startup/both/collection_dictionary.js';
+import {Meteor} from 'meteor/meteor';
+import {UploadedFiles} from '../../../api/databet_collections/UploadedFiles';
 
 Template.Backups.onCreated(function () {
-  this.zip_file_requested = new ReactiveVar();
-  this.download_button_clicked = new ReactiveVar();
-  this.waiting_for_download = new ReactiveVar();
-  this.waiting_for_upload = new ReactiveVar();
-  this.upload_successful = new ReactiveVar();
-  this.zip_file_id = new ReactiveVar();
-  this.download_error = new ReactiveVar();
-  this.is_json_parse_error = new ReactiveVar();
-  this.json_parse_error = new ReactiveVar();
-  this.upload_error = new ReactiveVar();
-  this.server_error = new ReactiveVar();
+  this.reactive_dict = new ReactiveDict();
 
-  Template.instance().zip_file_requested.set(false);
-  Template.instance().download_button_clicked.set(true);
-  Template.instance().waiting_for_download.set(true);
-  Template.instance().waiting_for_upload.set(false);
-  Template.instance().upload_successful.set(false);
-  Template.instance().zip_file_id.set(null);
-  Template.instance().download_error.set(false);
-  Template.instance().is_json_parse_error.set(false);
-  Template.instance().json_parse_error.set("");
-  Template.instance().upload_error.set(false);
-  Template.instance().server_error.set("");
+  // this.zip_file_requested = new ReactiveVar();
+  // this.download_button_clicked = new ReactiveVar();
+  // this.waiting_for_download = new ReactiveVar();
+  // this.waiting_for_upload = new ReactiveVar();
+  // this.upload_successful = new ReactiveVar();
+  // this.zip_file_id = new ReactiveVar();
+  // this.zip_file_url = new ReactiveVar();
+  // this.download_error = new ReactiveVar();
+  // this.is_json_parse_error = new ReactiveVar();
+  // this.json_parse_error = new ReactiveVar();
+  // this.upload_error = new ReactiveVar();
+  // this.server_error = new ReactiveVar();
+
+  Template.instance().reactive_dict.set("zip_file_requested", false);
+  Template.instance().reactive_dict.set("download_button_clicked", true);
+  Template.instance().reactive_dict.set("waiting_for_download", true);
+  Template.instance().reactive_dict.set("waiting_for_upload", false);
+  Template.instance().reactive_dict.set("upload_successful", false);
+  Template.instance().reactive_dict.set("zip_file_id", null);
+  Template.instance().reactive_dict.set("zip_file_url", null);
+  Template.instance().reactive_dict.set("download_error", false);
+  Template.instance().reactive_dict.set("is_json_parse_error", false);
+  Template.instance().reactive_dict.set("json_parse_error", "");
+  Template.instance().reactive_dict.set("upload_error", false);
+  Template.instance().reactive_dict.set("server_error", "");
+
+  // Template.instance().zip_file_requested.set(false);
+  // Template.instance().download_button_clicked.set(true);
+  // Template.instance().waiting_for_download.set(true);
+  // Template.instance().waiting_for_upload.set(false);
+  // Template.instance().upload_successful.set(false);
+  // Template.instance().zip_file_id.set(null);
+  // Template.instance().zip_file_url.set(null);
+  // Template.instance().download_error.set(false);
+  // Template.instance().is_json_parse_error.set(false);
+  // Template.instance().json_parse_error.set("");
+  // Template.instance().upload_error.set(false);
+  // Template.instance().server_error.set("");
+
 });
 
 Template.Backups.onRendered(function () {
@@ -38,24 +56,15 @@ Template.Backups.onRendered(function () {
 Template.Backups.helpers({
 
   "zip_file_requested": function () {
-    return Template.instance().zip_file_requested.get();
+    return Template.instance().reactive_dict.get("zip_file_requested");
   },
 
   "waiting_for_server_download": function () {
-    return Template.instance().waiting_for_download.get();
+    return Template.instance().reactive_dict.get("waiting_for_download");
   },
 
-  "fileRef": function () {
-    return UploadedFiles.findOne({"meta.databet_id": Template.instance().zip_file_id.get()});
-  },
-
-  "fuckingUrl": function() {
-    var doc = UploadedFiles.findOne({"meta.databet_id": Template.instance().zip_file_id.get()});
-    if (doc) {
-      return doc.link();
-    } else {
-      return "not_ready_yet";
-    }
+  "archiveUrl": function () {
+    return Template.instance().reactive_dict.get("zip_file_url");
   },
 
   "list_of_collections": function () {
@@ -73,33 +82,32 @@ Template.Backups.helpers({
   },
 
   "is_json_parse_error": function () {
-    return Template.instance().is_json_parse_error.get();
+    return Template.instance().reactive_dict.get("is_json_parse_error");
   },
 
   "json_parse_error": function () {
-    return Template.instance().json_parse_error.get();
+    return Template.instance().reactive_dict.get("json_parse_error");
   },
 
   "upload_successful": function () {
-    return Template.instance().upload_successful.get();
+    return Template.instance().reactive_dict.get("upload_successful");
   },
 
   "upload_error": function () {
-    return Template.instance().upload_error.get();
+    return Template.instance().reactive_dict.get("upload_error");
   },
 
   "waiting_for_upload": function () {
-    return Template.instance().waiting_for_upload.get();
+    return Template.instance().reactive_dict.get("waiting_for_upload");
   },
 
   "download_button_clicked": function () {
-    return Template.instance().download_button_clicked.get();
+    return Template.instance().reactive_dict.get("download_button_clicked");
   },
 
   "server_error": function () {
-    return Template.instance().server_error.get();
+    return Template.instance().reactive_dict.get("server_error");
   },
-
 
 });
 
@@ -108,49 +116,40 @@ Template.Backups.events({
 
   "click #button_download_archive": function (e) {
 
-    Template.instance().download_button_clicked.set(true);
-    Template.instance().zip_file_requested.set(true);
+    Template.instance().reactive_dict.set("download_button_clicked", true);
+    Template.instance().reactive_dict.set("zip_file_requested", true);
 
-    var set_to_true_on_error = Template.instance().download_error;
-    var set_to_id = Template.instance().zip_file_id;
-    var set_to_false_when_downloaded = Template.instance().waiting_for_download;
-    var set_to_error = Template.instance().server_error;
+    var reactive_dict = Template.instance().reactive_dict;
+    var set_to_true_on_error = "download_error";
+    var set_to_id = "zip_file_id";
+    var set_to_url = "zip_file_url";
+    var set_to_false_when_downloaded = "waiting_for_download";
+    var set_to_error = "server_error";
 
     Meteor.call("download_zipped_backup",
       async function (error, result) {
         if (error) {
-          set_to_true_on_error.set(true);
-          set_to_error.set(error);
+          reactive_dict.set(set_to_true_on_error, true);
+          reactive_dict.set(set_to_error, error);
         } else {
-          set_to_id.set(result);
           // console.log("RESULT = ", result);
-          var doc = null;
-
-          // Busy loop since although I got the ID from the server,
-          // it may be a while before I actually can get the object!
-          while (!doc) {
-            await sleep(1000);
-            doc = UploadedFiles.findOne({"meta.databet_id": result});
-            // console.log("==> ", UploadedFiles.find({}).fetch());
-            // console.log("DOC ===> ", doc);
-          }
-          // console.log("===>", doc.link());
-          set_to_false_when_downloaded.set(false);
-          // console.log("RETURNING!");
+          reactive_dict.set(set_to_id, result[0]);
+          reactive_dict.set(set_to_url, result[1]);
+          reactive_dict.set(set_to_false_when_downloaded, false);
         }
       });
     return false;
   },
 
   "click #delete_archive": function (e) {
-     UploadedFiles.remove_document(Template.instance().zip_file_id.get());
-     Template.instance().download_button_clicked.set(false);
+    UploadedFiles.remove_document(Template.instance().reactive_dict.get("zip_file_id"));
+    Template.instance().reactive_dict.set("download_button_clicked", false);
   },
 
   "click #button_upload_json": function (e) {
 
-    Template.instance().is_json_parse_error.set(false);
-    Template.instance().upload_successful.set(false);
+    Template.instance().reactive_dict.set("is_json_parse_error", false);
+    Template.instance().reactive_dict.set("upload_successful", false);
 
     //Build the list of collections to update
     var list_of_collections_to_update = [];
@@ -173,8 +172,8 @@ Template.Backups.events({
       data = JSON.parse(json_string);
     } catch (e) {
       console.log(e);
-      Template.instance().is_json_parse_error.set(true);
-      Template.instance().json_parse_error.set("<b>JSON PARSE ERROR:</b><br> " + e);
+      Template.instance().reactive_dict.set("is_json_parse_error",true);
+      Template.instance().reactive_dict.set("json_parse_error","<b>JSON PARSE ERROR:</b><br>" + e);
       return false;
     }
 
@@ -187,49 +186,41 @@ Template.Backups.events({
       }
     }
     if (error_message != "") {
-      Template.instance().is_json_parse_error.set(true);
-      Template.instance().json_parse_error.set("<b>JSON PARSE ERROR:</b><br> " + error_message);
+      Template.instance().reactive_dict.set("is_json_parse_error", true);
+      Template.instance().reactive_dict.set("json_parse_error", "<b>JSON PARSE ERROR:</b><br> " + error_message);
       return false;
     }
 
     // Set the reactive var for the spinner
-    Template.instance().waiting_for_upload.set(true);
+    Template.instance().reactive_dict.set("waiting_for_upload", true);
 
     // Send the whole JSON to the server, along with which collections
     // to actual process, and whether to update existing ids or not
 
-    var set_to_true_on_error = Template.instance().upload_error;
-    var set_to_false_on_success = Template.instance().upload_error;
-    var set_to_true_on_success = Template.instance().upload_successful;
-    var set_to_false_when_uploaded = Template.instance().waiting_for_upload;
-    var set_to_error = Template.instance().server_error;
+    var reactive_dict = Template.instance().reactive_dict;
+    var set_to_true_on_error = "upload_error";
+    var set_to_false_on_success = "upload_error";
+    var set_to_true_on_success = "upload_successful";
+    var set_to_false_when_uploaded = "waiting_for_upload";
+    var set_to_error = "server_error";
 
     var update_existing = $('#update_all').is(":checked");
-
 
     Meteor.call("import_JSON",
       json_string,
       list_of_collections_to_update,
       update_existing,
       function (error, result) {
-        set_to_false_when_uploaded.set(false);
+        reactive_dict.set(set_to_false_when_uploaded, false);
         if (error) {
-          set_to_true_on_error.set(true);
-          set_to_error.set(error);
+          reactive_dict.set(set_to_true_on_error, true);
+          reactive_dict.set(set_to_error, error);
         } else {
-          set_to_false_on_success.set(false);
-          set_to_true_on_success.set(true);
-          set_to_false_when_uploaded.set(false);
+          reactive_dict.set(set_to_false_on_success, false);
+          reactive_dict.set(set_to_true_on_success, true);
+          reactive_dict.set(set_to_false_when_uploaded, false);
         }
       });
-
     return false;
-
   }
-
 });
-
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}

@@ -145,6 +145,7 @@ Meteor.methods({
 
       console.log("URL=", doc.link());
       console.log("RETURNING", doc.meta.databet_id);
+      return [doc.meta.databet_id, doc.link()];
       return doc.meta.databet_id;
     }
   },
