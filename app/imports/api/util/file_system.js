@@ -43,3 +43,13 @@ export function fs_create_dir(path) {
     future.wait();
   }
 }
+
+export function fs_get_file_list(dirpath) {
+  var filesystem = Npm.require("fs");
+  return filesystem.readdirSync(dirpath);
+}
+
+export function fs_read_file_sync(path) {
+  var filesystem = Npm.require("fs");
+  return filesystem.readFileSync(path);
+}

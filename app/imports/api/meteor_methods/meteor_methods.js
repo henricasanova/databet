@@ -10,6 +10,9 @@ import { Curricula } from '../databet_collections/Curricula';
 import { UploadedFiles } from '../databet_collections/UploadedFiles';
 import { meteor_files_config } from '../databet_collections/UploadedFiles';
 import { fs_move_file_path } from '../util/file_system';
+import { fs_get_file_list } from '../util/file_system';
+import { fs_read_file_sync } from '../util/file_system';
+import { Random } from 'meteor/random';
 
 Meteor.methods({
 
@@ -44,17 +47,12 @@ Meteor.methods({
   get_list_of_uploaded_files: function (prefix) {
 
     if (Meteor.isServer) {
-      var sys = Npm.require('sys');                                                                              // 3
-      var path = Npm.require('path');                                                                            // 6
-      var filesystem = Npm.require("fs");
 
       // The is an ugly way to get the config back
       var dir = meteor_files_config["storagePath"];
 
-      //var dir = UploadServer.getOptions().uploadDir + "/" + prefix;
-      // var dir = UploadedFiles.
-      var list = filesystem.readdirSync(dir);
-      list.unshift(dir)
+      var list = fs_get_file_list(dir);
+      list.unshift(dir); // Add the directory itself as the first element of the list (total hack)
       return list;
     }
   },
@@ -67,28 +65,23 @@ Meteor.methods({
 
   download_zipped_backup: function () {
 
+    console.log("HERE");
     if (Meteor.server) {
 
-      var sys = Npm.require('sys');                                                                              // 3
-      var path = Npm.require('path');                                                                            // 6
-      var filesystem = Npm.require("fs");
+      // Get all files
+      var upload_root = meteor_files_config["storagePath"];
+      var filelist = fs_get_file_list(upload_root);
 
-      var upload_root = UploadServer.getOptions().uploadDir;
-      // Add all uploads to the archive
-      var cwd = process.env.PWD;
-
-      var imagedir = upload_root + "/assessment_uploads";
-
-      var filelist = filesystem.readdirSync(imagedir);
-
+      // Construct archive name
       var now = new Date();
       var archive_name = "databet_archive_" + (now.getMonth() + 1) + "_" +
         (now.getDate()) + "_" + (now.getFullYear());
 
+      // Add files to the archive
       var zipfile = new ZipZap();
       for (var i = 0; i < filelist.length; i++) {
-        console.log("Archiving ", imagedir + "/" + filelist[i]);
-        data = filesystem.readFileSync(imagedir + "/" + filelist[i]);
+        console.log("Archiving ", upload_root + "/" + filelist[i]);
+        data = fs_read_file_sync(upload_root + "/" + filelist[i]);
         zipfile.file(archive_name + '/assessment_uploads/' + filelist[i], data);
       }
 
@@ -103,12 +96,34 @@ Meteor.methods({
         "\t- an assessment_uploads/ directory, which contains all uploaded files, which on the server is located in" +
         upload_root + "/assessment_uploads/\n");
 
-      console.log("Saving archive to: " + upload_root + "/" + archive_name + ".zip");
-      zipfile.saveAs(upload_root + "/" + archive_name + ".zip");
+      var archive_path = upload_root + "/" + archive_name + ".zip";
+      console.log("Saving archive to: " + archive_path);
+      zipfile.saveAs(archive_path);
+
+      // Add this as member of the UploadedFiles collection
+      var random_key = Random.id();
+      UploadedFiles.MeteorFiles.addFile(archive_path,
+        {
+          fileName: archive_name + ".zip",
+          type: 'archive/zip',
+          meta: {databet_id: random_key}
+        },
+        function(error, fileRef) {
+          console.log("ARCHIVE UPLOADED: ", fileRef._id);
+        }
+      );
+
+      // Look for the record in a BUSU LOOP (ugly, but fuck callbacks)
+      var doc = undefined;
+      while (!doc) {
+        console.log("BUSY LOOP");
+        doc = UploadedFiles.MeteorFiles.findOne({"meta.databet_id": random_key});
+      }
+
 
       // Note that this it "upload" (the route from the upload package), rather
       // than "uploads", the directory...
-      return "upload/" + archive_name + ".zip";
+      return doc.link()
     }
   },
 

@@ -147,7 +147,7 @@ Template.UploadFileEnterText.events({
   },
 
   "change #fileInput": function (e) {
-    console.log("New file selection");
+    //console.log("New file selection");
     if (e.currentTarget.files && e.currentTarget.files[0]) {
       // We upload only one file, in case
       // there was multiple files selected

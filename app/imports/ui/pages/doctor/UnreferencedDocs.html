@@ -1,0 +1,63 @@
+<template name="UnreferencedDocs">
+  <div class="ui container center segment raised padded">
+
+    <h3 class="center aligned">Unreferenced UploadedFiles documents in the database</h3>
+
+    {{construct_list_of_unreferenced_docs}}
+
+    {{#if waiting_for_list_unreferenced_docs}}
+
+    {{> Loading }}
+
+    {{else}}
+
+    {{#if list_of_unreferenced_docs.length}}
+    <hr>
+
+    <table class="ui table celled">
+      <thead>
+      <tr>
+        <th>Collection</th>
+        <th>Document Id</th>
+        <th class="two wide"></th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each list_of_unreferenced_docs}}
+      {{> UnreferencedDocRow }}
+      {{/each}}
+      </tbody>
+
+    </table>
+    {{else}}
+    <h4>
+      None found <i class="ui icon green large smile"></i>
+    </h4>
+    {{/if}}
+
+    {{/if}}
+  </div>
+
+
+</template>
+
+<template name="UnreferencedDocRow">
+
+  <tr>
+    <td>{{this_collection}}</td>
+    <td>{{this_id}}</td>
+    <td>
+      <div class="ui circular icon grey button buttonpopup">
+        <i class="icon unhide"></i>
+      </div>
+      <div class="ui flowing popup top left transition hidden very fluid  mini wide">
+        {{{object_json}}}
+      </div>
+
+      <div class="circular ui icon button red manage_delete_item">
+        <i class="icon delete"></i>
+      </div>
+    </td>
+  </tr>
+
+</template>

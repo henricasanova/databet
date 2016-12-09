@@ -20,7 +20,7 @@ if (Meteor.server) {
   fs_create_dir(upload_root + "/assessment_uploads/");
 
   meteor_files_config["storagePath"] = upload_root + "/assessment_uploads/";
-  console.log("UPLOAD STORAGE PATH =", meteor_files_config["storagePath"]);
+  console.log("storage path =", meteor_files_config["storagePath"]);
 }
 
 meteor_files_config["debug"] = false;
@@ -73,6 +73,10 @@ export class UploadedFilesCollection {
   remove_document(databet_id) {
     console.log("Removing in UploadFiles");
     this.MeteorFiles.remove({"meta.databet_id": databet_id});
+  }
+
+  remove(selector) {
+    return this.MeteorFiles.remove(selector);
   }
 
   find(selector) {

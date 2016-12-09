@@ -15,7 +15,7 @@ Template.AddUpdateAssessmentItem.onRendered(function () {
   $('.ui.dropdown')
     .dropdown();
 
-  console.log("UPLOADED FILES", UploadedFiles.find({}).fetch());
+  //console.log("UPLOADED FILES", UploadedFiles.find({}).fetch());
 
   // Initialize radio and standard checkboxes
   $('.ui.radio.checkbox').checkbox();
@@ -363,7 +363,6 @@ Template.AddUpdateAssessmentItem.helpers({
   "sample_good_answer_upload_context": function () {
     return generic_upload_context("sample_good_answer");
   },
-
 
 });
 

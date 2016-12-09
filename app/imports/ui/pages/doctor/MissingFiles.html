@@ -1,17 +1,17 @@
-<template name="DanglingFiles">
+<template name="MissingFiles">
   <div class="ui container center segment raised padded">
 
-    <h3 class="center aligned">Dangling file references in the database</h3>
+    <h3 class="center aligned"> UploadedFiles documents that point to non-existing files (not dynamic)</h3>
 
-    {{construct_list_of_all_files}}
+    {{construct_list_of_missing_files}}
 
-    {{#if waiting_for_list_of_all_files}}
+    {{#if waiting_for_list_missing_files}}
 
     {{> Loading }}
 
     {{else}}
 
-    {{#if list_of_dangling_files.length}}
+    {{#if list_of_missing_files.length}}
     <hr>
 
     <table class="ui table celled">
@@ -19,13 +19,12 @@
       <tr>
         <th>Collection</th>
         <th>Document Id</th>
-        <th>Error</th>
         <th class="two wide"></th>
       </tr>
       </thead>
       <tbody>
-      {{#each list_of_dangling_files}}
-      {{> DanglingFileRow }}
+      {{#each list_of_missing_files}}
+      {{> MissingFileRow }}
       {{/each}}
       </tbody>
 
@@ -42,12 +41,11 @@
 
 </template>
 
-<template name="DanglingFileRow">
+<template name="MissingFileRow">
 
   <tr>
-    <td>UploadedFiles</td>
-    <td>{{this._id}}</td>
-    <td>{{{error_message}}}</td>
+    <td>{{this_collection}}</td>
+    <td>{{this_id}}</td>
     <td>
       <div class="ui circular icon grey button buttonpopup">
         <i class="icon unhide"></i>

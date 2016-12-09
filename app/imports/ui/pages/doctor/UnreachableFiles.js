@@ -33,25 +33,15 @@ Template.UnreachableFiles.helpers({
         set_to_true_if_error.set(true);
       } else {
 
-        // Build the list of known filenames (note that we don't simply looked at the UploadedFiles collection)
-        var list_of_assessment_items = AssessmentItems.find({}).fetch();
+        // console.log("RESULT = ", result);
+
+        var list_of_known_files = UploadedFiles.find({}).fetch();
         var list_of_known_filenames = [];
-        for (var i = 0; i < list_of_assessment_items.length; i++) {
-          var file_fields = ["assessment_question_file", "sample_poor_answer_file", "sample_medium_answer_file", "sample_good_answer_file"];
-          for (var j = 0; j < file_fields.length; j++) {
-            if (list_of_assessment_items[i][file_fields[j]]) {
-              var uploaded_file = UploadedFiles.findOne({"meta": {"databet_id": list_of_assessment_items[i][file_fields[j]]}});
-              if (uploaded_file) {
-                var original_name = uploaded_file.name;
-                var storage_path = uploaded_file.path;
-                var storage_name_tokens = storage_path.split("/");
-                var storage_name = storage_name_tokens[storage_name_tokens.length-1];
-                list_of_known_filenames.push(storage_name);
-              }
-            }
-          }
+        for (var i=0; i < list_of_known_files.length; i++) {
+          list_of_known_filenames.push(list_of_known_files[i].path.replace(result[0]+"/",""));
         }
 
+        // console.log("LIST OF KNOWN FILENAMES = ", list_of_known_filenames);
 
         // Build list of unreachable filenames
         var list_of_unreachable_filenames = [];
