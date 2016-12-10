@@ -1,0 +1,136 @@
+<template name="StatisticsCounts">
+
+  <br>
+
+  <div class="ui container center">
+
+    <div class="ui three column  grid container">
+
+      <div class="column two wide"></div>
+
+      <div class="column ten wide">
+
+        <div class="ui container center segment raised padded">
+
+          <h3 class="ui header center aligned">General Statistics</h3>
+          <table class="ui table definition celled">
+            <tr><td class="five wide"># Users    </td><td class="center aligned">{{num_users}} ({{num_admin_users}} admins)</td></tr>
+            <tr><td># Curricula</td><td class="center aligned">{{num_curricula}}</td></tr>
+            <tr><td># Semesters</td><td class="center aligned">{{num_semesters}}</td></tr>
+            <tr><td># Assessment Items</td><td class="center aligned">{{num_assessment_items}}</td></tr>
+            <tr><td># Uploaded Files</td><td class="center aligned">{{num_uploaded_files}}</td></tr>
+          </table>
+
+        </div>
+
+      </div>
+
+      <div class="column one wide"></div>
+
+    </div>
+
+
+    <div class="ui three column  grid container">
+
+      <div class="column two wide"></div>
+
+      <div class="column ten wide">
+
+        <div class="ui container center segment raised padded">
+
+          <h3 class="ui header center aligned">Curricula Statistics</h3>
+          <table class="ui table celled">
+            <thead>
+            <tr>
+              <th>Curriculum</th>
+              <th class="center aligned">Date created</th>
+              <th class="center aligned"># Courses</th>
+              <th class="center aligned"># Semesters</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each list_of_curricula}}
+              <tr>
+                <td>{{this.description}}</td>
+                <td class="center aligned">{{date_created}}</td>
+                <td class="center aligned">{{num_courses_for_curriculum}}</td>
+                <td class="center aligned">{{num_semesters_for_curriculum}}</td>
+              </tr>
+            {{/each}}
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+
+      <div class="column one wide"></div>
+
+    </div>
+
+
+    <div class="ui three column  grid container">
+
+      <div class="column two wide"></div>
+
+      <div class="column ten wide">
+
+        <div class="ui container center segment raised padded">
+
+          <h3 class="ui header center aligned">Semester Statistics</h3>
+          <table class="ui table celled">
+            <thead>
+            <tr><th>Semester</th><th class="center aligned"># Offered Courses</th><th class="center aligned"># Assessment Items</th></tr>
+            </thead>
+            <tbody>
+            {{#each list_of_semesters}}
+            <tr><td>{{this.session}} {{this.year}}</td><td class="center aligned">{{num_offered_courses_for_semester}}</td><td class="center aligned">{{num_assessment_items_for_semester}}</td></tr>
+            {{/each}}
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+
+      <div class="column one wide"></div>
+
+    </div>
+
+
+    <div class="ui three column  grid container">
+
+      <div class="column two wide"></div>
+
+      <div class="column ten wide">
+
+        <div class="ui container center segment raised padded">
+
+          <h3 class="ui header center aligned">User Statistics</h3>
+          <table class="ui table celled">
+            <thead>
+            <tr><th>User</th><th class="center aligned"># Offered Courses</th><th class="center aligned"># Assessment Items</th></tr>
+            </thead>
+            <tbody>
+            {{#each list_of_users}}
+            <tr><td>{{this.name}} {{this.year}}</td><td class="center aligned">{{num_offered_courses_for_user}}</td><td class="center aligned">{{num_assessment_items_for_user}}</td></tr>
+            {{/each}}
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+
+      <div class="column one wide"></div>
+
+    </div>
+
+
+
+
+
+
+  </div>
+
+</template>

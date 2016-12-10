@@ -6,9 +6,9 @@ import { CurriculumMappings } from '../../../api/databet_collections/CurriculumM
 import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
 import { PerformanceIndicators } from '../../../api/databet_collections/PerformanceIndicators';
 import { Meteor } from 'meteor/meteor';
-import { semesterid_to_semesterstring } from '../../../ui/global_template_helpers/semesters';
+import { semesterid_to_semesterstring } from '../../../ui/global_helpers/semesters';
 import { Random } from 'meteor/random';
-import { get_current_username } from '../../global_template_helpers/users_and_usernames';
+import { get_current_username } from '../../global_helpers/users_and_usernames';
 
 Template.AddUpdateAssessmentItem.onRendered(function () {
   // Initialize dropdown

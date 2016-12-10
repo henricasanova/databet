@@ -2,7 +2,7 @@
  * Created by casanova on 12/9/16.
  */
 
-import { get_global, set_global } from './global_set_get.js';
+import { get_global, set_global } from './set_get_globals.js';
 import { Semesters } from '../../api/databet_collections/Semesters';
 
 export var get_current_semester = function () {

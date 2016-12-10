@@ -1,10 +1,9 @@
-import { Template } from 'meteor/templating';
 import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses';
 import { Courses } from '../../../api/databet_collections/Courses';
 import { Semesters } from '../../../api/databet_collections/Semesters';
 import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
 import { _ } from 'meteor/underscore';
-import { get_current_user } from '../../global_template_helpers/users_and_usernames';
+import { get_current_user } from '../../global_helpers/users_and_usernames';
 import { Meteor } from 'meteor/meteor';
 
 Template.TodoList.helpers({

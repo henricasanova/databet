@@ -1,5 +1,5 @@
 /* Wrappers around the get/set global helpers */
-import { get_global, set_global } from '../../ui/global_template_helpers/set_get_globals';
+import { get_global, set_global } from '../../ui/global_helpers/set_get_globals';
 import { _ } from 'meteor/underscore';
 
 export var get_current_user = function () {
