@@ -115,10 +115,12 @@ Meteor.methods({
       // Add a README to the archive
       zipfile.file(archive_name + "/README.txt", "Snapshot date: " + now.toString() +
         "\n\nThis archive contains:\n\t- this README.txt file\n" +
-        "\t- collections.json, which contains a JSON array that contains all collection content, which " +
-        "can be uploaded back into the collections via the JSON upload feature on the admin panel.\n" +
-        "\t- an assessment_uploads/ directory, which contains all uploaded files, which on the server is located in" +
-        upload_root + "/assessment_uploads/\n");
+        "\t- collections.json, which contains a JSON array that contains all collection content, which \n" +
+        "can be uploaded back into the collections via the JSON upload feature on the Backup admin page.\n" +
+        "\t- an assessment_uploads/ directory, which contains all uploaded files, which on the server\n" +
+        "is located in" + upload_root + "/assessment_uploads/\n\n"+
+        "** WARNING ** The uploaded files should be put on the server BEFORE using DataBET to re-import\n " +
+        "the JSON array\n");
 
       var archive_path = upload_root + "/" + archive_name + ".zip";
       console.log("Saving archive to: " + archive_path);
@@ -267,7 +269,6 @@ function collections_2_string() {
 
   for (var collection_name in collection_dictionary) {
     if (collection_dictionary.hasOwnProperty(collection_name)) {
-      console.log("DEALING WITH ", collection_name);
       string += ' [ "' + collection_name + '" , ' +
         collection_dictionary[collection_name].export_to_JSON() + " ],";
     }

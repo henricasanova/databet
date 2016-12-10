@@ -1,8 +1,4 @@
-import { Template } from 'meteor/templating';
-
-export var trim_date = function (date) {
-  return (1 + date.getMonth()) + "/" + date.getDate() + "/" + date.getFullYear();
-};
+import { trim_date } from '../global_helpers/trim_date.js';
 
 Template.registerHelper('trim_date', function (date) {
   return trim_date(date);
