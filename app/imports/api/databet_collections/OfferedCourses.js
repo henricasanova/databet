@@ -19,6 +19,10 @@ export var OfferedCourses = new OfferedCoursesCollection("OfferedCourses");
 
 
 OfferedCourses.attachSchema(new SimpleSchema({
+  _id: {
+    type: String,
+    optional: false
+  },
   course: {
     type: String,
     optional: false,

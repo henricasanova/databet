@@ -16,6 +16,10 @@ export var CurriculumMappings = new CurriculumMappingsCollection("CurriculumMapp
 
 
 CurriculumMappings.attachSchema(new SimpleSchema({
+  _id: {
+    type: String,
+    optional: false
+  },
   curriculum: {
     type: String,
     optional: false

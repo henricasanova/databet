@@ -24,6 +24,10 @@ class CoursesCollection extends DatabetCollection {
 export var Courses = new CoursesCollection("Courses");
 
 Courses.attachSchema(new SimpleSchema({
+  _id: {
+    type: String,
+    optional: false
+  },
   alphanumeric: {
     type: String,
     optional: false,

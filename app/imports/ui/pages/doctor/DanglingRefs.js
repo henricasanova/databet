@@ -94,7 +94,7 @@ export var get_dangling_refs = function () {
     get_dangling_refs_in_collection("OfferedCourses",
       [["course", "Courses"],
         ["semester", "Semesters"],
-        ["instructor", "Meteor.users"]]));
+        ["instructor", "MeteorUsers"]]));
 
   // PerformanceIndicators
   dangling_refs.push.apply(dangling_refs,
@@ -111,8 +111,6 @@ export var get_dangling_refs = function () {
     get_dangling_refs_in_collection("StudentOutcomes",
       [["curriculum", "Curricula"]]));
 
-  // TOTO: Uploaded Files
-
   return dangling_refs;
 
 };
@@ -126,13 +124,9 @@ function not_in_collection(doc, field_name, target_collection_name) {
     return "";
   }
 
-  var query = {};
-  if (target_collection_name == "UploadedFiles") {
-    query = {"meta": {"databet_id": doc[field_name]}};
-  } else {
-    query = {"_id": doc[field_name]};
-  }
-  if (collection_dictionary[target_collection_name].find(query).count() == 0) {
+  var target_doc = collection_dictionary[target_collection_name].find_document(doc[field_name]);
+
+  if (!target_doc) {
     return "References non-existing "+field_name+" ("+doc[field_name]+") " +
       "in collection " + target_collection_name +"\n";
   } else {

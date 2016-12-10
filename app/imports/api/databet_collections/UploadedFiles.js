@@ -79,12 +79,113 @@ export class UploadedFilesCollection {
     return this.MeteorFiles.remove(selector);
   }
 
+  find_document(doc_id) {
+    var selector = {"meta.databet_id": doc_id};
+    return this.find(selector);
+  }
+
   find(selector) {
     return this.MeteorFiles.find(selector);
   }
 
   findOne(selector) {
     return this.MeteorFiles.findOne(selector);
+  }
+
+  export_to_JSON() {
+
+    var cursor = this.MeteorFiles.find();
+    if (cursor.count() == 0) {
+      return "[ ]";
+    }
+    var string = "[ ";
+
+    var documents = cursor.fetch();
+    for (var i = 0; i < documents.length; i++) {
+      var doc = documents[i];
+      console.log("DOC = ", doc);
+
+      var place_holder_object = {
+        "databet_id": doc.meta.databet_id,
+        "name": doc.name,
+        "path": doc.path,
+        "type": doc.type
+      };
+
+      string += JSON.stringify(place_holder_object);
+      string += ",";
+    }
+    string = string.slice(0, -1); // Remove last comma
+    string += " ]";
+
+    return string;
+
+    // return "[ TODO ]";
+  }
+
+  check_JSON_against_schema(doclist, schema) {
+    // This is a "fake check" (no schema, etc.)
+    // We just care: it there a databet_id? is there a path?
+
+    var k, error_message = "";
+    for (k = 0; k < doclist.length; k++) {
+      var doc = doclist[k];
+      if (!("databet_id" in doc) ||
+        !("name" in doc) ||
+        !("path" in doc) ||
+        !("type" in doc)) {
+        error_message += "<br>Document #" + k +": should have databet_id, name, path, and type attributes";
+      }
+    }
+
+    if (error_message != "") {
+      throw {
+        name: "Errors for collection UploadedFiles\n",
+        message: error_message,
+        toString: function () {
+          return this.name + ":" + this.message + "<br>";
+        }
+      }
+    }
+  }
+
+  import_from_JSON(doclist, update_existing) {
+
+    if (Meteor.isServer) {
+      var k;
+
+      console.log("Importing into UploadedFiles");
+      for (k = 0; k < doclist.length; k++) {
+        var doc_databet_id = doclist[k].databet_id;
+        var doc_name = doclist[k].name;
+        var doc_path = doclist[k].path;
+        var doc_type = doclist[k].type;
+
+        var file_already_known = (this.find_document(doc_databet_id) != undefined);
+
+        if ((!file_already_known) || (file_already_known && update_existing)) {
+          if (file_already_known) {
+            console.log("Removing document with databet_id", doc_databet_id, "from UploadedFiles");
+            super.remove({"meta.databet_id": doc_databet_id});
+          }
+          console.log("Adding document with databet_id", doc_databet_id, "into UploadedFiles");
+          this.MeteorFiles.addFile(doc_path,
+            {
+              fileName: doc_name,
+              type: doc_type,
+              meta: {databet_id: doc_databet_id}
+            },
+            function(error, fileRef) {
+              // console.log("===>", fileRef);
+            }
+          );
+        }
+      }
+    }
+  }
+
+  simpleSchema() {
+    return null;
   }
 }
 

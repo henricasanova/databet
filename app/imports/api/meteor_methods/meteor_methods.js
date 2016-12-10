@@ -44,7 +44,7 @@ Meteor.methods({
     collection.remove({"_id": doc_id});
   },
 
-  get_list_of_uploaded_files: function (prefix) {
+  get_list_of_uploaded_files: function () {
 
     if (Meteor.isServer) {
 
@@ -55,6 +55,25 @@ Meteor.methods({
       list.unshift(dir); // Add the directory itself as the first element of the list (total hack)
       return list;
     }
+  },
+
+  rename_uploaded_file: function(doc_id, new_path) {
+    var doc = UploadedFiles.MeteorFiles.findOne({"_id": doc_id});
+    if (!doc) { return; }
+
+    //console.log(doc);
+    var old_path = doc.path;
+
+    //console.log("Should mv ", old_path, " ", new_path);
+
+    // Update the collection
+    var modifier = {"path": new_path, "versions.original.path": new_path };
+    //console.log("MODIFIER = ", modifier);
+    UploadedFiles.MeteorFiles.update({"_id": doc._id}, {$set: modifier});
+    //console.log("UPDATED:", UploadedFiles.MeteorFiles.findOne({"_id": doc._id}));
+
+    // Update the file system
+    fs_move_file_path(old_path, new_path);
   },
 
   send_email: function (options) {
@@ -119,7 +138,7 @@ Meteor.methods({
         }
       );
 
-      // FS-based version (behaves the same)
+      // FS-based version (behaves the same, as far as I can tell)
       // var fs = Npm.require("fs");
       // fs.readFile(archive_path,
       //   function(error, data) {
@@ -146,13 +165,13 @@ Meteor.methods({
       console.log("URL=", doc.link());
       console.log("RETURNING", doc.meta.databet_id);
       return [doc.meta.databet_id, doc.link()];
-      return doc.meta.databet_id;
     }
   },
 
   import_JSON: function (json_string, collections_to_update, update_existing) {
     if (Meteor.isServer) {
 
+      console.log("IN IMPORT JSON");
       // Parse json_string
       var data;
       try {
@@ -161,10 +180,37 @@ Meteor.methods({
         throw new Meteor.Error("<b>JSON parse error:</b> <br>" + e);
       }
 
-      var error_message = "";
       var i, j, k;
       var collection_name, collection;
 
+      // Pre-process parse data to deal with the single-entry case
+      for (j = 0; j < data.length; j++) {
+        if (data[j][1].length === undefined) {
+          var tmp = data[j][1];
+          data[j][1] = [];
+          data[j][1][0] = tmp;
+        }
+      }
+
+      // Fix possible dates
+      for (i = 0; i < collections_to_update.length; i++) {
+        for (j = 0; j < data.length; j++) {
+          // If not the right collection, skip
+          collection_name = data[j][0];
+          if (collection_name != collections_to_update[i]) {
+            continue;
+          }
+
+          for (k = 0; k < data[j][1].length; k++) {
+            // fix date
+            data[j][1][k] = fix_dates(collection_name, data[j][1][k]);
+          }
+        }
+      }
+
+      // Check that every JSON is ok (we do all this before doing any import)
+      console.log("Checking JSON validity...");
+      var error_message = "";
       // Go through each collection specification and check validity
       for (i = 0; i < collections_to_update.length; i++) {
         for (j = 0; j < data.length; j++) {
@@ -176,91 +222,35 @@ Meteor.methods({
           collection_name = data[j][0];
           collection = collection_dictionary[collection_name];
 
-          // Deal with the case in which a single entry is entered
-          if (data[j][1].length === undefined) {
-            var tmp = data[j][1];
-            data[j][1] = [];
-            data[j][1][0] = tmp;
-          }
-
-          console.log("Processing ", data[j][1].length,
-            "document for collection: ", collection_name);
-
-          //Fixing dates, checking schemas...
-          console.log("  Mapping dates back into strings and checking schemas...");
-          for (k = 0; k < data[j][1].length; k++) {
-            try {
-              // fix date
-              data[j][1][k] = fix_dates(collection_name, data[j][1][k]);
-
-              // check against schema
-              if ("SimpleSchema" in collection) {
-                check_against_schema(data[j][1][k], collection.simpleSchema());
-              }
-            } catch (e) {
-              error_message += "ERROR: Collection " + collection_name +
-                ", Document #" + k + ":\n\t";
-              error_message += e.toString() + "\n";
-            }
+          try {
+            var schema = collection.simpleSchema();
+            collection.check_JSON_against_schema(data[j][1], schema);
+          } catch (e) {
+            error_message += e.toString();
           }
         }
       }
 
       if (error_message != "") {
-        throw new Meteor.Error("<b>Import error:</b><br>" + error_message);
+        throw new Meteor.Error("<br>"+error_message);
       }
 
+      // Do the import!!
       console.log("Updating collections...");
-      // At this point it's safe to do the uploads!!
       for (i = 0; i < collections_to_update.length; i++) {
         for (j = 0; j < data.length; j++) {
+          collection_name = data[j][0];
           // If not the right collection, skip
-          if (data[j][0] != collections_to_update[i]) {
+          if (collection_name != collections_to_update[i]) {
             continue;
           }
-
-          collection_name = data[j][0];
+          console.log("Updating collection ", collection_name);
           collection = collection_dictionary[collection_name];
-
-          console.log("  Updating collection ", collection_name);
-          for (k = 0; k < data[j][1].length; k++) {
-            var docId = data[j][1][k]._id;
-
-            if ((!docId) || (collection.find({_id: docId}).count() == 0)) {
-              console.log("    Inserting a new document");
-              collection.insert(data[j][1][k]);
-            } else if (update_existing) {
-              console.log("    Updating an existing document");
-              collection.remove({_id: docId});
-              collection.insert(data[j][1][k]);
-            } else {
-              // do nothing
-            }
-          }
+          collection.import_from_JSON(data[j][1], update_existing);
         }
       }
     }
   },
-
-  rename_uploaded_file: function(doc_id, new_path) {
-    var doc = UploadedFiles.MeteorFiles.findOne({"_id": doc_id});
-    if (!doc) { return; }
-
-    //console.log(doc);
-    var old_path = doc.path;
-
-    //console.log("Should mv ", old_path, " ", new_path);
-
-    // Update the collection
-    var modifier = {"path": new_path, "versions.original.path": new_path };
-    //console.log("MODIFIER = ", modifier);
-    UploadedFiles.MeteorFiles.update({"_id": doc._id}, {$set: modifier});
-    //console.log("UPDATED:", UploadedFiles.MeteorFiles.findOne({"_id": doc._id}));
-
-    // Update the file system
-    fs_move_file_path(old_path, new_path);
-
-  }
 
 });
 
@@ -268,229 +258,20 @@ Meteor.methods({
 /***** HELPERS *****/
 
 
-// function remove_from_collection(collection, doc_id) {
-//   console.log("REMOVE_FROM_COLLECTION: ", collection._name, doc_id);
-//   // First remove all linked documents
-//   switch (collection) {
-//     case Meteor.users:
-//       remove_all_documents_referring_to_user(doc_id);
-//       break;
-//     case OfferedCourses:
-//       remove_all_documents_referring_to_offered_course(doc_id);
-//       break;
-//     case AssessmentItems:
-//       remove_all_documents_referring_to_assessment_item(doc_id);
-//       break;
-//     case Semesters:
-//       remove_all_documents_referring_to_semester(doc_id);
-//       break;
-//     case Curricula:
-//       remove_all_documents_referring_to_curriculum(doc_id);
-//       break;
-//     case StudentOutcomes:
-//       var curriculum_id = StudentOutcomes.findOne({"_id": doc_id}).curriculum;
-//       remove_all_documents_referring_to_student_outcome(doc_id);
-//       break;
-//     case Courses:
-//       remove_all_documents_referring_to_course(doc_id);
-//       break;
-//     case CurriculumMappings:
-//       remove_all_documents_referring_to_curriculum_mapping(doc_id);
-//       break;
-//     case PerformanceIndicators:
-//       var outcome_id = PerformanceIndicators.findOne({"_id": doc_id}).student_outcome;
-//       remove_all_documents_referring_to_performance_indicator(doc_id);
-//       break;
-//     case UploadedFiles:
-//       remove_all_documents_referring_to_uploaded_file(doc_id);
-//       break;
-//   }
-//
-//   // Second, remove the document itself
-//   collection.remove({"_id": doc_id});
-//
-//   // Third, do some collection-specific cleanup
-//   switch (collection) {
-//     case PerformanceIndicators:
-//       var i;
-//       // Fix all orders
-//       var allPIs = PerformanceIndicators.find({"student_outcome": outcome_id}, {sort: {order: 1}}).fetch();
-//       for (i = 0; i < allPIs.length; i++) {
-// 	      PerformanceIndicators.update_document( allPIs[i]._id, {"order": i});
-//       }
-//       break;
-//     case StudentOutcomes:
-//       // Fix all orders
-//       var allOutcomes = StudentOutcomes.find({"curriculum": curriculum_id}, {sort: {order: 1}}).fetch();
-//       for (i = 0; i < allOutcomes.length; i++) {
-// 	      StudentOutcomes.update_document(allOutcomes[i]._id, {"order": i});
-//       }
-//       break;
-//     default:
-//       break;
-//   }
-// }
-
-// function remove_all_documents_referring_to_user(user_id) {
-//   var offered_courses = OfferedCourses.find({"instructor": user_id}).fetch();
-//   for (var i = 0; i < offered_courses.length; i++) {
-//     remove_from_collection(OfferedCourses, offered_courses[i]._id);
-//   }
-// }
-//
-// function remove_all_documents_referring_to_offered_course(offered_course_id) {
-//   var assessment_items = AssessmentItems.find({"offered_course": offered_course_id}).fetch();
-//   for (var i = 0; i < assessment_items.length; i++) {
-//     remove_from_collection(AssessmentItems, assessment_items[i]._id);
-//   }
-// }
-//
-// function remove_all_documents_referring_to_assessment_item(assessment_item_id) {
-//   var assessment_item = AssessmentItems.findOne({"_id": assessment_item_id});
-//
-//   var assessment_question_file_id = assessment_item.assessment_question_file;
-//   if (assessment_question_file_id) {
-//     remove_from_collection(UploadedFiles, assessment_question_file_id);
-//   }
-//
-//   var sample_poor_answer_file_id = assessment_item.sample_poor_answer_file;
-//   if (sample_poor_answer_file_id) {
-//     remove_from_collection(UploadedFiles, sample_poor_answer_file_id);
-//   }
-//
-//   var sample_medium_answer_file_id = assessment_item.sample_medium_answer_file;
-//   if (sample_medium_answer_file_id) {
-//     remove_from_collection(UploadedFiles, sample_medium_answer_file_id);
-//   }
-//
-//   var sample_good_answer_file_id = assessment_item.sample_good_answer_file;
-//   if (sample_good_answer_file_id) {
-//     remove_from_collection(UploadedFiles, sample_good_answer_file_id);
-//   }
-// }
-//
-// function remove_all_documents_referring_to_semester(semester_id) {
-//   var offered_courses = OfferedCourses.find({"semester": semester_id}).fetch();
-//   for (var i = 0; i < offered_courses.length; i++) {
-//     remove_from_collection(OfferedCourses, offered_courses[i]._id);
-//   }
-// }
-//
-// function remove_all_documents_referring_to_curriculum(curriculum_id) {
-//
-//   // Student Outcomes
-//   var student_outcomes = StudentOutcomes.find({"curriculum": curriculum_id}).fetch();
-//   for (var i = 0; i < student_outcomes.length; i++) {
-//     remove_from_collection(StudentOutcomes, student_outcomes[i]._id);
-//   }
-//
-//   // Courses
-//   var courses = Courses.find({"curriculum": curriculum_id}).fetch();
-//   for (i = 0; i < courses.length; i++) {
-//     remove_from_collection(Courses, courses[i]._id);
-//   }
-//
-//   // CurriculumMappings
-//   var curriculum_mappings = CurriculumMappings.find({"curriculum": curriculum_id}).fetch();
-//   for (i = 0; i < curriculum_mappings.length; i++) {
-//     remove_from_collection(CurriculumMappings, curriculum_mappings[i]._id);
-//   }
-//
-//   // Semesters
-//   var semesters = Semesters.find({"curriculum": curriculum_id}).fetch();
-//   for (i = 0; i < semesters.length; i++) {
-//     remove_from_collection(Semesters, semesters[i]._id);
-//   }
-// }
-//
-// function remove_all_documents_referring_to_student_outcome(student_outcome_id) {
-//   var performance_indicators = PerformanceIndicators.find({"student_outcome": student_outcome_id}).fetch();
-//   for (var i = 0; i < performance_indicators.length; i++) {
-//     remove_from_collection(PerformanceIndicators, performance_indicators[i]._id);
-//   }
-// }
-//
-// function remove_all_documents_referring_to_course(course_id) {
-//
-//   // Offered Courses
-//   var offered_courses = OfferedCourses.find({"course": course_id}).fetch();
-//   for (var i = 0; i < offered_courses.length; i++) {
-//     remove_from_collection(OfferedCourses, offered_courses[i]._id);
-//   }
-//
-//   //  CurriculumMappings
-//   var curriculum_mappings = CurriculumMappings.find({"course": course_id}).fetch();
-//   for (i = 0; i < curriculum_mappings.length; i++) {
-//     remove_from_collection(CurriculumMappings, curriculum_mappings[i]._id);
-//   }
-// }
-//
-// function remove_all_documents_referring_to_curriculum_mapping(curriculum_mapping_id) {
-//   // Nothing to do
-// }
-//
-// function remove_all_documents_referring_to_performance_indicator(performance_indicator_id) {
-//   var i;
-//
-//   // Assessment Items
-//   var assessment_items = AssessmentItems.find({"performance_indicator": performance_indicator_id}).fetch();
-//   for (i = 0; i < assessment_items.length; i++) {
-//     remove_from_collection(AssessmentItems, assessment_items[i]._id);
-//   }
-//   // Curriculum Mappings
-//   var curriculum_mappings = CurriculumMappings.find({"performance_indicator": performance_indicator_id}).fetch();
-//   for (i = 0; i < curriculum_mappings.length; i++) {
-//     remove_from_collection(CurriculumMappings, curriculum_mappings[i]._id);
-//   }
-// }
-//
-// function remove_all_documents_referring_to_uploaded_file(uploaded_file_id) {
-//   var uploaded_file = UploadedFiles.findOne({"_id": uploaded_file_id});
-//   if (uploaded_file) {
-//     remove_uploaded_filepath(uploaded_file.fileinfo.path);
-//   }
-// }
-//
-// function remove_uploaded_filepath(filepath) {
-//   if (Meteor.isServer) {
-//     console.log("REMOVING A FILE BRUTALLY IS TOO UNSAFE - DO IT BY HAND!");
-//   }
-// }
-
 function collections_2_string() {
   var string = "[ ";
 
   for (var collection_name in collection_dictionary) {
     if (collection_dictionary.hasOwnProperty(collection_name)) {
+      console.log("DEALING WITH ", collection_name);
       string += ' [ "' + collection_name + '" , ' +
-        collection_2_string(collection_name) + " ],";
+        collection_dictionary[collection_name].export_to_JSON() + " ],";
     }
   }
   string = string.slice(0, -1); // Remove last comma
   string += "]\n";
   return string;
 }
-
-
-function collection_2_string(collection_name) {
-
-  var cursor = collection_dictionary[collection_name].find();
-  if (cursor.count() == 0) {
-    return "[ ]";
-  }
-  var string = "[ ";
-
-  var documents = cursor.fetch();
-  for (var i = 0; i < documents.length; i++) {
-    string += JSON.stringify(documents[i]);
-    string += ",";
-  }
-  string = string.slice(0, -1); // Remove last comma
-  string += " ]";
-
-  return string;
-}
-
 
 // Fix dates in documents
 function fix_dates(collection_name, doc) {
@@ -510,37 +291,3 @@ function fix_dates(collection_name, doc) {
   }
   return doc;
 }
-
-// Check that the document is well-specified (with the extra _id check)
-function check_against_schema(document, schema) {
-  // Check that "_id" is provided
-  if (!("_id" in document)) {
-    throw {
-      name: "Missing attribute",
-      message: "Document must have an _id attribute",
-      toString: function () {
-        return this.name + ": " + this.message;
-      }
-    };
-  }
-  // Check against the schema
-  check(document, schema);
-}
-
-// function move_file_path(old_path, new_path) {
-//
-//   var Future = Npm.require("fibers/future");
-//   var exec = Npm.require("child_process").exec;
-//   var future = new Future();
-//   var dir = process.env.PWD;
-//   var command = "mv " + old_path + " " + new_path;
-//   //noinspection JSUnusedLocalSymbols
-//   exec(command, {cwd: dir}, function (error, stdout, stderr) {
-//     if (error) {
-//       console.log(error);
-//       throw new Meteor.Error(500, command + " failed");
-//     }
-//     future.return(stdout.toString());
-//   });
-//   future.wait();
-// }

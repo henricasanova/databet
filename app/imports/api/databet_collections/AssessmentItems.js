@@ -31,6 +31,12 @@ export var AssessmentItems = new AssessmentItemsCollection("AssessmentItems");
 
 
 AssessmentItems.attachSchema(new SimpleSchema({
+
+  _id: {
+    type: String,
+    optional: false
+  },
+
   offered_course: {
     type: String,
     optional: false,

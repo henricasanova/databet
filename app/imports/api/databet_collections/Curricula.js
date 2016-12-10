@@ -33,6 +33,10 @@ export var Curricula = new CurriculaCollection("Curricula");
 
 
 Curricula.attachSchema(new SimpleSchema({
+  _id: {
+    type: String,
+    optional: false
+  },
   description: {
     type: String,
     optional: false,

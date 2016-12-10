@@ -71,7 +71,7 @@
       <div class="field">
         <div class="ui radio checkbox">
           <input type="radio" name="update_option" id="update_all" tabindex="0" class="hidden">
-          <label>Add new documents and update existing documents</label>
+          <label>Add new documents and REPLACE existing documents</label>
         </div>
       </div>
 
@@ -89,7 +89,7 @@
       {{else}}
       {{#if upload_error}}
       <div class="ui message raised red text">
-        <b>Upload Error:</b><br>{{{server_error}}}
+        <b>Upload Errors:</b><br>{{{server_error}}}
       </div>
       {{else}}
       {{#if upload_successful}}

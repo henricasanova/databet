@@ -10,10 +10,11 @@ import { OfferedCourses } from '../../api/databet_collections/OfferedCourses';
 import { PerformanceIndicators } from '../../api/databet_collections/PerformanceIndicators';
 import { Semesters } from '../../api/databet_collections/Semesters';
 import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
+
 import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
+import { MeteorUsers } from '../../api/databet_collections/MeteorUsers';
 
 export var collection_dictionary = {};
-collection_dictionary["Meteor.users"] = Meteor.users;
 collection_dictionary["AssessmentItems"] = AssessmentItems;
 collection_dictionary["Courses"] = Courses;
 collection_dictionary["Curricula"] = Curricula;
@@ -23,4 +24,6 @@ collection_dictionary["PerformanceIndicators"] = PerformanceIndicators;
 collection_dictionary["Semesters"] = Semesters;
 collection_dictionary["StudentOutcomes"] = StudentOutcomes;
 collection_dictionary["UploadedFiles"] = UploadedFiles;
+collection_dictionary["MeteorUsers"] = MeteorUsers;
+
 

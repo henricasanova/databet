@@ -19,6 +19,10 @@ class SemestersCollection extends DatabetCollection {
 export var Semesters = new SemestersCollection("Semesters");
 
 Semesters.attachSchema(new SimpleSchema({
+  _id: {
+    type: String,
+    optional: false
+  },
   session: {
     type: String,
     optional: false,

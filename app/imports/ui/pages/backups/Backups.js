@@ -130,7 +130,7 @@ Template.Backups.events({
       async function (error, result) {
         if (error) {
           reactive_dict.set(set_to_true_on_error, true);
-          reactive_dict.set(set_to_error, error);
+          reactive_dict.set(set_to_error, error.toString());
         } else {
           // console.log("RESULT = ", result);
           reactive_dict.set(set_to_id, result[0]);
@@ -187,7 +187,7 @@ Template.Backups.events({
     }
     if (error_message != "") {
       Template.instance().reactive_dict.set("is_json_parse_error", true);
-      Template.instance().reactive_dict.set("json_parse_error", "<b>JSON PARSE ERROR:</b><br> " + error_message);
+      Template.instance().reactive_dict.set("json_parse_error", "<b>JSON PARSE ERROR:</b><br>" + error_message);
       return false;
     }
 
@@ -214,7 +214,7 @@ Template.Backups.events({
         reactive_dict.set(set_to_false_when_uploaded, false);
         if (error) {
           reactive_dict.set(set_to_true_on_error, true);
-          reactive_dict.set(set_to_error, error);
+          reactive_dict.set(set_to_error, error.message);
         } else {
           reactive_dict.set(set_to_false_on_success, false);
           reactive_dict.set(set_to_true_on_success, true);
