@@ -137,6 +137,7 @@ function not_in_collection(doc, field_name, target_collection_name) {
 // Generic method that looks for dangling references
 function get_dangling_refs_in_collection(source_collection, reference_specs) {
   var dangling_refs = [];
+
   var docs = collection_dictionary[source_collection].find({}).fetch();
   for (var i=0; i < docs.length; i++) {
     var error_message = "";

@@ -163,7 +163,7 @@ Meteor.methods({
       }
 
       console.log("URL=", doc.link());
-      console.log("RETURNING", doc.meta.databet_id);
+      // console.log("RETURNING", doc.meta.databet_id);
       return [doc.meta.databet_id, doc.link()];
     }
   },
@@ -246,7 +246,11 @@ Meteor.methods({
           }
           console.log("Updating collection ", collection_name);
           collection = collection_dictionary[collection_name];
-          collection.import_from_JSON(data[j][1], update_existing);
+          try {
+            collection.import_from_JSON(data[j][1], update_existing);
+          } catch (e) {
+            console.log("IM IMPORT FROM JASON GOT EXCEPTION", e.toString());
+          }
         }
       }
     }

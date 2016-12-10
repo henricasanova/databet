@@ -81,7 +81,7 @@ export class UploadedFilesCollection {
 
   find_document(doc_id) {
     var selector = {"meta.databet_id": doc_id};
-    return this.find(selector);
+    return this.findOne(selector);
   }
 
   find(selector) {
@@ -119,8 +119,6 @@ export class UploadedFilesCollection {
     string += " ]";
 
     return string;
-
-    // return "[ TODO ]";
   }
 
   check_JSON_against_schema(doclist, schema) {
@@ -169,6 +167,7 @@ export class UploadedFilesCollection {
             super.remove({"meta.databet_id": doc_databet_id});
           }
           console.log("Adding document with databet_id", doc_databet_id, "into UploadedFiles");
+
           this.MeteorFiles.addFile(doc_path,
             {
               fileName: doc_name,
@@ -176,9 +175,16 @@ export class UploadedFilesCollection {
               meta: {databet_id: doc_databet_id}
             },
             function(error, fileRef) {
-              // console.log("===>", fileRef);
+              if (error == null) {
+                console.log("Successfully re-linked an UploadedFiles doc to  FS file '", doc_name, "'");
+              } else {
+                console.log("Couldn't re-linked an UploadedFiles doc to FS file '",doc_name,"': not found");
+                // TODO: Figure out a way to send this back to the client - seems impossible :(
+                throw new Meteor.Error("RE-LINKING FAILED!!");
+              }
             }
           );
+
         }
       }
     }

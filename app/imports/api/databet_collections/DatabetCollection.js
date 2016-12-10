@@ -34,8 +34,15 @@ export class DatabetCollection extends Mongo.Collection {
   }
 
   find_document(doc_id) {
-    var doc = super.findOne({_id: doc_id});
-    return doc;
+    return super.findOne({_id: doc_id});
+  }
+
+  find(selector) {
+    return super.find(selector);
+  }
+
+  findOne(selector) {
+    return super.findOne(selector);
   }
 
   get_selected_doc_ids(selector) {
