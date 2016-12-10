@@ -72,7 +72,6 @@ Template.MissingFileRow.onRendered(function () {
 });
 
 
-//noinspection JSUnusedLocalSymbols
 Template.MissingFileRow.events({
 
   "click .manage_delete_item": function (e) {

@@ -30,18 +30,18 @@ export var semesterid_to_semesterstring = function (id) {
   return "unknownsemester";
 };
 
-export var semesterstring_to_semesterid = function (string) {
-
-  var tokens = string.split(" ");
-  var session = tokens[0];
-  var year = Number(tokens[1]);
-
-  var semester = Semesters.findOne({"session": session, "year": year});
-  if (semester)
-    return semester._id;
-  else
-    return null;
-};
+// export var semesterstring_to_semesterid = function (string) {
+//
+//   var tokens = string.split(" ");
+//   var session = tokens[0];
+//   var year = Number(tokens[1]);
+//
+//   var semester = Semesters.findOne({"session": session, "year": year});
+//   if (semester)
+//     return semester._id;
+//   else
+//     return null;
+// };
 
 
 // Global helpers
