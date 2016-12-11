@@ -1,0 +1,13 @@
+<template name="CoverageHeatMap">
+
+    {{#if canShowHeatMap}}
+
+    <div id="chart">{{createHeatMap}}</div>
+
+    {{else}}
+
+    Cannot display heatmap due to lack of data
+
+    {{/if}}
+
+</template>

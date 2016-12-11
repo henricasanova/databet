@@ -25,7 +25,10 @@ export var set_current_semester = function (id) {
 
 export var semesterid_to_semesterstring = function (id) {
   var semester = Semesters.findOne({_id: id});
+  return semesterdoc_to_semesterstring(semester);
+};
 
+export var semesterdoc_to_semesterstring = function (semester) {
   if (semester) {
     return semester.session + " " + semester.year;
   }

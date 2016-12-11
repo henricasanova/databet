@@ -2,14 +2,27 @@
 
   <br>
 
+  {{#if atLeastOneCurriculum}}
+
   <div class="ui container center">
 
+    {{> CurriculumSelect context=heatmap_context }}
 
+    <br>
 
-   TBD
-
+    <div id="chart" class="ui container fluid">
+      {{> CoverageHeatMap context=heatmap_context }}
+    </div>
 
 
   </div>
+
+  {{else}}
+
+  <div class="ui container center padded">
+  No Curricula in database
+  </div>
+
+  {{/if}}
 
 </template>
