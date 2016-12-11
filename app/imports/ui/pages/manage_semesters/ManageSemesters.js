@@ -9,7 +9,11 @@ import { semesterid_to_semesterstring } from '../../../ui/global_helpers/semeste
 Template.ManageSemesters.helpers({
 
   listOfSemesters: function() {
-    return Semesters.find({}, {sort: {order: -1}});
+    var x= Semesters.find({}, {sort: {order: 1}}).fetch();
+    for (var i=0; i < x.length; i++) {
+      console.log("====> ", x[i].order);
+    }
+    return Semesters.find({}, {sort: {order: 1}});
   },
 
   atLeastOneSemester: function() {

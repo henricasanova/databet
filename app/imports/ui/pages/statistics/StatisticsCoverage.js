@@ -1,4 +1,5 @@
 import { Curricula } from '../../../api/databet_collections/Curricula';
+import { StudentOutcomes } from '../../../api/databet_collections/StudentOutcomes';
 
 Template.StatisticsCoverage.onCreated(function () {
   this.heatmap_context = new ReactiveVar();
@@ -18,6 +19,14 @@ Template.StatisticsCoverage.helpers({
 
   heatmap_context: function () {
     return Template.instance().heatmap_context;
+  },
+
+  so_list: function() {
+    return StudentOutcomes.find({curriculum: Template.instance().heatmap_context.get()}).fetch();
+  },
+
+  so_description: function() {
+    return "<b>SO#" + (this.order+1) + ":</b> " + this.description + "<br>";
   },
 
 });

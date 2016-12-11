@@ -10,8 +10,19 @@
 
     <br>
 
-    <div id="chart" class="ui container fluid">
+    <div id="chart" class="ui container">
       {{> CoverageHeatMap context=heatmap_context }}
+    </div>
+
+    <br>
+
+    <div id="so_list">
+      <div class="ui bulleted list">
+
+      {{#each so_list}}
+        <div class="item">{{{so_description}}}</div>
+      {{/each}}
+        </div>
     </div>
 
 

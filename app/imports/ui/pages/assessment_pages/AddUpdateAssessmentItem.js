@@ -182,6 +182,7 @@ Template.AddUpdateAssessmentItem.helpers({
   "list_of_curriculum_mappings": function () {
 
     var offered_course = Template.instance().offered_course;
+    console.log("LIST OF CURR MAPING: ", CurriculumMappings.find({"course": offered_course.course}).fetch() );
     return CurriculumMappings.find({"course": offered_course.course}).fetch();
   },
 
