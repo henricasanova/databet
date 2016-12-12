@@ -108,4 +108,16 @@
 
   </div>
 
+  <div class="ui container raised segment">
+
+    <h3 class="ui fluid">Insert "Bogus" Documents for Testing (no uploaded files)</h3>
+    <form class="ui form">
+      <button class="ui button blue" id="button_insert_bogus"><i class="ui icon upload"></i>Bogus DB
+      </button>
+    </form>
+    {{#if bogus_inserted}}
+    <h4>Bogus documents inserted!!!</h4>
+    {{/if}}
+  </div>
+
 </template>

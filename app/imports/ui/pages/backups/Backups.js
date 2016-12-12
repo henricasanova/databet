@@ -1,22 +1,11 @@
 import {collection_dictionary} from '../../../startup/both/collection_dictionary.js';
 import {Meteor} from 'meteor/meteor';
 import {UploadedFiles} from '../../../api/databet_collections/UploadedFiles';
+import {insert_bogus_database} from '../../global_helpers/bogus_database';
 
 Template.Backups.onCreated(function () {
   this.reactive_dict = new ReactiveDict();
 
-  // this.zip_file_requested = new ReactiveVar();
-  // this.download_button_clicked = new ReactiveVar();
-  // this.waiting_for_download = new ReactiveVar();
-  // this.waiting_for_upload = new ReactiveVar();
-  // this.upload_successful = new ReactiveVar();
-  // this.zip_file_id = new ReactiveVar();
-  // this.zip_file_url = new ReactiveVar();
-  // this.download_error = new ReactiveVar();
-  // this.is_json_parse_error = new ReactiveVar();
-  // this.json_parse_error = new ReactiveVar();
-  // this.upload_error = new ReactiveVar();
-  // this.server_error = new ReactiveVar();
 
   Template.instance().reactive_dict.set("zip_file_requested", false);
   Template.instance().reactive_dict.set("download_button_clicked", true);
@@ -30,19 +19,8 @@ Template.Backups.onCreated(function () {
   Template.instance().reactive_dict.set("json_parse_error", "");
   Template.instance().reactive_dict.set("upload_error", false);
   Template.instance().reactive_dict.set("server_error", "");
+  Template.instance().reactive_dict.set("bogus_inserted", false);
 
-  // Template.instance().zip_file_requested.set(false);
-  // Template.instance().download_button_clicked.set(true);
-  // Template.instance().waiting_for_download.set(true);
-  // Template.instance().waiting_for_upload.set(false);
-  // Template.instance().upload_successful.set(false);
-  // Template.instance().zip_file_id.set(null);
-  // Template.instance().zip_file_url.set(null);
-  // Template.instance().download_error.set(false);
-  // Template.instance().is_json_parse_error.set(false);
-  // Template.instance().json_parse_error.set("");
-  // Template.instance().upload_error.set(false);
-  // Template.instance().server_error.set("");
 
 });
 
@@ -54,6 +32,10 @@ Template.Backups.onRendered(function () {
 
 
 Template.Backups.helpers({
+
+  "bogus_inserted": function () {
+    return Template.instance().reactive_dict.get("bogus_inserted");
+  },
 
   "zip_file_requested": function () {
     return Template.instance().reactive_dict.get("zip_file_requested");
@@ -222,5 +204,12 @@ Template.Backups.events({
         }
       });
     return false;
+  },
+
+  "click #button_insert_bogus": function (e) {
+    insert_bogus_database();
+    Template.instance().reactive_dict.set("bogus_inserted", true);
+    return false;
   }
-});
+
+  });

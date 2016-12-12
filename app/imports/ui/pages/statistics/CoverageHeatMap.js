@@ -24,29 +24,13 @@ Template.CoverageHeatMap.onRendered(function () {
 
 Template.CoverageHeatMap.helpers({
 
-
-
   canShowHeatMap: function() {
     var so_list = get_so_list(Template.currentData().context.get());
     var semester_list = get_semester_list(Template.currentData().context.get());
-    if ((so_list.length < 1) || (semester_list.length <1)) {
-      return false;
-    }
-    return true;
+    return ((so_list.length > 0) && (semester_list.length >0));
   },
 
   createHeatMap: function () {
-    // Gather data:
-    var allTasks = 80,
-      incompleteTask = 20,
-      tasksData = [{
-        y: incompleteTask,
-        name: "Incomplete"
-      }, {
-        y: allTasks - incompleteTask,
-        name: Template.currentData().context.get(),
-      }];
-
     // Get the lists
     var so_list = get_so_list(Template.currentData().context.get());
     var semester_list = get_semester_list(Template.currentData().context.get());
@@ -65,7 +49,7 @@ Template.CoverageHeatMap.helpers({
     }
 
     for (var i=0; i < so_list.length; i++) {
-      coverage_data.push([semester_list.length-1, i, total_counts[i]]);
+      coverage_data.push([semester_list.length-1, i, total_counts[i] / 100]);
     }
 
     // console.log("so_list ===>", so_list.toString());
@@ -148,15 +132,13 @@ Template.CoverageHeatMap.helpers({
 
 function get_so_list(curriculum_id) {
   var so_list = StudentOutcomes.find({curriculum: curriculum_id}).fetch();
-  var so_description_list = _.map(so_list, function(e) {return "SO#"+(e.order+1);});
-  return so_description_list;
+  return _.map(so_list, function(e) {return "SO#"+(e.order+1);});
 }
 
 
 function get_semester_list(curriculum_id) {
   var semester_list = Semesters.find({curriculum: curriculum_id}).fetch();
-  var semester_description_list = _.map(semester_list, function(e) {return semesterdoc_to_semesterstring(e)})
-  return semester_description_list;
+  return _.map(semester_list, function(e) {return semesterdoc_to_semesterstring(e)})
 }
 
 function get_coverage_data(curriculum_id) {

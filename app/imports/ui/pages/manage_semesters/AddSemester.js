@@ -85,6 +85,7 @@ Template.AddSemester.events({
       order += 3;
     }
 
+
     var semester = {
       "year": Number(year),
       "session": session,
