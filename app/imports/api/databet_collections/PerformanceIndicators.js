@@ -7,11 +7,14 @@ class PerformanceIndicatorsCollection extends DatabetCollection {
 
   remove_document(doc_id, callback) {
 
+    console.log("=====> ", doc_id);
+    console.log("=====> ", this.findOne({"_id": doc_id}));
+    var outcome_id = this.findOne({"_id": doc_id}).student_outcome;
+
     // Removing referencing CurriculumMappings
     var referencing_ids = CurriculumMappings.get_selected_doc_ids({performance_indicator: doc_id});
     _.each(referencing_ids, function(e) { CurriculumMappings.remove_document(e); });
 
-    var outcome_id = this.findOne({"_id": doc_id}).student_outcome;
 
     super.remove_document(doc_id, callback);
 

@@ -10,13 +10,13 @@ import {AssessmentItems} from "../../api/databet_collections/AssessmentItems";
 
 var curriculum_id = "BogusCurriculum";
 var curriculum_description = "Bogus curriculum for testing purposes";
-var num_courses = 12;
-var max_num_courses_per_pi = 8;
-var num_sos = 8;
-var num_semesters = 50;
+var num_courses = 8;
+var max_num_courses_per_pi = 4;
+var num_sos = 6;
+var num_semesters = 15;
 var min_num_offered_courses_per_semester = Math.trunc(num_courses/4);
 var max_num_offered_courses_per_semester = num_courses;
-var num_assessment_items_per_semesters = 40;
+var num_assessment_items_per_semesters = 15;
 
 export function insert_bogus_database() {
 
@@ -47,7 +47,7 @@ function create_bogus_curriculum() {
 
 function create_bogus_courses() {
   for (var i = 0; i < num_courses; i++) {
-    var course_id = "BogusCourse_" + i;
+    var course_id = "BogusCourse" + i;
 
     var doc = {
       _id: course_id,
@@ -61,7 +61,7 @@ function create_bogus_courses() {
 
 function create_bogus_sos_and_pis() {
   for (var i = 0; i < num_sos; i++) {
-    var so_id = "BogusStudentOutcome_" + i;
+    var so_id = "BogusStudentOutcome" + i;
 
     var doc = {
       _id: so_id,
@@ -78,7 +78,7 @@ function create_bogus_sos_and_pis() {
 function create_bogus_pis(so_id) {
   var num_pis = Math.trunc(Random.fraction() * 4) + 1;
   for (var i = 0; i < num_pis; i++) {
-    var pi_id = "BogusPerformanceIndicator_" + so_id + "_" + i;
+    var pi_id = "BogusPerformanceIndicator" + so_id + "" + i;
 
     var doc = {
       _id: pi_id,
@@ -107,7 +107,7 @@ function create_bogus_curriculum_map() {
           level = "proficient";
         }
         var doc = {
-          _id: "BogusCurriculumMapping_" + count,
+          _id: "BogusCurriculumMapping" + count,
           curriculum: curriculum_id,
           course: course._id,
           performance_indicator: Random.choice(pis)._id,
@@ -138,7 +138,7 @@ function create_bogus_semesters() {
     }
 
     var doc = {
-      _id: "BogusSemester_"+count,
+      _id: "BogusSemester"+count,
       session: sessions[session],
       year: year,
       order: order,
@@ -164,7 +164,7 @@ function create_bogus_offered_courses() {
     for (var j=0;  j < num_offered_courses; j++) {
       var course = Random.choice(list_of_courses);
       var doc = {
-        _id: "BogusOfferedCourse_" + count,
+        _id: "BogusOfferedCourse" + count,
         course: course._id,
         semester: list_of_semesters[i]._id,
         instructor: Meteor.userId(),
@@ -187,7 +187,7 @@ function create_bogus_assessment_items() {
       var offered_course = Random.choice(list_of_offered_courses);
       var curriculum_mapping = Random.choice(CurriculumMappings.find({"curriculum": curriculum_id}).fetch());
       var doc = {
-        _id: "BogusAssessmentItem_" + count,
+        _id: "BogusAssessmentItem" + count,
         offered_course: offered_course._id,
         curriculum_mapping: curriculum_mapping._id,
         date_last_modified: new Date(),
