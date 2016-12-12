@@ -6,6 +6,22 @@ import { _ } from 'meteor/underscore';
 import { get_current_user } from '../../global_helpers/users_and_usernames';
 import { Meteor } from 'meteor/meteor';
 
+Template.TodoList.onCreated(function () {
+  // Use this.subscribe inside onCreated callback
+  this.subscribe("Meteor.users");
+  this.subscribe("Semesters");
+  this.subscribe("Curricula");
+  this.subscribe("StudentOutcomes");
+  this.subscribe("PerformanceIndicators");
+  this.subscribe("Courses");
+  this.subscribe("CurriculumMappings");
+  this.subscribe("OfferedCourses");
+  this.subscribe("AssessmentItems");
+  // this.subscribe("UploadedFiles");
+
+});
+
+
 Template.TodoList.helpers({
 
   "listOfOfferedCourses": function () {

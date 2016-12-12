@@ -4,6 +4,8 @@
 
   <div class="ui container center">
 
+    {{#if Template.subscriptionsReady}}
+
 
     {{> DanglingRefs}}
 
@@ -12,6 +14,12 @@
     {{> MissingFiles}}
 
     {{> UnreachableFiles}}
+
+    {{else}}
+
+    {{> Loading}}
+
+    {{/if}}
 
   </div>
 

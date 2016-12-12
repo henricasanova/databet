@@ -80,7 +80,6 @@ Template.curriculumRow.helpers({
     var num_offered_courses = 0;
     for (var i = 0; i < courses.length; i++) {
       num_offered_courses += OfferedCourses.find({"course": courses[i]._id}).count();
-
     }
     return num_offered_courses;
   },
@@ -89,7 +88,7 @@ Template.curriculumRow.helpers({
     var courses = Courses.find({"curriculum": this._id}).fetch();
     var num_assessment_items = 0;
     for (var i = 0; i < courses.length; i++) {
-      var offered_courses = OfferedCourses.find({"course": courses[i]._id}).count();
+      var offered_courses = OfferedCourses.find({"course": courses[i]._id}).fetch();
       for (var j = 0; j < offered_courses.length; j++) {
         num_assessment_items += AssessmentItems.find({"offered_course": offered_courses[j]._id}).count();
       }

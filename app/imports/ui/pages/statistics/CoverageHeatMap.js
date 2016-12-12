@@ -49,7 +49,8 @@ Template.CoverageHeatMap.helpers({
     }
 
     for (var i=0; i < so_list.length; i++) {
-      coverage_data.push([semester_list.length-1, i, total_counts[i] / 100]);
+      coverage_data.push([semester_list.length-1, i, total_counts[i].toString()]);
+      // coverage_data.push([semester_list.length-1, i, "string"]);
     }
 
     // console.log("so_list ===>", so_list.toString());

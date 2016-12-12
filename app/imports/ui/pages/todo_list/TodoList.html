@@ -12,6 +12,10 @@
     <hr>
     {{/if}}
     <h2 class="ui header aligned center">Your todo list</h2>
+
+
+    {{#if Template.subscriptionsReady}}
+
     {{#if atLeastOneOfferedCourse}}
     <table class="ui table">
       <thead>
@@ -33,6 +37,15 @@
       <!--But you can look at  <a href="{{pathFor 'InstructorViewArchived'}}"> previously entered assessment data</a> to revisit it.-->
     </h3>
     {{/if}}
+
+    {{else}}
+
+    {{> Loading }}
+
+    {{/if}}
+
+
+
 
   </div>
 
