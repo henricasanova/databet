@@ -14,7 +14,7 @@ export class DatabetCollection extends Mongo.Collection {
   }
 
   update_document(doc_id, modifier, callback) {
-    console.log("Updating in ", this._name);
+    console.log("Updating ", doc_id," in ", this._name);
 
     if (Meteor.isClient) {
       Meteor.call("update_document_in_collection", this._name, doc_id, modifier, callback);
@@ -24,7 +24,7 @@ export class DatabetCollection extends Mongo.Collection {
   }
 
   remove_document(doc_id, callback) {
-    console.log("Removing in ", this._name);
+    console.log("Removing ", doc_id," in ", this._name);
 
     if (Meteor.isClient) {
       Meteor.call("remove_document_from_collection", this._name, doc_id, callback);

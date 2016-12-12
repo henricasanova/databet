@@ -10,9 +10,9 @@ Template.ManageSemesters.helpers({
 
   listOfSemesters: function() {
     var x= Semesters.find({}, {sort: {order: 1}}).fetch();
-    for (var i=0; i < x.length; i++) {
-      console.log("====> ", x[i].order);
-    }
+    // for (var i=0; i < x.length; i++) {
+    //   console.log("====> ", x[i].order);
+    // }
     return Semesters.find({}, {sort: {order: 1}});
   },
 
