@@ -295,7 +295,6 @@ function collections_2_string() {
   return string;
 }
 
-// Fix dates in documents
 function fix_dates(collection_name, doc) {
   try {
     for (var attribute in doc) {

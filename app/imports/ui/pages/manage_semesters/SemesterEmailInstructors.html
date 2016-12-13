@@ -21,8 +21,7 @@
           <b>Body:</b><textarea rows=15 id="email_body">
 Greetings,
 
-you are teaching or have taught one or more courses in {{semester_string}}. Please log in to DataBET at {{get_root_url}} and enter your assessment data.
-
+you  have taught one or more courses required for our BS degree in Fall 2016. Please log in to DataBET at http://databet.ics.hawaii.edu/databet/ and enter your assessment data. It would be great if this could be entered before the end of the year.  Recall that once you log in to DataBET you can watch the tutorial video and consult the FAQs. And you can always send e-mail to Henri (henric@hawaii.edu) with whatever question/feedback you may have regarding this process.
 Thanks!
 DataBET
 
@@ -33,7 +32,11 @@ PS: Do not reply to this e-mail.
     </form>
       <br>
 
+      {{#if email_has_been_sent}}
+      <button class="ui button blue disabled"><i class="ui icon announcement"></i>Send e-mail</button>
+      {{else}}
       <button class="ui button blue" id="button_send_email"><i class="ui icon announcement"></i>Send e-mail</button>
+      {{/if}}
 
   </div>
 

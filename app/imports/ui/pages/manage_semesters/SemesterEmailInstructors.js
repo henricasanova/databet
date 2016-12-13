@@ -3,8 +3,18 @@ import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses.
 import { Meteor } from 'meteor/meteor';
 import { semesterid_to_semesterstring } from '../../../ui/global_helpers/semesters';
 
+Template.SemesterEmailInstructors.onCreated(function () {
+  this.email_has_been_sent = new ReactiveVar();
+
+  Template.instance().email_has_been_sent.set(false);
+});
+
 
 Template.SemesterEmailInstructors.helpers({
+
+  "email_has_been_sent": function() {
+    return Template.instance().email_has_been_sent.get();
+  },
 
   "default_cc_list": function() {
     return "Henri Casanova <henric@hawaii.edu>";
@@ -43,6 +53,8 @@ Template.SemesterEmailInstructors.events({
         text: body
       });
     }
+
+    Template.instance().email_has_been_sent.set(true);
   }
 
 });

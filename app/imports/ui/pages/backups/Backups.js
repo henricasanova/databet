@@ -29,7 +29,6 @@ Template.Backups.onRendered(function () {
 
 });
 
-
 Template.Backups.helpers({
 
   "bogus_inserted": function () {
@@ -71,7 +70,7 @@ Template.Backups.helpers({
   },
 
 
-"is_json_parse_error": function () {
+  "is_json_parse_error": function () {
     return Template.instance().reactive_dict.get("is_json_parse_error");
   },
 
@@ -225,4 +224,4 @@ Template.Backups.events({
     return false;
   }
 
-  });
+});

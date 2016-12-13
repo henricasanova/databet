@@ -152,5 +152,4 @@ function get_dangling_refs_in_collection(source_collection, reference_specs) {
     }
   }
   return dangling_refs;
-
 }

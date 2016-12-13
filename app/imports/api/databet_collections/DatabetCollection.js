@@ -52,21 +52,6 @@ export class DatabetCollection extends Mongo.Collection {
 
     return generic_docs_to_JSON(super.find({}));
 
-    // var cursor = super.find();
-    // if (cursor.count() == 0) {
-    //   return "[ ]";
-    // }
-    // var string = "[ ";
-    //
-    // var documents = cursor.fetch();
-    // for (var i = 0; i < documents.length; i++) {
-    //   string += JSON.stringify(documents[i]);
-    //   string += ",";
-    // }
-    // string = string.slice(0, -1); // Remove last comma
-    // string += " ]";
-    //
-    // return string;
   }
 
   check_JSON_against_schema(doclist, schema) {
@@ -115,23 +100,7 @@ export class DatabetCollection extends Mongo.Collection {
     if (Meteor.isServer) {
 
       generic_import_docs_from_JSON(this, doclist, update_existing);
-      // // var k;
-      // //
-      // // for (k = 0; k < doclist.length; k++) {
-      // //   var doc = doclist[k];
-      // //   var docId = doc._id;
-      // //
-      // //   if ((!docId) || (super.find({_id: docId}).count() == 0)) {
-      // //     console.log("    Inserting a new document in ", this._name);
-      // //     super.insert(doc);
-      // //   } else if (update_existing) {
-      // //     console.log("    Replacing an existing document in ", this._name);
-      // //     super.remove({_id: docId});
-      // //     super.insert(doc);
-      // //   } else {
-      // //     // do nothing
-      // //   }
-      // }
+
     }
   }
 }
