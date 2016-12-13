@@ -21,7 +21,6 @@ Template.Backups.onCreated(function () {
   Template.instance().reactive_dict.set("server_error", "");
   Template.instance().reactive_dict.set("bogus_inserted", false);
 
-
 });
 
 Template.Backups.onRendered(function () {
@@ -63,7 +62,16 @@ Template.Backups.helpers({
     return (this == "Meteor.users" ? "" : "checked");
   },
 
-  "is_json_parse_error": function () {
+  "checkbox_id": function () {
+    if (this == "Meteor.users") {
+      return "Meteorusers";
+    } else {
+      return this;
+    }
+  },
+
+
+"is_json_parse_error": function () {
     return Template.instance().reactive_dict.get("is_json_parse_error");
   },
 
@@ -138,7 +146,12 @@ Template.Backups.events({
 
     for (var p in collection_dictionary) {
       if (collection_dictionary.hasOwnProperty(p)) {
-        if ($('#' + p).is(":checked")) {
+        var checkbox_id = p;
+        if (p == "Meteor.users") {
+          checkbox_id = "Meteorusers";
+        }
+        console.log(p, ": ",  $('#' + checkbox_id).is(":checked"));
+        if ($('#' + checkbox_id).is(":checked")) {
           list_of_collections_to_update.push(p);
         }
       }

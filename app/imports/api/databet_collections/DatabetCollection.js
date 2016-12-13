@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import { generic_docs_to_JSON } from '../../ui/global_helpers/collection_to_json';
+import { generic_import_docs_from_JSON } from '../../ui/global_helpers/collection_to_json';
 
 
 export class DatabetCollection extends Mongo.Collection {
@@ -112,23 +113,25 @@ export class DatabetCollection extends Mongo.Collection {
   import_from_JSON(doclist, update_existing) {
 
     if (Meteor.isServer) {
-      var k;
 
-      for (k = 0; k < doclist.length; k++) {
-        var doc = doclist[k];
-        var docId = doc._id;
-
-        if ((!docId) || (super.find({_id: docId}).count() == 0)) {
-          console.log("    Inserting a new document in ", this._name);
-          super.insert(doc);
-        } else if (update_existing) {
-          console.log("    Replacing an existing document in ", this._name);
-          super.remove({_id: docId});
-          super.insert(doc);
-        } else {
-          // do nothing
-        }
-      }
+      generic_import_docs_from_JSON(this, doclist, update_existing);
+      // // var k;
+      // //
+      // // for (k = 0; k < doclist.length; k++) {
+      // //   var doc = doclist[k];
+      // //   var docId = doc._id;
+      // //
+      // //   if ((!docId) || (super.find({_id: docId}).count() == 0)) {
+      // //     console.log("    Inserting a new document in ", this._name);
+      // //     super.insert(doc);
+      // //   } else if (update_existing) {
+      // //     console.log("    Replacing an existing document in ", this._name);
+      // //     super.remove({_id: docId});
+      // //     super.insert(doc);
+      // //   } else {
+      // //     // do nothing
+      // //   }
+      // }
     }
   }
 }

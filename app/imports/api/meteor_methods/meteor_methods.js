@@ -13,6 +13,7 @@ import { fs_move_file_path } from '../util/file_system';
 import { fs_get_file_list } from '../util/file_system';
 import { fs_read_file_sync } from '../util/file_system';
 import { generic_docs_to_JSON } from '../../ui/global_helpers/collection_to_json';
+import { generic_import_docs_from_JSON } from '../../ui/global_helpers/collection_to_json';
 import { Random } from 'meteor/random';
 
 Meteor.methods({
@@ -229,11 +230,13 @@ Meteor.methods({
           collection_name = data[j][0];
           collection = collection_dictionary[collection_name];
 
-          try {
-            var schema = collection.simpleSchema();
-            collection.check_JSON_against_schema(data[j][1], schema);
-          } catch (e) {
-            error_message += e.toString();
+          if (collection_name != "Meteor.users") { // Do something for Meteor.users??
+            try {
+              var schema = collection.simpleSchema();
+              collection.check_JSON_against_schema(data[j][1], schema);
+            } catch (e) {
+              error_message += e.toString();
+            }
           }
         }
       }
@@ -254,9 +257,13 @@ Meteor.methods({
           console.log("Updating collection ", collection_name);
           collection = collection_dictionary[collection_name];
           try {
-            collection.import_from_JSON(data[j][1], update_existing);
+            if (collection_name == "Meteor.users") {
+              generic_import_docs_from_JSON(Meteor.users, data[j][1], update_existing);
+            } else {
+              collection.import_from_JSON(data[j][1], update_existing);
+            }
           } catch (e) {
-            console.log("IM IMPORT FROM JASON GOT EXCEPTION", e.toString());
+            console.log("IN IMPORT FROM JASON GOT EXCEPTION", e.toString());
           }
         }
       }
