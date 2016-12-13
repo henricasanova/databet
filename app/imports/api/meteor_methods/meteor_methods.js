@@ -12,6 +12,7 @@ import { meteor_files_config } from '../databet_collections/UploadedFiles';
 import { fs_move_file_path } from '../util/file_system';
 import { fs_get_file_list } from '../util/file_system';
 import { fs_read_file_sync } from '../util/file_system';
+import { generic_docs_to_JSON } from '../../ui/global_helpers/collection_to_json';
 import { Random } from 'meteor/random';
 
 Meteor.methods({
@@ -37,11 +38,15 @@ Meteor.methods({
   },
 
   remove_document_from_collection: function(collection_name, doc_id) {
+    console.log("REMOVE_DOC_FROM_COLL: ", collection_name);
     var collection = collection_dictionary[collection_name];
     if (collection == null) {
       throw new Meteor.Error("Unknown Collection "+collection_name);
     }
     collection.remove({"_id": doc_id});
+    if (Meteor.isServer) {
+      console.log("RIGHT AFTER CALL TO REMOVE: ", collection.findOne({_id: doc_id}));
+    }
   },
 
   get_list_of_uploaded_files: function () {
@@ -269,8 +274,13 @@ function collections_2_string() {
 
   for (var collection_name in collection_dictionary) {
     if (collection_dictionary.hasOwnProperty(collection_name)) {
-      string += ' [ "' + collection_name + '" , ' +
-        collection_dictionary[collection_name].export_to_JSON() + " ],";
+      var json_string;
+      if (collection_name == "Meteor.users") {
+        json_string = generic_docs_to_JSON(Meteor.users.find({}));
+      } else {
+        json_string = collection_dictionary[collection_name].export_to_JSON();
+      }
+      string += ' [ "' + collection_name + '" , ' + json_string + " ],";
     }
   }
   string = string.slice(0, -1); // Remove last comma

@@ -85,7 +85,6 @@ Template.AddUpdateUser.events({
       }
     }
 
-
     if (!allGood)
       return false;
 
@@ -108,7 +107,7 @@ Template.AddUpdateUser.events({
       };
 
       console.log("CREATING USER: ", user);
-      Meteor.call("insert_into_collection", "Meteor.users", user);
+      Meteor.call("insert_document_into_collection", "Meteor.users", user);
 
 
       // Send e-mail notification
@@ -126,7 +125,7 @@ Template.AddUpdateUser.events({
       console.log("UPDATING A USER");
 
       var userId = Template.currentData().userId;
-      Meteor.call("update_in_collection", "Meteor.users", userId,
+      Meteor.call("update_document_in_collection", "Meteor.users", userId,
         {
           "name": name,
           "is_admin": isAdmin,

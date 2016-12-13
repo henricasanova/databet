@@ -11,7 +11,6 @@ import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
 import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
 
 
-// Publish the Meteor.user collection
 Meteor.publish("Meteor.users", function() {
   if (Roles.userIsInRole(this.userId, 'admin')) {
     return Meteor.users.find({});
@@ -57,7 +56,11 @@ Meteor.publish("CurriculumMappings", function() {
 
 // Publish the AssessmentItems collection
 Meteor.publish("AssessmentItems", function() {
-  return AssessmentItems.find({});
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    return AssessmentItems.find({});
+  } else {
+    return AssessmentItems.find({instructor: this.userId});
+  }
 });
 
 // Publish the UploadedFiles collection

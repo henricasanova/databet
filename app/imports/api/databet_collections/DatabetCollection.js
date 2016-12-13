@@ -1,35 +1,30 @@
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
+import { generic_docs_to_JSON } from '../../ui/global_helpers/collection_to_json';
 
 
 export class DatabetCollection extends Mongo.Collection {
 
   insert_document(doc, callback) {
-    console.log("Inserting in ", this._name);
     if (Meteor.isClient) {
+      console.log("Inserting in ", this._name);
       Meteor.call("insert_document_into_collection", this._name, doc, callback);
-    } else {
-      super.insert(doc);
     }
   }
 
   update_document(doc_id, modifier, callback) {
-    console.log("Updating ", doc_id," in ", this._name);
 
     if (Meteor.isClient) {
+      console.log("Updating ", doc_id," in ", this._name);
       Meteor.call("update_document_in_collection", this._name, doc_id, modifier, callback);
-    } else {
-      super.update({"_id": doc_id}, {$set: modifier});
     }
   }
 
   remove_document(doc_id, callback) {
-    console.log("Removing ", doc_id," in ", this._name);
 
     if (Meteor.isClient) {
+      console.log("Removing ", doc_id," in ", this._name);
       Meteor.call("remove_document_from_collection", this._name, doc_id, callback);
-    } else {
-      super.remove({"_id": doc_id});
     }
   }
 
@@ -54,21 +49,23 @@ export class DatabetCollection extends Mongo.Collection {
 
   export_to_JSON() {
 
-    var cursor = super.find();
-    if (cursor.count() == 0) {
-      return "[ ]";
-    }
-    var string = "[ ";
+    return generic_docs_to_JSON(super.find({}));
 
-    var documents = cursor.fetch();
-    for (var i = 0; i < documents.length; i++) {
-      string += JSON.stringify(documents[i]);
-      string += ",";
-    }
-    string = string.slice(0, -1); // Remove last comma
-    string += " ]";
-
-    return string;
+    // var cursor = super.find();
+    // if (cursor.count() == 0) {
+    //   return "[ ]";
+    // }
+    // var string = "[ ";
+    //
+    // var documents = cursor.fetch();
+    // for (var i = 0; i < documents.length; i++) {
+    //   string += JSON.stringify(documents[i]);
+    //   string += ",";
+    // }
+    // string = string.slice(0, -1); // Remove last comma
+    // string += " ]";
+    //
+    // return string;
   }
 
   check_JSON_against_schema(doclist, schema) {

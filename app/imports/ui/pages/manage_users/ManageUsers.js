@@ -63,6 +63,7 @@ Template.userRow.onCreated(function () {
 
   this.edit_user_mode = new ReactiveVar();
 
+
   Template.instance().edit_user_mode.set(false);
 
 });
@@ -81,6 +82,7 @@ Template.userRow.events({
         onApprove: function () {
           $('#modal_' + userId).modal('hide');
           Meteor.call("remove_document_from_collection", "Meteor.users", userId);
+
           return true;
         }
       })

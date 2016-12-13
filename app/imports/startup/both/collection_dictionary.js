@@ -12,7 +12,6 @@ import { Semesters } from '../../api/databet_collections/Semesters';
 import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
 
 import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
-import { MeteorUsers } from '../../api/databet_collections/MeteorUsers';
 
 export var collection_dictionary = {};
 collection_dictionary["AssessmentItems"] = AssessmentItems;
@@ -24,6 +23,6 @@ collection_dictionary["PerformanceIndicators"] = PerformanceIndicators;
 collection_dictionary["Semesters"] = Semesters;
 collection_dictionary["StudentOutcomes"] = StudentOutcomes;
 collection_dictionary["UploadedFiles"] = UploadedFiles;
-collection_dictionary["MeteorUsers"] = MeteorUsers;
+collection_dictionary["Meteor.users"] = Meteor.users;
 
 
