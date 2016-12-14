@@ -6,15 +6,8 @@ import {insert_bogus_database} from '../../global_helpers/bogus_database';
 Template.Backups.onCreated(function () {
   this.reactive_dict = new ReactiveDict();
 
-
-  Template.instance().reactive_dict.set("zip_file_requested", false);
-  Template.instance().reactive_dict.set("download_button_clicked", true);
-  Template.instance().reactive_dict.set("waiting_for_download", true);
   Template.instance().reactive_dict.set("waiting_for_upload", false);
   Template.instance().reactive_dict.set("upload_successful", false);
-  Template.instance().reactive_dict.set("zip_file_id", null);
-  Template.instance().reactive_dict.set("zip_file_url", null);
-  Template.instance().reactive_dict.set("download_error", false);
   Template.instance().reactive_dict.set("is_json_parse_error", false);
   Template.instance().reactive_dict.set("json_parse_error", "");
   Template.instance().reactive_dict.set("upload_error", false);
@@ -33,18 +26,6 @@ Template.Backups.helpers({
 
   "bogus_inserted": function () {
     return Template.instance().reactive_dict.get("bogus_inserted");
-  },
-
-  "zip_file_requested": function () {
-    return Template.instance().reactive_dict.get("zip_file_requested");
-  },
-
-  "waiting_for_server_download": function () {
-    return Template.instance().reactive_dict.get("waiting_for_download");
-  },
-
-  "archiveUrl": function () {
-    return Template.instance().reactive_dict.get("zip_file_url");
   },
 
   "list_of_collections": function () {
@@ -90,10 +71,6 @@ Template.Backups.helpers({
     return Template.instance().reactive_dict.get("waiting_for_upload");
   },
 
-  "download_button_clicked": function () {
-    return Template.instance().reactive_dict.get("download_button_clicked");
-  },
-
   "server_error": function () {
     return Template.instance().reactive_dict.get("server_error");
   },
@@ -102,38 +79,6 @@ Template.Backups.helpers({
 
 
 Template.Backups.events({
-
-  "click #button_download_archive": function (e) {
-
-    Template.instance().reactive_dict.set("download_button_clicked", true);
-    Template.instance().reactive_dict.set("zip_file_requested", true);
-
-    var reactive_dict = Template.instance().reactive_dict;
-    var set_to_true_on_error = "download_error";
-    var set_to_id = "zip_file_id";
-    var set_to_url = "zip_file_url";
-    var set_to_false_when_downloaded = "waiting_for_download";
-    var set_to_error = "server_error";
-
-    Meteor.call("download_zipped_backup",
-      async function (error, result) {
-        if (error) {
-          reactive_dict.set(set_to_true_on_error, true);
-          reactive_dict.set(set_to_error, error.toString());
-        } else {
-          // console.log("RESULT = ", result);
-          reactive_dict.set(set_to_id, result[0]);
-          reactive_dict.set(set_to_url, result[1]);
-          reactive_dict.set(set_to_false_when_downloaded, false);
-        }
-      });
-    return false;
-  },
-
-  "click #delete_archive": function (e) {
-    UploadedFiles.remove_document(Template.instance().reactive_dict.get("zip_file_id"));
-    Template.instance().reactive_dict.set("download_button_clicked", false);
-  },
 
   "click #button_upload_json": function (e) {
 

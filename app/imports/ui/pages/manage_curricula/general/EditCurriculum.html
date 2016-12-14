@@ -91,9 +91,14 @@
 
     <br>
 
+    {{> FileDownload button_text="Download LaTeX version" meteor_method="latex_curriculum" meteor_method_argument=curriculum_id }}
+
+    <div class="ui">
     <a href="{{pathFor 'ManageCurricula'}}" class="ui button grey goback">Go back</a>
+</div>
 
   </div>
+  <br>
 
 </template>
 

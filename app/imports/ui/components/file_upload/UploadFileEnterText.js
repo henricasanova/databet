@@ -22,7 +22,6 @@ Template.UploadFileEnterText.onCreated(function () {
 
   }
 
-  // console.log("CONTEXT: ", Template.currentData().context);
 
   // Set final to initial (since we may not change anything)
   Template.currentData().context.final_state.is_file = Template.currentData().context.initial_method_is_file;

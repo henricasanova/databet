@@ -86,6 +86,10 @@ Template.EditCurriculum.helpers({
     }
   },
 
+  "curriculum_id": function() {
+    return FlowRouter.getParam('_id');
+  },
+
   "is_locked": function () {
     var curriculumId = FlowRouter.getParam('_id');
     return Curricula.findOne({"_id": curriculumId}).locked;

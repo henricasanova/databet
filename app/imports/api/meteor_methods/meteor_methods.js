@@ -86,7 +86,7 @@ Meteor.methods({
     }
   },
 
-  download_zipped_backup: function () {
+  download_zipped_backup: function (unused_argument) {
 
     if (Meteor.server) {
 
@@ -267,6 +267,11 @@ Meteor.methods({
       }
     }
   },
+
+  latex_curriculum: function(curriculum_id) {
+    console.log("SHOULD LATEX ", curriculum_id);
+    return ["Bogus id", "http://bogus" ];
+  }
 
 });
 

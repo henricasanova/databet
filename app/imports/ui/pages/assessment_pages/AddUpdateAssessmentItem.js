@@ -685,7 +685,6 @@ Template.AddUpdateAssessmentItem.events({
       // without seeing annoying (but harmless) exceptions in helpers that should no longer
       // be rendered anyway... Looks like some kind of race condition...
 
-      console.log("MODIFIER=", modifier);
 
       var url_to_return_to = "/assessment_items/" + Template.instance().offered_course._id;
       console.log("URL=", url_to_return_to);

@@ -9,6 +9,7 @@ Template.FileDownload.onCreated(function () {
   Template.instance().reactive_dict.set("downloadable_file_id", null);
   Template.instance().reactive_dict.set("downloadable_file_url", null);
   Template.instance().reactive_dict.set("download_error", false);
+  Template.instance().reactive_dict.set("is_button_enabled", true);
 
 });
 
@@ -32,6 +33,10 @@ Template.FileDownload.helpers({
 
   "download_error": function () {
     return Template.instance().reactive_dict.get("download_error");
+  },
+
+  "is_button_enabled": function () {
+    return Template.instance().reactive_dict.get("is_button_enabled");
   },
 
   "button_text": function () {
@@ -60,14 +65,16 @@ Template.FileDownload.events({
 
     // Initiate the download
     Meteor.call(Template.currentData().meteor_method,
+                Template.currentData().meteor_method_argument,
       async function (error, result) {
         if (error) {
           reactive_dict.set(set_to_true_on_error, true);
           reactive_dict.set(set_to_error, error.toString());
         } else {
-          console.log("RESULT = ", result);
+          // console.log("RESULT = ", result);
           reactive_dict.set(set_to_id, result[0]);
           reactive_dict.set(set_to_url, result[1]);
+          reactive_dict.set("is_button_enabled", false);
           reactive_dict.set(set_to_false_when_downloaded, false);
         }
       });
@@ -77,6 +84,8 @@ Template.FileDownload.events({
   "click #delete_downloadable_file_on_server": function (e) {
     UploadedFiles.remove_document(Template.instance().reactive_dict.get("downloadable_file_id"));
     Template.instance().reactive_dict.set("download_button_clicked", false);
+    Template.instance().reactive_dict.set("is_button_enabled", true);
+
   },
 
 });
