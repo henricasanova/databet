@@ -1,12 +1,12 @@
 import {_} from "meteor/underscore";
-import {Curricula} from "../../api/databet_collections/Curricula";
-import {Courses} from "../../api/databet_collections/Courses";
-import {StudentOutcomes} from "../../api/databet_collections/StudentOutcomes";
-import {PerformanceIndicators} from "../../api/databet_collections/PerformanceIndicators";
-import {CurriculumMappings} from "../../api/databet_collections/CurriculumMappings";
-import {Semesters} from "../../api/databet_collections/Semesters";
-import {OfferedCourses} from "../../api/databet_collections/OfferedCourses";
-import {AssessmentItems} from "../../api/databet_collections/AssessmentItems";
+import {Curricula} from "../databet_collections/Curricula";
+import {Courses} from "../databet_collections/Courses";
+import {StudentOutcomes} from "../databet_collections/StudentOutcomes";
+import {PerformanceIndicators} from "../databet_collections/PerformanceIndicators";
+import {CurriculumMappings} from "../databet_collections/CurriculumMappings";
+import {Semesters} from "../databet_collections/Semesters";
+import {OfferedCourses} from "../databet_collections/OfferedCourses";
+import {AssessmentItems} from "../databet_collections/AssessmentItems";
 
 var curriculum_id = "BogusCurriculum";
 var curriculum_description = "Bogus curriculum for testing purposes";

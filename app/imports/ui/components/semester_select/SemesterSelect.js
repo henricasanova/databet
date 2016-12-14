@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating';
 import {Semesters } from '../../../api/databet_collections/Semesters';
-import {semesterdoc_to_semesterstring} from '../../../ui/global_helpers/semesters';
+import {semesterdoc_to_semesterstring} from '../../../api/global_helpers/semesters';
 
 Template.SemesterSelect.helpers({
 

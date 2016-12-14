@@ -1,8 +1,8 @@
 /* Wrappers around the get/set global helpers */
-import { get_global, set_global } from '../../ui/global_helpers/set_get_globals';
+import { get_global, set_global } from './/set_get_globals';
 import { _ } from 'meteor/underscore';
 import { Meteor } from 'meteor/meteor';
-import { OfferedCourses } from '../../api/databet_collections/OfferedCourses';
+import { OfferedCourses } from '../databet_collections/OfferedCourses';
 
 export var get_current_user = function () {
   //console.log("Meteor.user=", Meteor.users.findOne({_id: get_global("currentUserId")}));

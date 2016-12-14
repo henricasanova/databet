@@ -2,7 +2,7 @@ import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
 import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
 import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
-import { object_to_json_html } from '../../../ui/global_helpers/object_to_json';
+import { object_to_json_html } from '../../../api/global_helpers/object_to_json';
 
 Template.MissingFiles.onCreated(function () {
 

@@ -1,4 +1,4 @@
-import {set_global, get_global} from '../global_helpers/set_get_globals';
+import {set_global, get_global} from '../../api/global_helpers/set_get_globals';
 
 Template.registerHelper('set_global', function (name, value) {
   set_global(name, value);

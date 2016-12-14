@@ -4,7 +4,7 @@ import { Curricula } from '../../../../api/databet_collections/Curricula';
 import { Courses } from '../../../../api/databet_collections/Courses';
 import { OfferedCourses } from '../../../../api/databet_collections/OfferedCourses';
 import { AssessmentItems } from '../../../../api/databet_collections/AssessmentItems';
-import { trim_date } from '../../../../ui/global_helpers/trim_date';
+import { trim_date } from '../../../../api/global_helpers/trim_date';
 
 Template.ManageCurricula.helpers({
 

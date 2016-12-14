@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
-import { generic_docs_to_JSON } from '../../ui/global_helpers/collection_to_json';
-import { generic_import_docs_from_JSON } from '../../ui/global_helpers/collection_to_json';
+import { generic_docs_to_JSON } from '../global_helpers/collection_to_json';
+import { generic_import_docs_from_JSON } from '../global_helpers/collection_to_json';
 
 
 export class DatabetCollection extends Mongo.Collection {

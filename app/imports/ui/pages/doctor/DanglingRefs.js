@@ -1,6 +1,6 @@
 import { collection_dictionary } from '../../../startup/both/collection_dictionary.js';
 import { Meteor } from 'meteor/meteor';
-import { object_to_json_html } from '../../../ui/global_helpers/object_to_json';
+import { object_to_json_html } from '../../../api/global_helpers/object_to_json';
 
 Template.DanglingRefs.helpers({
 

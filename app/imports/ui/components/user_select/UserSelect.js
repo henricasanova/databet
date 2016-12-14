@@ -1,5 +1,5 @@
 import { Template } from 'meteor/templating';
-import { set_current_user, get_current_user } from '../../global_helpers/users_and_usernames';
+import { set_current_user, get_current_user } from '../../../api/global_helpers/users_and_usernames';
 
 Template.UserSelect.helpers({
 

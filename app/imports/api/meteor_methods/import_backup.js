@@ -5,9 +5,10 @@
 import '../../api/databet_collections';
 import { collection_dictionary } from '../../startup/both/collection_dictionary';
 import { Meteor } from 'meteor/meteor';
+import { _ } from 'meteor/underscore';
 import { AssessmentItems } from '../databet_collections/AssessmentItems';
 import { Curricula } from '../databet_collections/Curricula';
-import { generic_import_docs_from_JSON } from '../../ui/global_helpers/collection_to_json';
+import { generic_import_docs_from_JSON } from '../global_helpers/collection_to_json';
 import { Random } from 'meteor/random';
 
 

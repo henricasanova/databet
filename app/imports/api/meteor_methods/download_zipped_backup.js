@@ -5,13 +5,12 @@
 import '../../api/databet_collections';
 import { collection_dictionary } from '../../startup/both/collection_dictionary';
 import { Meteor } from 'meteor/meteor';
-import { UploadedFiles } from '../databet_collections/UploadedFiles';
-import { meteor_files_config } from '../databet_collections/UploadedFiles';
-import { fs_get_file_list } from '../util/file_system';
-import { fs_read_file_sync } from '../util/file_system';
-import { generic_docs_to_JSON } from '../../ui/global_helpers/collection_to_json';
+import { fs_get_file_list } from '../global_helpers/file_system';
+import { fs_read_file_sync } from '../global_helpers/file_system';
+import { generic_docs_to_JSON } from '../global_helpers/collection_to_json';
+import { save_and_publish_zipfile} from '../global_helpers/downloadable_zipfile';
 import { Random } from 'meteor/random';
-
+import { TmpFiles } from '../../api/databet_collections/TmpFiles';
 
 Meteor.methods({
 
@@ -20,7 +19,7 @@ Meteor.methods({
     if (Meteor.server) {
 
       // Get all files
-      var upload_root = meteor_files_config["storagePath"];
+      var upload_root = TmpFiles.get_storage_path();
       var filelist = fs_get_file_list(upload_root);
 
       // Construct archive name
@@ -55,54 +54,11 @@ Meteor.methods({
         "** WARNING ** The uploaded files should be put on the server BEFORE using DataBET to re-import\n " +
         "the JSON array\n");
 
-      var archive_path = upload_root + "/" + archive_name + ".zip";
-      console.log("Saving archive to: " + archive_path);
-      zipfile.saveAs(archive_path);
+      var id_and_url = save_and_publish_zipfile(zipfile, archive_name);
+      return id_and_url;
 
-      var random_key = Random.id();
-
-      UploadedFiles.MeteorFiles.addFile(archive_path,
-        {
-          fileName: archive_name + ".zip",
-          type: 'binary', // not needed
-          isBase64: true, // not needed
-          meta: {databet_id: random_key}
-        },
-        function(error, fileRef) {
-          // console.log("===>", fileRef);
-        }
-      );
-
-      // FS-based version (behaves the same, as far as I can tell)
-      // var fs = Npm.require("fs");
-      // fs.readFile(archive_path,
-      //   function(error, data) {
-      //     UploadedFiles.MeteorFiles.write(data,
-      //       {
-      //         fileName: archive_name + ".zip",
-      //         isBase64: true,
-      //         type: 'binary',
-      //         meta: {databet_id: random_key}
-      //       }, function (error, fileRef) {
-      //         console.log("===>", fileRef);
-      //       });
-      //   }
-      // );
-
-
-      // Look for the record in a BUSY LOOP (ugly, but fuck callbacks)
-      var doc = undefined;
-      while (!doc) {
-        console.log("In short-lived busy loop");
-        doc = UploadedFiles.MeteorFiles.findOne({"meta.databet_id": random_key});
-      }
-
-      console.log("URL=", doc.link());
-      // console.log("RETURNING", doc.meta.databet_id);
-      return [doc.meta.databet_id, doc.link()];
     }
   },
-
 
 });
 

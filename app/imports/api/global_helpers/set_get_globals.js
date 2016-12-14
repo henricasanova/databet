@@ -2,7 +2,7 @@
  * Created by casanova on 12/9/16.
  */
 
-import { Globals } from '../../api/databet_collections/Globals.js';
+import { Globals } from '../databet_collections/Globals.js';
 
 export var set_global = function (name, value) {
   if (Globals.find({name: name}).count() == 0) {

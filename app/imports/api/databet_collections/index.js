@@ -9,3 +9,4 @@ import './PerformanceIndicators.js';
 import './Semesters.js';
 import './StudentOutcomes.js';
 import './UploadedFiles.js';
+import './TmpFiles.js';

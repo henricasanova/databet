@@ -1,6 +1,6 @@
 /* Wrappers around the get/set global helpers */
 
-import {get_current_semester, set_current_semester,get_current_semester_string} from '../global_helpers/semesters';
+import {get_current_semester, set_current_semester,get_current_semester_string} from '../../api/global_helpers/semesters';
 
 
 Template.registerHelper('get_current_semester', function () {

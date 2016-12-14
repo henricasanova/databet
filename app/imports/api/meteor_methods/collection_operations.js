@@ -19,7 +19,6 @@ Meteor.methods({
 
     var id = collection.insert(doc);
     console.log("Inserted new document ", id, " into collection", collection_name);
-
   },
 
   update_document_in_collection: function (collection_name, doc_id, modifier) {

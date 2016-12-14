@@ -2,8 +2,8 @@ import { Template } from 'meteor/templating';
 import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses';
 import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
 import { Meteor } from 'meteor/meteor';
-import { userid_to_username } from '../../../ui/global_helpers/users_and_usernames';
-import { remove_user } from '../../../ui/global_helpers/users_and_usernames';
+import { userid_to_username } from '../../../api/global_helpers/users_and_usernames';
+import { remove_user } from '../../../api/global_helpers/users_and_usernames';
 
 Template.ManageUsers.onCreated(function () {
 
@@ -128,7 +128,7 @@ Template.userRow.helpers({
     if (this.name) {
       return this.name;
     } else {
-      return "-";g
+      return "-";
     }
   },
 

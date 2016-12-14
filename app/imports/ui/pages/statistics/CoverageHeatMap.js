@@ -1,6 +1,6 @@
 import {Meteor} from 'meteor/meteor';
 import {_} from 'meteor/underscore';
-import {semesterdoc_to_semesterstring} from '../../../ui/global_helpers/semesters';
+import {semesterdoc_to_semesterstring} from '../../../api/global_helpers/semesters';
 import {StudentOutcomes} from '../../../api/databet_collections/StudentOutcomes';
 import {Semesters} from '../../../api/databet_collections/Semesters';
 import {AssessmentItems} from '../../../api/databet_collections/AssessmentItems';

@@ -3,7 +3,7 @@
  */
 
 import { get_global, set_global } from './set_get_globals.js';
-import { Semesters } from '../../api/databet_collections/Semesters';
+import { Semesters } from '../databet_collections/Semesters';
 
 export var get_current_semester = function () {
   return get_global("currentSemesterId");

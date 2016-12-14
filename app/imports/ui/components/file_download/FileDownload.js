@@ -1,5 +1,5 @@
 import {Meteor} from 'meteor/meteor';
-import {UploadedFiles} from '../../../api/databet_collections/UploadedFiles';
+import {TmpFiles} from '../../../api/databet_collections/TmpFiles';
 
 Template.FileDownload.onCreated(function () {
   this.reactive_dict = new ReactiveDict();
@@ -82,7 +82,7 @@ Template.FileDownload.events({
   },
 
   "click #delete_downloadable_file_on_server": function (e) {
-    UploadedFiles.remove_document(Template.instance().reactive_dict.get("downloadable_file_id"));
+    TmpFiles.remove_document(Template.instance().reactive_dict.get("downloadable_file_id"));
     Template.instance().reactive_dict.set("download_button_clicked", false);
     Template.instance().reactive_dict.set("is_button_enabled", true);
 

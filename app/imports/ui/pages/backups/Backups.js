@@ -1,7 +1,6 @@
 import {collection_dictionary} from '../../../startup/both/collection_dictionary.js';
 import {Meteor} from 'meteor/meteor';
-import {UploadedFiles} from '../../../api/databet_collections/UploadedFiles';
-import {insert_bogus_database} from '../../global_helpers/bogus_database';
+import {insert_bogus_database} from '../../../api/global_helpers/bogus_database';
 
 Template.Backups.onCreated(function () {
   this.reactive_dict = new ReactiveDict();

@@ -5,40 +5,18 @@
 
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
-import { fs_create_dir } from '../util/file_system';
+import { fs_create_dir } from '../global_helpers/file_system';
 
-export var meteor_files_config = {};
-
-if (Meteor.server) {
-
-  var upload_root = process.env.UPLOAD_DIR;
-  if (upload_root == undefined) {
-    throw new Meteor.Error("UPLOAD_DIR environment variable must be defined");
-  }
-
-  // console.log("Creating Directory " + upload_root + "/assessment_uploads/ ...");
-  fs_create_dir(upload_root + "/assessment_uploads/");
-
-  meteor_files_config["storagePath"] = upload_root + "/assessment_uploads/";
-  console.log("storage path =", meteor_files_config["storagePath"]);
-}
-
-meteor_files_config["debug"] = false;
-meteor_files_config["collectionName"] = 'UploadedFiles';
-meteor_files_config["allowClientCode"] = true;  // to allow file removal
-meteor_files_config["onBeforeUpload"] = function (file) {
-  // Allow upload files under 10MB, and only in png/jpg/jpeg/pdf/txt formats
-  if (file.size <= 1024 * 1024 * 20 && /png|jpg|jpeg|pdf|txt/i.test(file.extension)) {
-    return true;
-  } else {
-    return 'Please upload image, with size equal or less than 20MB';
-  }
-};
 
 export class UploadedFilesCollection {
 
   constructor(config) {
+    this.config = config;
     this.MeteorFiles = new Meteor.Files(config);
+  }
+
+  get_storage_path() {
+    return this.config["storagePath"];
   }
 
   insert_document(fileObj, databet_id, prefix) {
@@ -196,5 +174,34 @@ export class UploadedFilesCollection {
 }
 
 
+var meteor_files_config = {};
+
+if (Meteor.server) {
+
+  var upload_root = process.env.UPLOAD_DIR;
+  if (upload_root == undefined) {
+    throw new Meteor.Error("UPLOAD_DIR environment variable must be defined");
+  }
+
+  meteor_files_config["storagePath"] = upload_root + "/assessment_uploads/";
+  fs_create_dir(meteor_files_config["storagePath"]);
+
+  console.log("storage path =", meteor_files_config["storagePath"]);
+}
+
+meteor_files_config["debug"] = false;
+meteor_files_config["collectionName"] = 'UploadedFiles';
+meteor_files_config["allowClientCode"] = true;  // to allow file removal
+meteor_files_config["onBeforeUpload"] = function (file) {
+
+  // Allow upload files under 10MB, and only in png/jpg/jpeg/pdf/txt formats
+  if (file.size <= 1024 * 1024 * 20 && /png|jpg|jpeg|pdf|txt/i.test(file.extension)) {
+    return true;
+  } else {
+    return 'Please upload image, with size equal or less than 20MB';
+  }
+};
+
 export var UploadedFiles = new UploadedFilesCollection(meteor_files_config);
+
 

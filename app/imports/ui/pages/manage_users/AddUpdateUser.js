@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
-import { create_user } from '../../global_helpers/users_and_usernames';
-import { update_user } from '../../global_helpers/users_and_usernames';
+import { create_user } from '../../../api/global_helpers/users_and_usernames';
+import { update_user } from '../../../api/global_helpers/users_and_usernames';
 
 Template.AddUpdateUser.onRendered(function () {
   $('.ui.radio.checkbox').checkbox();

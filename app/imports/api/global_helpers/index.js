@@ -1,7 +1,9 @@
 import './object_to_json';
 import './set_get_globals';
+import './downloadable_zipfile';
 import './semesters';
 import './trim_date';
 import './users_and_usernames';
 import './bogus_database';
 import './collection_to_json';
+import './latex';
