@@ -8,7 +8,7 @@ export class DatabetCollection extends Mongo.Collection {
 
   insert_document(doc, callback) {
     if (Meteor.isClient) {
-      console.log("Inserting in ", this._name);
+      // console.log("Inserting in ", this._name);
       Meteor.call("insert_document_into_collection", this._name, doc, callback);
     }
   }
@@ -16,7 +16,7 @@ export class DatabetCollection extends Mongo.Collection {
   update_document(doc_id, modifier, callback) {
 
     if (Meteor.isClient) {
-      console.log("Updating ", doc_id," in ", this._name);
+      // console.log("Updating ", doc_id," in ", this._name);
       Meteor.call("update_document_in_collection", this._name, doc_id, modifier, callback);
     }
   }
@@ -24,7 +24,7 @@ export class DatabetCollection extends Mongo.Collection {
   remove_document(doc_id, callback) {
 
     if (Meteor.isClient) {
-      console.log("Removing ", doc_id," in ", this._name);
+      // console.log("Removing ", doc_id," in ", this._name);
       Meteor.call("remove_document_from_collection", this._name, doc_id, callback);
     }
   }

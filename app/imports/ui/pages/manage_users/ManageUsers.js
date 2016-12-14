@@ -139,14 +139,7 @@ Template.userRow.helpers({
   },
 
   num_assessment_items: function () {
-    var offered_courses = OfferedCourses.find({"instructor": this._id}).fetch();
-
-    var num_assessment_items = 0;
-    for (var i = 0; i < offered_courses.length; i++) {
-      num_assessment_items += AssessmentItems.find({"offered_course": offered_courses[i]}).count();
-    }
-
-    return num_assessment_items;
+    return AssessmentItems.find({"instructor": this._id}).count();
   },
 
   not_this_user: function () {
