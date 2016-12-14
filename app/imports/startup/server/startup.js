@@ -1,12 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { Globals } from '../../api/databet_collections/Globals';
+import { TmpFiles } from '../../api/databet_collections/TmpFiles';
 
 console.log("SERVER-SIDE: ROOT_URL = ", process.env.ROOT_URL);
 
 Meteor.startup(function () {
   try {
     configure_email();
-    reset_globals();
+    remove_tmp_files();
   } catch (e) {
     throw(e);
   }
@@ -26,9 +26,6 @@ function configure_email() {
 }
 
 
-function reset_globals() {
-
-  // some_global  (could come in handy)
-  Globals.remove({name: "some_global"});
-  Globals.insert({name: "some_global", value: ""});
+function remove_tmp_files() {
+  TmpFiles.remove_all();
 }

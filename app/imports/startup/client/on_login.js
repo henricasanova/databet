@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { set_current_user } from '../../api/global_helpers/users_and_usernames';
 import { set_current_semester } from '../../api/global_helpers/semesters';
+import { Globals } from '../../api/databet_collections/Globals';
 
 Accounts.ui.config({
   passwordSignupFields: 'USERNAME_ONLY',
@@ -19,6 +20,9 @@ Accounts.onLogin(function() {
   Meteor.subscribe("OfferedCourses");
   Meteor.subscribe("AssessmentItems");
   Meteor.subscribe("UploadedFiles");
+
+  // Purge globals (not sure if this is necessary)
+  Globals.remove({});
 
   // Setting the current user
   set_current_user(Meteor.userId());

@@ -13,6 +13,7 @@ import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
 
 import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
 
+console.log("Creating Collection dict");
 export var collection_dictionary = {};
 collection_dictionary["AssessmentItems"] = AssessmentItems;
 collection_dictionary["Courses"] = Courses;

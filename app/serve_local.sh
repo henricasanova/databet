@@ -12,7 +12,7 @@ echo ROOT_URL=$ROOT_URL
 #export METEOR_SETTINGS=$(cat ../config/settings.real.json)
 #echo METEOR_SETTINGS=$METEOR_SETTINGS
 
-export UPLOAD_DIR=`pwd`/UploadedFiles
+export UPLOAD_DIR=`pwd`/uploaded_and_downloadable_files
 echo UPLOAD_DIR=$UPLOAD_DIR
 
 #SETTINGS_FILE=../config/settings.development.json

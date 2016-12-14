@@ -5,7 +5,7 @@
 
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
-import { fs_create_dir } from '../global_helpers/file_system';
+import { fs_create_dir, fs_remove_dir } from '../global_helpers/file_system';
 
 
 export class TmpFilesCollection {
@@ -24,6 +24,10 @@ export class TmpFilesCollection {
     this.MeteorFiles.remove({"meta.databet_id": databet_id});
   }
 
+  remove_all() {
+    console.log("Removing ALL in TmpFiles");
+    this.MeteorFiles.remove({});
+  }
 }
 
 
@@ -38,6 +42,7 @@ if (Meteor.server) {
 
 
   meteor_files_config["storagePath"] = upload_root + "/tmp/";
+  fs_remove_dir(meteor_files_config["storagePath"]);
   fs_create_dir(meteor_files_config["storagePath"]);
 
 }
@@ -47,5 +52,4 @@ meteor_files_config["collectionName"] = 'TmpFiles';
 meteor_files_config["allowClientCode"] = true;  // to allow file removal
 
 export var TmpFiles = new TmpFilesCollection(meteor_files_config);
-
 
