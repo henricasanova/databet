@@ -115,19 +115,23 @@ Meteor.methods({
 /***** HELPERS *****/
 
 function fix_dates(collection_name, doc) {
-  try {
-    for (var attribute in doc) {
-      if (doc.hasOwnProperty(attribute)) {
-        if ((collection_name == "AssessmentItems") && (attribute == "date_last_modified")) {
-          doc.date_last_modified = new Date(doc.date_last_modified);
+
+  var date_fixing_rules = {};
+
+  date_fixing_rules["AssessmentItems"] = ["date_last_modified"];
+  date_fixing_rules["Curricula"] = ["date_created"];
+  date_fixing_rules["Meteor.users"] = ["createdAt"];
+
+  for (collection_name in date_fixing_rules) {
+    if (date_fixing_rules.hasOwnProperty(collection_name)) {
+      _.each(date_fixing_rules[collection_name], function (e) {
+        if (e in doc) {
+          console.log("FIXING ", doc[e], " into ", Date(doc[e]));
+          doc[e] = new Date(doc[e]);
         }
-        if ((collection_name == "Curricula") && (attribute == "date_created")) {
-          doc.date_created = new Date(doc.date_created);
-        }
-      }
+      })
     }
-  } catch (e) {
-    throw e;
   }
+
   return doc;
 }

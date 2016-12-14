@@ -3,6 +3,7 @@ import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses'
 import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
 import { Meteor } from 'meteor/meteor';
 import { userid_to_username } from '../../../ui/global_helpers/users_and_usernames';
+import { remove_user } from '../../../ui/global_helpers/users_and_usernames';
 
 Template.ManageUsers.onCreated(function () {
 
@@ -60,10 +61,7 @@ Template.userRow.onRendered(function () {
 
 Template.userRow.onCreated(function () {
 
-
   this.edit_user_mode = new ReactiveVar();
-
-
   Template.instance().edit_user_mode.set(false);
 
 });
@@ -130,7 +128,7 @@ Template.userRow.helpers({
     if (this.name) {
       return this.name;
     } else {
-      return "-";
+      return "-";g
     }
   },
 
@@ -157,15 +155,3 @@ Template.userRow.helpers({
 });
 
 
-// Have to do this here because I can $!@#!@# Wrap Meteor.users in my own collection
-function remove_user(userId) {
-
-  // Remove offered courses
-  var offered_courses = OfferedCourses.find({instructor: userId}).fetch();
-  for (var i=0; i < offered_courses.length; i++) {
-    OfferedCourses.remove_document(offered_courses[i]._id);
-  }
-
-  Meteor.call("remove_document_from_collection", "Meteor.users", userId);
-
-}

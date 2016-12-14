@@ -1,6 +1,8 @@
 /* Wrappers around the get/set global helpers */
 import { get_global, set_global } from '../../ui/global_helpers/set_get_globals';
 import { _ } from 'meteor/underscore';
+import { Meteor } from 'meteor/meteor';
+import { OfferedCourses } from '../../api/databet_collections/OfferedCourses';
 
 export var get_current_user = function () {
   //console.log("Meteor.user=", Meteor.users.findOne({_id: get_global("currentUserId")}));
@@ -33,6 +35,30 @@ export var userid_to_username = function (userId) {
 
   return "unknownuser";
 };
+
+
+
+// Have to do this here because I can $!@#!@# Wrap Meteor.users in my own collection
+export function remove_user(userId) {
+
+  // Remove offered courses
+  var offered_courses = OfferedCourses.find({instructor: userId}).fetch();
+  for (var i=0; i < offered_courses.length; i++) {
+    OfferedCourses.remove_document(offered_courses[i]._id);
+  }
+  Meteor.call("remove_document_from_collection", "Meteor.users", userId);
+}
+
+export function create_user(doc) {
+  Meteor.call("insert_document_into_collection", "Meteor.users", user);
+}
+
+export function update_user(docId, modifier) {
+  Meteor.call("update_document_in_collection", "Meteor.users", userId, modifier);
+}
+
+
+
 
 // var username_to_userid = function (username) {
 //

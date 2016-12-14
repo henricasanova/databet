@@ -1,5 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
+import { create_user } from '../../global_helpers/users_and_usernames';
+import { update_user } from '../../global_helpers/users_and_usernames';
 
 Template.AddUpdateUser.onRendered(function () {
   $('.ui.radio.checkbox').checkbox();
@@ -19,7 +21,6 @@ Template.AddUpdateUser.onCreated(function () {
 
 });
 
-//noinspection JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols,JSUnusedLocalSymbols
 Template.AddUpdateUser.events({
 
   'click .cancel': function (e) {
@@ -88,7 +89,6 @@ Template.AddUpdateUser.events({
     if (!allGood)
       return false;
 
-
     if (Template.currentData().action == "add") {
 
       // At this point, we should be able to create a new user
@@ -106,9 +106,7 @@ Template.AddUpdateUser.events({
         is_CAS: true
       };
 
-      console.log("CREATING USER: ", user);
-      Meteor.call("insert_document_into_collection", "Meteor.users", user);
-
+      create_user(user);
 
       // Send e-mail notification
       if (sendNotification) {
@@ -123,8 +121,7 @@ Template.AddUpdateUser.events({
 
     } else {
 
-      var userId = Template.currentData().userId;
-      Meteor.call("update_document_in_collection", "Meteor.users", userId,
+      update_user(Template.currentData().userId,
         {
           "name": name,
           "is_admin": isAdmin,
