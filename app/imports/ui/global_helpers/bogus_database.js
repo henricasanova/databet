@@ -101,21 +101,33 @@ function create_bogus_curriculum_map() {
     for (var j = 0; j < pis.length; j++) {
       var num_courses_for_pi = Math.trunc(1 + Random.fraction() * max_num_courses_per_pi);
       for (var k=0; k < num_courses_for_pi; k++) {
-        var course = Random.choice(list_of_courses);
-        var level = "elementary";
-        if (Random.fraction() < 0.5) {
-          level = "proficient";
-        }
-        var doc = {
-          _id: "BogusCurriculumMapping" + count,
-          curriculum: curriculum_id,
-          course: course._id,
-          performance_indicator: Random.choice(pis)._id,
-          level: level
-        };
+        while (true) {
+          var course = Random.choice(list_of_courses);
+          var performance_indicator = Random.choice(pis)._id;
+          var level = "elementary";
+          if (Random.fraction() < 0.5) {
+            level = "proficient";
+          }
 
-        CurriculumMappings.insert_document(doc);
-        count++;
+          if (!CurriculumMappings.findOne({
+              curriculum: curriculum_id,
+              course: course._id,
+              performance_indicator: performance_indicator,
+              level: level
+            })) {
+            var doc = {
+              _id: "BogusCurriculumMapping" + count,
+              curriculum: curriculum_id,
+              course: course._id,
+              performance_indicator: performance_indicator,
+              level: level
+            };
+
+            CurriculumMappings.insert_document(doc);
+            count++;
+            break;
+          }
+        }
       }
     }
   }
@@ -157,21 +169,32 @@ function create_bogus_offered_courses() {
   var list_of_courses = Courses.find({curriculum: curriculum_id}).fetch();
 
   var count = 0;
-  for (var i=0; i < list_of_semesters.length; i++) {
+  for (var i = 0; i < list_of_semesters.length; i++) {
     var num_offered_courses = min_num_offered_courses_per_semester +
-      Math.trunc( + Random.fraction() *
+      Math.trunc(+Random.fraction() *
         (max_num_offered_courses_per_semester - min_num_offered_courses_per_semester));
-    for (var j=0;  j < num_offered_courses; j++) {
-      var course = Random.choice(list_of_courses);
-      var doc = {
-        _id: "BogusOfferedCourse" + count,
-        course: course._id,
-        semester: list_of_semesters[i]._id,
-        instructor: Meteor.userId(),
-        archived: false
-      };
-      OfferedCourses.insert_document(doc);
-      count++;
+    for (var j = 0; j < num_offered_courses; j++) {
+      while (true) {
+        var course = Random.choice(list_of_courses);
+        var user = Random.choice(Meteor.users.find({}).fetch())._id;
+
+        if (!OfferedCourses.findOne({
+            course: course._id,
+            semester: list_of_semesters[i]._id,
+            instructor: user
+          })) {
+          var doc = {
+            _id: "BogusOfferedCourse" + count,
+            course: course._id,
+            semester: list_of_semesters[i]._id,
+            instructor: user,
+            archived: false
+          };
+          OfferedCourses.insert_document(doc);
+          count++;
+          break;
+        }
+      }
     }
   }
 }
@@ -188,6 +211,7 @@ function create_bogus_assessment_items() {
       var curriculum_mapping = Random.choice(CurriculumMappings.find({"curriculum": curriculum_id}).fetch());
       var doc = {
         _id: "BogusAssessmentItem" + count,
+        instructor: offered_course.instructor,
         offered_course: offered_course._id,
         curriculum_mapping: curriculum_mapping._id,
         date_last_modified: new Date(),

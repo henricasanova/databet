@@ -122,7 +122,6 @@ Template.AddUpdateUser.events({
       }
 
     } else {
-      console.log("UPDATING A USER");
 
       var userId = Template.currentData().userId;
       Meteor.call("update_document_in_collection", "Meteor.users", userId,
@@ -169,6 +168,5 @@ Template.AddUpdateUser.helpers({
       return null;
     }
   }
-
 
 });

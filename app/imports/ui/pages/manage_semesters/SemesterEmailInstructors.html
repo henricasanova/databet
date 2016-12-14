@@ -3,6 +3,7 @@
   <div class="ui container center">
 
 
+    {{#if are_there_recipients}}
     <div class="ui container  raised segment">
 
       {{> ListOfUsersEmails}}
@@ -21,8 +22,9 @@
           <b>Body:</b><textarea rows=15 id="email_body">
 Greetings,
 
-you  have taught one or more courses required for our BS degree in Fall 2016. Please log in to DataBET at http://databet.ics.hawaii.edu/databet/ and enter your assessment data. It would be great if this could be entered before the end of the year.  Recall that once you log in to DataBET you can watch the tutorial video and consult the FAQs. And you can always send e-mail to Henri (henric@hawaii.edu) with whatever question/feedback you may have regarding this process.
-Thanks!
+you  have taught one or more courses required for our BS degree in Fall 2016. If you haven't already done so, please log in to DataBET at http://databet.ics.hawaii.edu/databet/ and enter your assessment data. It would be great if this could be entered before the end of the year.  Recall that once you log in to DataBET you can watch the tutorial video and consult the FAQs. And you can always send e-mail to Henri (henric@hawaii.edu) with whatever question/feedback you may have regarding this process.
+
+          Thanks!
 DataBET
 
 PS: Do not reply to this e-mail.
@@ -39,6 +41,9 @@ PS: Do not reply to this e-mail.
       {{/if}}
 
   </div>
+    {{else}}
+     <h3> No instructor has pending tasks for this semester</h3>
+    {{/if}}
 
 
     <a href="{{pathFor 'EditSemester'}}/{{semester_id}}" class="ui button grey goback">Go back</a>
@@ -51,9 +56,13 @@ PS: Do not reply to this e-mail.
 <template name="ListOfUsersEmails">
 
   <b>To:</b><br>
+  {{#if list_of_user_emails.length}}
   {{#each list_of_user_emails}}
     {{this}}<br>
   {{/each}}
+  {{else}}
+  <b>NO RECIPIENTS</b> (perhaps they've all done their work already?)
+  {{/if}}
   <!--{{list_of_user_emails}}-->
   <br>
   <br>

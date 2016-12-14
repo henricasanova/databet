@@ -7,41 +7,57 @@
     <div class="ui container raised segment">
 
       <h3 class="ui fluid">Download JSON and uploaded files</h3>
-      <form class="ui form">
-        <button class="ui button blue" id="button_download_archive"><i class="ui icon download"></i>Download Zipped
-          archive
-        </button>
-      </form>
 
-      {{#if zip_file_requested}}
-      {{#if download_button_clicked}}
-      {{#if waiting_for_server_download}}
-      {{> Loading}}
-      {{else}}
-      {{#if download_error}}
-      <div class="ui message raised red text">
-        <b>Download Error: {{server_error}}</b>
-      </div>
-      {{else}}
+      {{> FileDownload button_text="Download Zipped Archive" meteor_method="download_zipped_backup"}}
 
-      <h3><a href="{{archiveUrl}}?download=true" target="_parent" download>
-        Click this link to download the archive
-      </a></h3>
+      <!---->
+      <!--<form class="ui form">-->
+        <!--<button class="ui button blue" id="button_download_archive"><i class="ui icon download"></i>Download Zipped-->
+          <!--archive-->
+        <!--</button>-->
+      <!--</form>-->
 
-      <div class="circular ui icon button red" id="delete_archive">
-        <i class="icon delete"></i>
-      </div>
-      {{/if}}
-      {{/if}}
-      {{/if}}
-      {{/if}}
-      <br>
+      <!--{{#if zip_file_requested}}-->
+      <!--{{#if download_button_clicked}}-->
+      <!--{{#if waiting_for_server_download}}-->
+      <!--{{> Loading}}-->
+      <!--{{else}}-->
+      <!--{{#if download_error}}-->
+      <!--<div class="ui message raised red text">-->
+        <!--<b>Download Error: {{server_error}}</b>-->
+      <!--</div>-->
+      <!--{{else}}-->
+
+      <!--<h3><a href="{{archiveUrl}}?download=true" target="_parent" download>-->
+        <!--Click this link to download the archive-->
+      <!--</a></h3>-->
+
+      <!--<div class="circular ui icon button red" id="delete_archive">-->
+        <!--<i class="icon delete"></i>-->
+      <!--</div>-->
+      <!--{{/if}}-->
+      <!--{{/if}}-->
+      <!--{{/if}}-->
+      <!--{{/if}}-->
+      <!--<br>-->
 
     </div>
 
     <div class="ui container raised segment">
 
-      <h3 class="ui fluid">Upload JSON</h3>
+      <h3 class="ui fluid">Insert "Bogus" Documents for Testing (no uploaded files)</h3>
+      <form class="ui form">
+        <button class="ui button blue" id="button_insert_bogus"><i class="ui icon upload"></i>Bogus DB
+        </button>
+      </form>
+      {{#if bogus_inserted}}
+      <h4>Bogus documents inserted!!!</h4>
+      {{/if}}
+    </div>
+
+    <div class="ui container raised segment">
+
+      <h3 class="ui fluid">Upload Previously Downloaded JSON</h3>
 
       <h4>Cut-and-paste JSON below</h4>
       <form class="ui form fluid">
@@ -108,16 +124,6 @@
 
   </div>
 
-  <div class="ui container raised segment">
 
-    <h3 class="ui fluid">Insert "Bogus" Documents for Testing (no uploaded files)</h3>
-    <form class="ui form">
-      <button class="ui button blue" id="button_insert_bogus"><i class="ui icon upload"></i>Bogus DB
-      </button>
-    </form>
-    {{#if bogus_inserted}}
-    <h4>Bogus documents inserted!!!</h4>
-    {{/if}}
-  </div>
 
 </template>

@@ -65,7 +65,8 @@ export var get_dangling_refs = function () {
   // Assessment Items
   dangling_refs.push.apply(dangling_refs,
     get_dangling_refs_in_collection("AssessmentItems",
-      [["offered_course", "OfferedCourses"],
+      [ ["instructor", "Meteor.users"],
+        ["offered_course", "OfferedCourses"],
         ["curriculum_mapping", "CurriculumMappings"],
         ["assessment_question_file", "UploadedFiles"],
         ["sample_poor_answer_file", "UploadedFiles"],
@@ -124,7 +125,12 @@ function not_in_collection(doc, field_name, target_collection_name) {
     return "";
   }
 
-  var target_doc = collection_dictionary[target_collection_name].find_document(doc[field_name]);
+  var target_doc;
+  if (target_collection_name == "Meteor.users") {
+    target_doc = Meteor.users.findOne({_id: doc[field_name]});
+  } else {
+    target_doc = collection_dictionary[target_collection_name].find_document(doc[field_name]);
+  }
 
   if (!target_doc) {
     return "References non-existing "+field_name+" ("+doc[field_name]+") " +

@@ -81,7 +81,7 @@ Template.userRow.events({
         },
         onApprove: function () {
           $('#modal_' + userId).modal('hide');
-          Meteor.call("remove_document_from_collection", "Meteor.users", userId);
+          remove_user(userId);
 
           return true;
         }
@@ -162,3 +162,17 @@ Template.userRow.helpers({
   }
 
 });
+
+
+// Have to do this here because I can $!@#!@# Wrap Meteor.users in my own collection
+function remove_user(userId) {
+
+  // Remove offered courses
+  var offered_courses = OfferedCourses.find({instructor: userId}).fetch();
+  for (var i=0; i < offered_courses.length; i++) {
+    OfferedCourses.remove_document(offered_courses[i]._id);
+  }
+
+  Meteor.call("remove_document_from_collection", "Meteor.users", userId);
+
+}

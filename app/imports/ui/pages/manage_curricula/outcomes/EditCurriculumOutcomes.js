@@ -87,17 +87,17 @@ Template.OutcomeRow.events({
     //var curriculumId = FlowRouter.getParam('_id');
 
     $('#modal_delete_outcome_'+outcomeId).
-      modal({
-        onDeny    : function(){
-          return true;
-        },
-        onApprove : function() {
-          $('#modal_delete_outcome_'+outcomeId).modal('hide');
-	  StudentOutcomes.remove_document(outcomeId);
-          return true;
-        }
-      }).
-      modal('show');
+    modal({
+      onDeny    : function(){
+        return true;
+      },
+      onApprove : function() {
+        $('#modal_delete_outcome_'+outcomeId).modal('hide');
+        StudentOutcomes.remove_document(outcomeId);
+        return true;
+      }
+    }).
+    modal('show');
   },
 
   "click .outcome_edit": function(e) {
@@ -120,8 +120,8 @@ Template.OutcomeRow.events({
         var i_order = allOutcomes[i].order;
         var i_minus_1_order = allOutcomes[i-1].order;
 
-	StudentOutcomes.update_document(allOutcomes[i]._id, {"order": i_minus_1_order});
-	StudentOutcomes.update_document(allOutcomes[i-1]._id, {"order": i_order});
+        StudentOutcomes.update_document(allOutcomes[i]._id, {"order": i_minus_1_order});
+        StudentOutcomes.update_document(allOutcomes[i-1]._id, {"order": i_order});
         break;
       }
     }
@@ -142,8 +142,8 @@ Template.OutcomeRow.events({
         var i_order = allOutcomes[i].order;
         var i_plus_1_order = allOutcomes[i+1].order;
 
-	StudentOutcomes.update_document(allOutcomes[i]._id, {"order": i_plus_1_order});
-	StudentOutcomes.update_document(allOutcomes[i+1]._id, {"order": i_order});
+        StudentOutcomes.update_document(allOutcomes[i]._id, {"order": i_plus_1_order});
+        StudentOutcomes.update_document(allOutcomes[i+1]._id, {"order": i_order});
         break;
       }
     }
@@ -182,7 +182,7 @@ Template.OutcomeRow.helpers({
   },
 
   "num_performance_indicators": function() {
-     return PerformanceIndicators.find({"student_outcome": this._id}).count();
+    return PerformanceIndicators.find({"student_outcome": this._id}).count();
   },
 
   "num_courses": function() {
@@ -211,6 +211,5 @@ Template.OutcomeRow.helpers({
     }
     return num_assessment_items;
   },
-
 
 });

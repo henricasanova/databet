@@ -84,7 +84,7 @@ Template.AddCurriculum.events({
     }
 
     var new_curriculum = {
-      "_id": new_unique_id(Curricula),
+      "_id": Random.id(),
       "description": description,
       "date_created": new Date(),
       "locked": false
@@ -103,14 +103,6 @@ Template.AddCurriculum.events({
 });
 
 
-function new_unique_id(collection) {
-  var newId = Random.id();
-  while (collection.findOne({"_id": newId})) {
-    newId = Random.id();
-  }
-  return newId;
-}
-
 function clone_curriculum(sourceCurriculumId, destCurriculumId) {
   var i, j;
 
@@ -120,7 +112,7 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
   var to_clone_courses = Courses.find({"curriculum": sourceCurriculumId}).fetch();
   for (i = 0; i < to_clone_courses.length; i++) {
     var cloned_course = {
-      "_id": new_unique_id(Courses),
+      "_id": Random.id(),
       "alphanumeric": to_clone_courses[i].alphanumeric,
       "title": to_clone_courses[i].title,
       "curriculum": destCurriculumId
@@ -135,7 +127,7 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
   var to_clone_outcomes = StudentOutcomes.find({"curriculum": sourceCurriculumId}).fetch();
   for (i = 0; i < to_clone_outcomes.length; i++) {
     var cloned_outcome = {
-      "_id": new_unique_id(StudentOutcomes),
+      "_id": Random.id(),
       "description": to_clone_outcomes[i].description,
       "curriculum": destCurriculumId,
       "order": to_clone_outcomes[i].order
@@ -145,7 +137,7 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
     var to_clone_pis = PerformanceIndicators.find({"student_outcome": to_clone_outcomes[i]._id}).fetch();
     for (j = 0; j < to_clone_pis.length; j++) {
       var cloned_pi = {
-        "_id": new_unique_id(PerformanceIndicators),
+        "_id": Random.id(),
         "student_outcome": cloned_outcome._id,
         "description": to_clone_pis[j].description,
         "order": to_clone_pis[j].order

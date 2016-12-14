@@ -39,14 +39,12 @@ Meteor.methods({
   },
 
   remove_document_from_collection: function(collection_name, doc_id) {
-    console.log("REMOVE_DOC_FROM_COLL: ", collection_name);
     var collection = collection_dictionary[collection_name];
     if (collection == null) {
       throw new Meteor.Error("Unknown Collection "+collection_name);
     }
     collection.remove({"_id": doc_id});
     if (Meteor.isServer) {
-      console.log("RIGHT AFTER CALL TO REMOVE: ", collection.findOne({_id: doc_id}));
     }
   },
 

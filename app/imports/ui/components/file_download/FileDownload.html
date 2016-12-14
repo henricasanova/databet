@@ -1,0 +1,31 @@
+<!--Usage: {{> FileDownload meteor_method=... button_text=...}}-->
+
+<template name="FileDownload">
+
+      <form class="ui form">
+        <button class="ui button blue" id="button_download_file"><i class="ui icon download"></i>{{button_text}}
+        </button>
+      </form>
+
+      {{#if download_button_clicked}}
+        {{#if waiting_for_download}}
+          {{> Loading}}
+        {{else}}
+          {{#if download_error}}
+            <div class="ui message raised red text">
+              <b>Download Error: {{server_error}}</b>
+            </div>
+          {{else}}
+            <h3><a href="{{downloadable_file_url}}?download=true" target="_parent" download>
+              Click this link to download
+            </a></h3>
+
+            <div class="circular ui icon button red" id="delete_downloadable_file_on_server">
+              <i class="icon delete"></i>
+            </div>
+          {{/if}}
+        {{/if}}
+      {{/if}}
+      <br>
+
+</template>

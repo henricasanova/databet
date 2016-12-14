@@ -46,7 +46,11 @@ Meteor.publish("Courses", function() {
 
 // Publish the OfferedCourses collection
 Meteor.publish("OfferedCourses", function() {
-  return OfferedCourses.find({});
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    return OfferedCourses.find({});
+  } else {
+    return OfferedCourses.find({instructor: this.userId});
+  }
 });
 
 // Publish the CurriculumMappings collection

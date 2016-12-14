@@ -9,6 +9,7 @@ import { Meteor } from 'meteor/meteor';
 import { semesterid_to_semesterstring } from '../../../ui/global_helpers/semesters';
 import { Random } from 'meteor/random';
 import { get_current_username } from '../../global_helpers/users_and_usernames';
+import { get_current_user } from '../../global_helpers/users_and_usernames';
 
 Template.AddUpdateAssessmentItem.onRendered(function () {
   // Initialize dropdown
@@ -626,6 +627,7 @@ Template.AddUpdateAssessmentItem.events({
 
       // Create the assessment item
       var assessment_item = {
+        instructor: get_current_user(),
         offered_course: Template.instance().offered_course._id,
         curriculum_mapping: tentative_doc.curriculum_mapping_id,
         date_last_modified: new Date(),
@@ -657,6 +659,7 @@ Template.AddUpdateAssessmentItem.events({
       // Everything but files
       var modifier = {
         //offered_course: existing_assessment_item.offered_course,
+        instructor: get_current_user(),
         curriculum_mapping: tentative_doc.curriculum_mapping_id,
         date_last_modified: new Date(),
         assessment_type: tentative_doc.assessment_item_type,

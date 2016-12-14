@@ -1,0 +1,3 @@
+New features:
+    - Export curriculum to printable format
+	- To do this: component-ize the "download a file" feature

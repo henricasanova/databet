@@ -27,6 +27,14 @@ Template.SemesterEmailInstructors.helpers({
   "semester_string": function() {
     var semester_id = FlowRouter.getParam("_id");
     return semesterid_to_semesterstring(semester_id);
+  },
+
+  "are_there_recipients": function() {
+    // var semester_id = FlowRouter.getParam("_id");
+    // var offered_courses = OfferedCourses.find({"semester": semester_id}).fetch();
+    // var user_list = _.map(offered_courses, function(e) {return Meteor.users.findOne({"_id": e.instructor});});
+    var email_list = compute_email_list();
+    return (email_list.length > 0);
   }
 
 });
@@ -39,10 +47,8 @@ Template.SemesterEmailInstructors.events({
     var cc = $('#cc').val();
     var body = $('#email_body').val();
 
-    var semester_id = FlowRouter.getParam("_id");
-    var offered_courses = OfferedCourses.find({"semester": semester_id}).fetch();
-    var user_list = _.map(offered_courses, function(e) {return Meteor.users.findOne({"_id": e.instructor});});
-    var email_list = compute_email_list(user_list);
+
+    var email_list = compute_email_list();
 
     for (var i=0; i < email_list.length; i++) {
       Meteor.call("send_email", {
@@ -59,23 +65,32 @@ Template.SemesterEmailInstructors.events({
 
 });
 
+
 Template.ListOfUsersEmails.helpers({
 
   "list_of_user_emails": function () {
     var semester_id = FlowRouter.getParam("_id");
 
-    var offered_courses = OfferedCourses.find({"semester": semester_id}).fetch();
-    var user_list = _.map(offered_courses, function(e) {console.log(e.instructor);return Meteor.users.findOne({"_id": e.instructor});});
-    return compute_email_list(user_list);
+    // var offered_courses = OfferedCourses.find({"semester": semester_id, "archived": false}).fetch();
+    // var user_list = _.map(offered_courses, function(e) {
+    //   console.log(e.instructor);
+    //   return Meteor.users.findOne({"_id": e.instructor});
+    // });
+    return compute_email_list();
   },
 });
 
 
 /*** Helper function ***/
 
-function compute_email_list(user_array) {
+function compute_email_list() {
 
-  var e_mail_list =  _.map(user_array, function(e) {
+  var semester_id = FlowRouter.getParam("_id");
+  console.log("SEMESTER ID = ", semester_id);
+  var offered_courses = OfferedCourses.find({"semester": semester_id, "archived": false}).fetch();
+  var user_list = _.map(offered_courses, function(e) {return Meteor.users.findOne({"_id": e.instructor});});
+
+  var e_mail_list =  _.map(user_list, function(e) {
                       if (e.emails) { return e.name + " <" + e.emails[0].address + ">  ";}
                       if (e.email) { return e.name + " <" + e.email + "> ";}
                       return ""; });

@@ -52,6 +52,11 @@ AssessmentItems.attachSchema(new SimpleSchema({
     optional: false
   },
 
+  instructor: {
+    type: String,
+    optional: false
+  },
+
   // Below are the real Data Fields
 
   assessment_type: {    // exam question, homework assignment, quiz,
