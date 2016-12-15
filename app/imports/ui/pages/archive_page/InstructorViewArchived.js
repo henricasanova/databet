@@ -6,6 +6,46 @@ import { _ } from 'meteor/underscore';
 import { get_current_user } from '../../../api/global_helpers/users_and_usernames';
 import { Meteor } from 'meteor/meteor';
 
+Template.InstructorViewArchived.onCreated(function() {
+
+
+  // var instructor = get_current_user();
+  // console.log("SUBSCRIBING TO THE OFFERED COURSES as", instructor);
+  // Tracker.autorun(function() {
+  //   Meteor.subscribe("offered_courses_for_a_user", instructor, true,
+  //     function() {
+  //       var offered_courses = OfferedCourses.find({instructor: instructor, archived: true}).fetch();
+  //       var list_of_semesters = _.map(offered_courses, function (e) {return e.semester;});
+  //       list_of_semesters = _.uniq(list_of_semesters);
+  //       var list_of_courses = _.map(offered_courses, function (e) {return e.course;});
+  //       list_of_courses = _.uniq(list_of_courses);
+  //       console.log("SUBSCRIBING TO THE SEMSTERS");
+  //
+  //       Meteor.subscribe("list_of_semesters", list_of_semesters);
+  //
+  //       console.log("SUBSCRIBING TO THE COURSES");
+  //
+  //       Meteor.subscribe("list_of_courses", list_of_courses);
+  //     }
+  //   );
+  // });
+
+
+
+  // if (sub1.ready()) {
+  //   console.log("SUBSCRIBED TO THE OFFERED COURSES");
+  //   var offered_courses = OfferedCourses.find({instructor: instructor, archived: true}).fetch();
+  //   var list_of_semesters = _.map(offered_courses, function (e) {return e.semester;});
+  //   list_of_semesters = _.uniq(list_of_semesters);
+  //   var list_of_courses = _.map(offered_courses, function (e) {return e.course;});
+  //   list_of_courses = _.uniq(list_of_courses);
+  //   Meteor.subscribe("list_of_semesters", list_of_semesters);
+  //   Meteor.subscribe("list_of_courses", list_of_courses);
+  // }
+
+});
+
+
 Template.InstructorViewArchived.helpers({
 
   "listOfOfferedCourses": function () {
@@ -38,6 +78,12 @@ Template.InstructorViewArchived.helpers({
   },
 
 });
+
+
+Template.OfferedCourseRowArchived.onCreated(function () {
+  Meteor.subscribe("subscription_OfferedCourseTowArchived", this);
+});
+
 
 Template.OfferedCourseRowArchived.onRendered(function () {
   $('.buttonpopup')

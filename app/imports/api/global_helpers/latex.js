@@ -3,6 +3,7 @@ import { _ } from 'meteor/underscore';
 var makefile_template =
   "default: MAKE_TARGET.pdf\n\n" +
   "MAKE_TARGET.pdf: DEPENDENCIES\n" +
+  "\tpdflatex MAKE_TARGET.tex\n" +
   "\tpdflatex MAKE_TARGET.tex\n\n" +
   "clean:\n" +
   "\t/bin/rm -f MAKE_TARGET.pdf\n" +

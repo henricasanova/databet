@@ -10,13 +10,13 @@ import {AssessmentItems} from "../databet_collections/AssessmentItems";
 
 var curriculum_id = "BogusCurriculum";
 var curriculum_description = "Bogus curriculum for testing purposes";
-var num_courses = 8;
-var max_num_courses_per_pi = 4;
-var num_sos = 6;
-var num_semesters = 15;
+var num_courses = 18;
+var max_num_courses_per_pi = 8;
+var num_sos = 10;
+var num_semesters = 50;
 var min_num_offered_courses_per_semester = Math.trunc(num_courses/4);
 var max_num_offered_courses_per_semester = num_courses;
-var num_assessment_items_per_semesters = 15;
+var num_assessment_items_per_semesters = 20;
 
 export function insert_bogus_database() {
 

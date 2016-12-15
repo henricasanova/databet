@@ -1,2 +1,31 @@
+Software improvement:
+    - Have each Template call "subscribe()" in OnCreated()
+        - archive_page
+        - assessment_page
+        - backups
+        - doctor
+        - faq
+        - front_page
+        - manage_curricula
+        - manage_semesters
+        - manage_users
+        - reports
+        - statistics
+        - toto_list
+        - components
+            - curriculum_select
+            - file_download
+            - file_upload
+            - login_logout_button
+            - semester_select
+            - user_select
+    - Remove all subscribe called in startup/client/on_login.js
+
+
 New features:
-    - Export curriculum to printable format
+    - Find a way to "guide" assessment
+    - Start thinking about generating the assessment reports
+
+
+
+Make sure deployment works:

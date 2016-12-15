@@ -9,7 +9,7 @@ Accounts.ui.config({
 
 Accounts.onLogin(function() {
 
-  // Subscribe to collections
+  // Subscribe to collections: TODO stop getting everything!
   Meteor.subscribe("Meteor.users");
   Meteor.subscribe("Semesters");
   Meteor.subscribe("Curricula");

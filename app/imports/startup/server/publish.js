@@ -11,6 +11,43 @@ import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
 import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
 
 
+// Meteor.publish("roomAndMessages", function (roomId) {
+//   check(roomId, String);
+//   return [
+//     Rooms.find({_id: roomId}),
+//     Messages.find({roomId: roomId})
+//   ];
+// });
+
+//  Meteor.subscribe("counts-by-room", Session.get("roomId"));
+
+
+
+Meteor.publish("offered_courses_for_a_user", function (instructor, archived) {
+  check(instructor, String);
+  check(archived, Boolean);
+  console.log("RETURNING OFFERED COURSES! isServer", Meteor.isServer, instructor, archived);
+  return [
+    OfferedCourses.find({instructor: instructor, archived: archived}),
+  ]
+});
+
+Meteor.publish("list_of_semesters", function (list_of_semesters) {
+  return [
+    Semesters.find({_id: {$in: list_of_semesters}})
+  ]
+});
+
+
+Meteor.publish("list_of_courses", function (list_of_courses) {
+  return [
+    Courses.find({_id: {$in: list_of_courses}})
+  ]
+});
+
+
+
+
 Meteor.publish("Meteor.users", function() {
   if (Roles.userIsInRole(this.userId, 'admin')) {
     return Meteor.users.find({});

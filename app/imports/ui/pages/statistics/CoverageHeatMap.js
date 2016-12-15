@@ -105,13 +105,13 @@ Template.CoverageHeatMap.helpers({
         },
 
         tooltip: {
-          // formatter: function () {
-          //   return '<b>' + this.point.value + "</b> assessment items entered<br> for <b>" +
-          //     this.series.yAxis.categories[this.point.y] +
-          //     '</b> for semester <br><b>' +
-          //     this.series.xAxis.categories[this.point.x] + '</b>';
-          // }
-          enabled: false
+          formatter: function () {
+            return '<b>' + this.point.value + "</b> assessment items entered<br> for <b>" +
+              this.series.yAxis.categories[this.point.y] +
+              '</b> for semester <br><b>' +
+              this.series.xAxis.categories[this.point.x] + '</b>';
+          },
+          enabled: true
         },
 
         series: [{
