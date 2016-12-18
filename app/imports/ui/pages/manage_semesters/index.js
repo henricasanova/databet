@@ -5,6 +5,8 @@ import './AddSemester.html';
 import './AddSemester.js';
 import './EditSemester.html';
 import './EditSemester.js';
+import './SemesterEmailInstructorsAfter.html';
+import './SemesterEmailInstructorsBefore.html';
 import './SemesterEmailInstructors.html';
 import './SemesterEmailInstructors.js';
 import './ManageSemesters.html';

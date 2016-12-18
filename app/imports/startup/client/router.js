@@ -98,10 +98,18 @@ FlowRouter.route('/edit_semester/:_id', {
   },
 });
 
-FlowRouter.route('/semester_email/:_id', {
-  name: 'SemesterEmailInstructors',
+FlowRouter.route('/semester_email_before/:_id', {
+  name: 'SemesterEmailInstructorsBefore',
   action() {
-    BlazeLayout.render("App_Body", {main: "SemesterEmailInstructors"});
+    BlazeLayout.render("App_Body", {main: "SemesterEmailInstructorsBefore"});
+  },
+});
+
+
+FlowRouter.route('/semester_email_after/:_id', {
+  name: 'SemesterEmailInstructorsAfter',
+  action() {
+    BlazeLayout.render("App_Body", {main: "SemesterEmailInstructorsAfter"});
   },
 });
 

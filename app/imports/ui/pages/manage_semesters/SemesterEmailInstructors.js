@@ -12,6 +12,14 @@ Template.SemesterEmailInstructors.onCreated(function () {
 
 Template.SemesterEmailInstructors.helpers({
 
+  "is_before": function() {
+    return (Template.currentData().type == "before");
+  },
+
+  "is_after": function() {
+    return (Template.currentData().type == "after");
+  },
+
   "email_has_been_sent": function() {
     return Template.instance().email_has_been_sent.get();
   },
@@ -30,11 +38,8 @@ Template.SemesterEmailInstructors.helpers({
   },
 
   "are_there_recipients": function() {
-    // var semester_id = FlowRouter.getParam("_id");
-    // var offered_courses = OfferedCourses.find({"semester": semester_id}).fetch();
-    // var user_list = _.map(offered_courses, function(e) {return Meteor.users.findOne({"_id": e.instructor});});
-    var email_list = compute_email_list();
-    return (email_list.length > 0);
+    var distribution_list = compute_distribution_list();
+    return (distribution_list.length > 0);
   }
 
 });
@@ -48,15 +53,19 @@ Template.SemesterEmailInstructors.events({
     var body = $('#email_body').val();
 
 
-    var email_list = compute_email_list();
 
-    for (var i=0; i < email_list.length; i++) {
-      Meteor.call("send_email", {
-        to: email_list[i],
+    var distribution_list = compute_distribution_list();
+    console.log("DISTRIBUTION_LIST = ", distribution_list);
+
+    for (var i=0; i < distribution_list[0].length; i++) {
+      var processed_body = process_body(body, distribution_list[0][i]);
+      // Meteor.call("send_email", {
+      console.log("EMAIL TO BE SENT: ", {
+        to: distribution_list[1][i],
         from: "donotreply@databet.hawaii.edu",
         cc: cc,
         subject: subject_line,
-        text: body
+        text: processed_body
       });
     }
 
@@ -69,36 +78,40 @@ Template.SemesterEmailInstructors.events({
 Template.ListOfUsersEmails.helpers({
 
   "list_of_user_emails": function () {
-    var semester_id = FlowRouter.getParam("_id");
-
-    // var offered_courses = OfferedCourses.find({"semester": semester_id, "archived": false}).fetch();
-    // var user_list = _.map(offered_courses, function(e) {
-    //   console.log(e.instructor);
-    //   return Meteor.users.findOne({"_id": e.instructor});
-    // });
-    return compute_email_list();
+    return compute_distribution_list()[1];
   },
 });
 
 
 /*** Helper function ***/
 
-function compute_email_list() {
+function process_body(original_body, user_id) {
+  var processed_body;
+  var course_info = "TO_IMPLEMENT";
+
+  processed_body = original_body.replace(/COURSE_INFO/, course_info);
+
+  return processed_body;
+
+}
+
+
+
+
+function compute_distribution_list() {
 
   var semester_id = FlowRouter.getParam("_id");
-  console.log("SEMESTER ID = ", semester_id);
   var offered_courses = OfferedCourses.find({"semester": semester_id, "archived": false}).fetch();
-  var user_list = _.map(offered_courses, function(e) {return Meteor.users.findOne({"_id": e.instructor});});
+  var user_ids = _.map(offered_courses, function(e) {return e.instructor;});
+  var user_ids = _.uniq(user_ids);
+  var user_list = Meteor.users.find({_id: {$in: user_ids}}).fetch();
+  user_list = _.uniq(user_list);
+
 
   var e_mail_list =  _.map(user_list, function(e) {
                       if (e.emails) { return e.name + " <" + e.emails[0].address + ">  ";}
                       if (e.email) { return e.name + " <" + e.email + "> ";}
                       return ""; });
-  var uniq_list = [];
-  for (var i=0; i < e_mail_list.length; i++) {
-    if ((e_mail_list[i] != "") && (uniq_list.indexOf(e_mail_list[i]) == -1)) {
-      uniq_list.push(e_mail_list[i]);
-    }
-  }
-  return uniq_list;
+
+  return [user_ids, e_mail_list];
 }

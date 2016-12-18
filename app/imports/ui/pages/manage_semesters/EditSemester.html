@@ -107,13 +107,13 @@
 
       </div>
 
-
     </div>
 
     {{/if}}
 
     <a href="{{pathFor 'ManageSemesters'}}" class="ui button grey goback">Go back</a>&nbsp;&nbsp;&nbsp;
-    <a href="{{pathFor 'SemesterEmailInstructors'}}/{{semester_id}}" class="ui button blue"><i class="ui icon announcement"></i>E-mail all instructors</a>
+    <a href="{{pathFor 'SemesterEmailInstructorsBefore'}}/{{semester_id}}" class="ui button blue"><i class="ui icon announcement"></i>E-mail instructors (before semester)</a>
+    <a href="{{pathFor 'SemesterEmailInstructorsAfter'}}/{{semester_id}}" class="ui button blue"><i class="ui icon announcement"></i>E-mail instructors (at the end of semester)</a>
 
   </div>
 
