@@ -1,5 +1,69 @@
 <template name="CourseInfo">
 
-  FOO: {{foo}}
+  <div class="ui container center raised">
+
+    {{#if course_exists}}
+
+    <h3 class="ui center aligned header"> Information for Instructors </h3>
+
+    <hr class="ui">
+
+    <h1 class="ui"> <b>{{course_alpha}}:</b> {{course_title}}</h1>
+
+    <hr class="ui">
+
+    <h2 class="ui">Student Outcomes (SOs)</h2>
+
+    <div class="ui message olive">
+      <div class="help_message_text">
+        All <b>{{numOfStudentOutcomes}}</b> SOs below <b>MUST</b> appear on the syllabus for this course.
+      </div>
+    </div>
+
+    <ul class="ui">
+    {{#each listOfStudentOutcomes}}
+      <li class="ui item"><h4 class="ui">{{this.description}}</h4></li>
+    {{/each}}
+    </ul>
+
+    <hr class="ui">
+
+    <h2 class="ui">Relevant Performance Indicators</h2>
+
+    <div class="ui message olive">
+      <div class="help_message_text">
+         Below are the specific student abilities that are measurable for this course
+         at the end of the semester. For some of these
+        (chosen by you and/or suggested by DataBET), you will need
+         to enter assessment data (e.g., an exam question, along with
+          a list of grades for that question and sample poor/mid-range/good student answers).
+      </div>
+    </div>
+
+    <ul class="ui">
+      {{#each listOfPerformanceIndicators}}
+      <li class="ui item"><h4 class="ui">{{this.description}}</h4></li>
+      {{/each}}
+    </ul>
+
+    <hr class="ui">
+
+    {{else}}
+
+    <div class="ui container raised">
+      <div class="ui icon message red">
+        <i class=" icon warning sign"></i>
+        <div class="content">
+          <div class="header">
+            <b>No course info here... likely a wrong URL.</b>
+          </div>
+          <p>Contact the DataBET administrator for more info.</p>
+        </div>
+      </div>
+    </div>
+
+    {{/if}}
+
+  </div>
 
 </template>

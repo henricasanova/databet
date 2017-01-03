@@ -60,8 +60,7 @@ Template.SemesterEmailInstructors.events({
 
     for (var i=0; i < distribution_list[0].length; i++) {
       var processed_body = process_body(body, distribution_list[0][i]);
-      // Meteor.call("send_email", {
-      console.log("EMAIL TO BE SENT: ", {
+      Meteor.call("send_email", {
         to: distribution_list[1][i],
         from: "donotreply@databet.hawaii.edu",
         cc: cc,
@@ -122,16 +121,14 @@ function get_course_info_for_user_and_semester(user_id, semester_id) {
   for (var i=0; i < offered_courses.length; i++) {
     var course = Courses.findOne({_id: offered_courses[i].course});
     var url= get_course_info_url(offered_courses[i].course);
-    course_info += "<a href=\""+ url + "\">" + "Useful ABET information for " +
-      course.alphanumeric + " (" +
+    course_info += course.alphanumeric + " (" +
       semesterid_to_semesterstring(semester_id) +
-      ")</a><br>\n\n";
+      "): " + url + "\n";
   }
   return course_info;
 }
 
 function get_course_info_url(course_id) {
 
-  // TODO
-  return Meteor.absoluteUrl() + "course_info/:" + course_id;
+  return Meteor.absoluteUrl() + "course_info/" + course_id;
 }

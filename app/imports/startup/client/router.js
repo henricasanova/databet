@@ -112,7 +112,7 @@ FlowRouter.route('/manage_semesters', {
 FlowRouter.route('/edit_semester/:_id', {
   name: 'EditSemester',
   action() {
-c
+    conditional_render(true, true, "EditSemester");
   },
 });
 

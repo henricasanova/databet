@@ -21,30 +21,28 @@
         <div class="field">
           <b>Body:</b><textarea rows=15 id="email_body">
 
-          Greetings,
+Greetings,
+{{#if is_before }}
+you are scheduled to teach the courses below in {{semester_string}}.
+To find out relevant information, including what to list on your syllabus and what to expect
+in terms of ABET assessment, see the following pages:
 
-          {{#if is_before }}
-          you are scheduled to teach one or more courses required for our BS degree in {{semester_string}}.
-          To find out relevant information, including what to list on your syllabus and what to expect
-          in terms of assessment, see the following pages:
+  COURSE_INFO
+{{/if}}
+{{#if is_after }}
+you  have taught one or more courses required for our BS degree in {{semester_string}}.
+If you haven't already done so, please log in to DataBET at http://databet.ics.hawaii.edu/databet/
+and enter your assessment data. Ideally, this information should be entered before the beginning
+of the next semester.
+{{/if}}
+Recall that once you log in to DataBET you can watch the tutorial video and consult the FAQs.
+And you can always send e-mail to Henri (henric@hawaii.edu) with whatever question/feedback
+you may have regarding this process.
 
-            COURSE_INFO
-          {{/if}}
-          {{#if is_after }}
-          you  have taught one or more courses required for our BS degree in {{semester_string}}.
-          If you haven't already done so, please log in to DataBET at http://databet.ics.hawaii.edu/databet/
-          and enter your assessment data. Ideally, this information should be entered before the beginning
-          of the next semester.
-          {{/if}}
+Thanks!
+DataBET
 
-          Recall that once you log in to DataBET you can watch the tutorial video and consult the FAQs.
-          And you can always send e-mail to Henri (henric@hawaii.edu) with whatever question/feedback
-          you may have regarding this process.
-
-          Thanks!
-          DataBET
-
-          PS: Do not reply to this e-mail.
+PS: Do not reply to this e-mail.
           </textarea>
         </div>
 
