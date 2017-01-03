@@ -1,5 +1,9 @@
 <template name="AssessmentItems">
 
+
+  {{#if currentUser}}
+
+
   <div class="ui container">
 
     {{#if add_mode}}
@@ -46,6 +50,14 @@
   </div>
 
   {{> DeleteAssessmentItemModal modal_content=for_modal}}
+
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
+  {{/if}}
 
 </template>
 

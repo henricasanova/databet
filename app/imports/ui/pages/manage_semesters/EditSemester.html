@@ -1,5 +1,7 @@
 <template name="EditSemester">
 
+  {{#if currentUser}}
+
   <div class="ui container center">
 
     <h3 class="ui dividing header">Editing an existing semester</h3>
@@ -116,6 +118,14 @@
     <a href="{{pathFor 'SemesterEmailInstructorsAfter'}}/{{semester_id}}" class="ui button blue"><i class="ui icon announcement"></i>E-mail instructors (at the end of semester)</a>
 
   </div>
+
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
+  {{/if}}
 
 
 </template>

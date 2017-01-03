@@ -49,11 +49,11 @@ export function remove_user(userId) {
   Meteor.call("remove_document_from_collection", "Meteor.users", userId);
 }
 
-export function create_user(doc) {
+export function create_user(user) {
   Meteor.call("insert_document_into_collection", "Meteor.users", user);
 }
 
-export function update_user(docId, modifier) {
+export function update_user(userId, modifier) {
   Meteor.call("update_document_in_collection", "Meteor.users", userId, modifier);
 }
 

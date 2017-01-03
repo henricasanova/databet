@@ -30,7 +30,13 @@ Accounts.onLogin(function() {
   // Setting the current semester
   set_current_semester(null);
 
-  // Go to the Home page
-  FlowRouter.go('Home_Page');
+  // Go to the Home page if this is a fresh login
+  // This is a bad hack to avoid unwanted "go to home page"
+  // behavior in case the user hacks the URL or hits reload on the browser
+
+  if (FlowRouter.getRouteName() == "Home_Page") {
+    FlowRouter.go('Home_Page');
+  }
+
 });
 

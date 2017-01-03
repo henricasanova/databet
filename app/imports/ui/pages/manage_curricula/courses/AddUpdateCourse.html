@@ -1,5 +1,7 @@
 <template name="AddUpdateCourse">
 
+  {{#if currentUser}}
+
   <div class="ui container raised very padded text segment">
     <form class="ui equal width form">
       {{#if is_add}}
@@ -55,6 +57,15 @@
     {{/if}}
 
   </div>
+
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
+  {{/if}}
+
 
 
 </template>

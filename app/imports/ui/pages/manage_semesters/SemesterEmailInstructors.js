@@ -1,5 +1,6 @@
 import { _ } from 'meteor/underscore';
 import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses.js';
+import { Courses } from '../../../api/databet_collections/Courses.js';
 import { Meteor } from 'meteor/meteor';
 import { semesterid_to_semesterstring } from '../../../api/global_helpers/semesters';
 
@@ -87,15 +88,13 @@ Template.ListOfUsersEmails.helpers({
 
 function process_body(original_body, user_id) {
   var processed_body;
-  var course_info = "TO_IMPLEMENT";
+  var course_info = get_course_info_for_user_and_semester(user_id, FlowRouter.getParam("_id"));
 
   processed_body = original_body.replace(/COURSE_INFO/, course_info);
 
   return processed_body;
 
 }
-
-
 
 
 function compute_distribution_list() {
@@ -114,4 +113,25 @@ function compute_distribution_list() {
                       return ""; });
 
   return [user_ids, e_mail_list];
+}
+
+function get_course_info_for_user_and_semester(user_id, semester_id) {
+
+  var offered_courses = OfferedCourses.find({"semester": semester_id, "instructor": user_id}).fetch();
+  var course_info = "";
+  for (var i=0; i < offered_courses.length; i++) {
+    var course = Courses.findOne({_id: offered_courses[i].course});
+    var url= get_course_info_url(offered_courses[i].course);
+    course_info += "<a href=\""+ url + "\">" + "Useful ABET information for " +
+      course.alphanumeric + " (" +
+      semesterid_to_semesterstring(semester_id) +
+      ")</a><br>\n\n";
+  }
+  return course_info;
+}
+
+function get_course_info_url(course_id) {
+
+  // TODO
+  return Meteor.absoluteUrl() + "course_info/:" + course_id;
 }

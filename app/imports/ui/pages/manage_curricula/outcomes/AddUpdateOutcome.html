@@ -1,5 +1,6 @@
 <template name="AddUpdateOutcome">
 
+  {{#if currentUser}}
 
   <div class="ui container raised very padded text segment">
     <form class="ui equal width form">
@@ -75,6 +76,13 @@
     {{/if}}
 
   </div>
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
+  {{/if}}
 
 
 </template>

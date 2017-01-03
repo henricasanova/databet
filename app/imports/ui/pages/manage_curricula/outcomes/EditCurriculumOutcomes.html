@@ -1,5 +1,7 @@
 <template name="EditCurriculumOutcomes">
 
+  {{#if currentUser}}
+
   <div class="ui container center">
 
     {{#if at_least_one_outcome}}
@@ -31,6 +33,14 @@
   {{else}}
   <button class="ui button green" id="button_add_outcome"><i class="ui icon add"></i>Add a new Outcome</button>
   {{/if}}
+  {{/if}}
+
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
   {{/if}}
 
 </template>

@@ -23,6 +23,9 @@ Software improvement:
 
 
 New features:
+    - Course Info Page: in progress
+           - Issue: how to come up with a URL that somebody can go to?
+
     - Find a way to "guide" assessment
     - Start thinking about generating the assessment reports
 

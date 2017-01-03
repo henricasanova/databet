@@ -1,5 +1,7 @@
 <template name="Doctor">
 
+  {{#if currentUser}}
+
   <br>
 
   <div class="ui container center">
@@ -22,6 +24,15 @@
     {{/if}}
 
   </div>
+
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
+  {{/if}}
+
 
 </template>
 

@@ -1,7 +1,5 @@
 <template name="Home_Page">
 
-  {{#if currentUser}}
-
   <div class="ui container raised text container segment">
     <h2 class="ui header aligned center">
       Welcome to DataBET!<br>
@@ -27,12 +25,5 @@
 
   {{> TodoList}}
 
-  {{else}}
-
-  <div class="center-align">
-    {{> Login }}
-  </div>
-
-  {{/if}}
 
 </template>

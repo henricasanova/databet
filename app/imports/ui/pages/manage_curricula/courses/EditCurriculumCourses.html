@@ -1,5 +1,7 @@
 <template name="EditCurriculumCourses">
 
+  {{#if currentUser}}
+
   <div class="ui container center">
 
     {{#if at_least_one_course}}
@@ -32,6 +34,14 @@
   {{else}}
   <button class="ui button green" id="button_add_course">Add a new course</button>
   {{/if}}
+  {{/if}}
+
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
   {{/if}}
 
 </template>

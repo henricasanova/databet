@@ -1,8 +1,8 @@
 <template name="AddSemester">
 
+{{#if currentUser}}
 
   <div class="ui container raised very padded text container segment">
-
 
     {{#if curricula_not_empty}}
 
@@ -83,5 +83,13 @@
 
 
   </div>
+
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
+  {{/if}}
 
 </template>

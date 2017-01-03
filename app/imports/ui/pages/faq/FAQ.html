@@ -1,5 +1,7 @@
 <template name="FAQ">
 
+  {{#if currentUser}}
+
   <div class="ui container raised padded text segment fluid">
 
 <h2 class="aligned center ui header">DataBET Frequently Asked Questions</h2>
@@ -158,6 +160,13 @@
 
   </div>
 
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
+  {{/if}}
 
 
 </template>

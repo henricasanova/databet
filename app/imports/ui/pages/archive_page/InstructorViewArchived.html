@@ -1,5 +1,9 @@
 <template name="InstructorViewArchived">
 
+  {{#if currentUser}}
+
+
+
   <div class="ui container raised padded text segment">
     <h2 class="ui header aligned center">Previously Entered Assessments for Past Courses</h2>
   </div>
@@ -39,6 +43,15 @@
 
 
   </div>
+
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
+  {{/if}}
+
 
 </template>
 

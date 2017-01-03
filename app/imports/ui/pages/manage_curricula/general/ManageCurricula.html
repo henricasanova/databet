@@ -1,5 +1,7 @@
 <template name="ManageCurricula">
 
+  {{#if currentUser}}
+
   <!--<h3 class="ui header center aligned">Curriculum management</h3>-->
   <br>
 
@@ -35,6 +37,14 @@
 
   </div>
 
+
+  {{else}}
+
+  <div class="center-align">
+    {{> Login }}
+  </div>
+
+  {{/if}}
 
 </template>
 
