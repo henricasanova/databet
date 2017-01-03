@@ -2,6 +2,8 @@
 
   <div class="ui container center raised">
 
+    {{#if subscription_ready}}
+
     {{#if course_exists}}
 
     <h3 class="ui center aligned header"> Information for Instructors </h3>
@@ -64,6 +66,13 @@
 
     {{/if}}
 
+
+  {{ else }}
+
+  {{> Loading}}
+
+  {{/if}}
   </div>
+
 
 </template>

@@ -3,6 +3,7 @@ import { CurriculumMappings } from '../../../api/databet_collections/CurriculumM
 import { PerformanceIndicators } from '../../../api/databet_collections/PerformanceIndicators';
 import { StudentOutcomes } from '../../../api/databet_collections/StudentOutcomes';
 import { _ } from 'meteor/underscore';
+import { Meteor } from 'meteor/meteor';
 
 Template.CourseInfo.onRendered(
   function() {
@@ -12,9 +13,25 @@ Template.CourseInfo.onRendered(
 Template.CourseInfo.onCreated( function() {
 
 
+  // Somehow, couldn't get the Template.subscriptionReady stuff to work. This will do for now...
+
+  this.subscription_readiness = new ReactiveVar();
+  Template.instance().subscription_readiness.set(0);
+
+  var increment_when_ready = Template.instance().subscription_readiness;
+
+  Meteor.subscribe("StudentOutcomes", function() { increment_when_ready.set(increment_when_ready.get() + 1);});
+  Meteor.subscribe("PerformanceIndicators", function() { increment_when_ready.set(increment_when_ready.get() + 1);});
+  Meteor.subscribe("Courses", function() { increment_when_ready.set(increment_when_ready.get() + 1);});
+  Meteor.subscribe("CurriculumMappings", function() { increment_when_ready.set(increment_when_ready.get() + 1);});
+
 });
 
 Template.CourseInfo.helpers({
+
+  subscription_ready: function() {
+    return (Template.instance().subscription_readiness.get() == 4);
+  },
 
   course_exists: function() {
     var course_id = FlowRouter.getParam('_id');
