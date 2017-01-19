@@ -1,12 +1,19 @@
 #!/bin/bash
 set -e
 
+###############################
+####   EDIT THIS SECTION   ####
+###############################
+
 SERVER_NAME=databet.ics.hawaii.edu
 PORT=5001
 URL_SUFFIX=/
 SETTINGS_FILE=../../settings.production.json
 SERVICE_NAME=meteor_databet
 
+###############################
+#### END EDIT THIS SECTION ####
+###############################
 
 echo "To run this script you need to:"
 echo "  1) Be logged in to your deployment ITS VM"
