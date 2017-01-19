@@ -1,7 +1,9 @@
 #!/bin/sh 
 
+-e
+
 if [ "$#" -ne 4 ] ; then
-	echo "Usage: $0 <server name> <port> <url_suffix> <path to settings file>"
+	echo "Usage: $0 <server name> <port> </url_suffix> <path to settings file>"
 	echo ""
 	echo "Examples:"
 	echo "  $0 myserver.ics.hawaii.edu 5001 / ../config/settings.json"

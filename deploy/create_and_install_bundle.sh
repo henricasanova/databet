@@ -1,8 +1,4 @@
 #!/bin/bash
-#
-# This script updates the DataBET app. You will need to restart
-# the service to make the update effective
-#
 set -e
 
 # Get the github 

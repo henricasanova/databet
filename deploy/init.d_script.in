@@ -1,0 +1,139 @@
+#!/bin/bash
+#
+# @SERVICE_NAME@
+#
+# chkconfig: 35 99 99
+#      Run level: 35  (just like MongoDB)
+#      Start order: 99 (late)
+#      Stop order: 10 (early)
+# description: Meteor application
+
+
+# Load the helpful initd functions
+#
+. /etc/rc.d/init.d/functions
+
+## Useful variables for the init.d script
+###################################################
+export METEOR_USER=@SERVICE_NAME@
+export METEOR_GROUP=@SERVICE_NAME@
+
+## For variables for the Meteor app
+###################################################
+export MONGO_URL=mongodb://localhost:27017
+export PORT=@PORT@
+export ROOT_URL=http://@SERVER_NAME@:@PORT@@URL_SUFFIX@
+export METEOR_SETTINGS=$(cat "@SETTINGS_FILE@")
+
+# Set the path to the useful files given the METEOR_ROOT
+METEOR_MAINJS=@MAIN_DIR@/bundle/main.js
+PIDDIR=@MAIN_DIR@/var/run
+PIDFILE=$PIDDIR/@SERVICE_NAME@.pid
+LOCKFILE=@MAIN_DIR@/var/lock/@SERVICE_NAME@
+LOGDIR=@MAIN_DIR@/var/log
+LOGFILE=$LOGDIR/@SERVICE_NAME@.log
+
+
+#
+# Function to check that user is root
+##################################################
+check() {
+  [ "`id -u`" = 0 ] || exit 4
+}
+
+#
+# Function to start the service
+##################################################
+start()
+{
+ 
+  check	    # check that the user is root
+
+  echo -n $"Starting @SERVICE_NAME@...    "
+
+  # Check that no instance is currently running
+  ####
+  LIST=`su - $METEOR_USER -c "forever list" | grep $METEOR_MAINJS | wc -l`
+  [ ! $LIST -eq 0 ] && echo -n "Already running!" && failure && echo && return 1
+
+  # Create a PID dir if not there already
+  ####
+  [ ! -d $PIDDIR ] && install -d -m 0755 -o $METEOR_USER -g $METEOR_GROUP $PIDDIR
+
+  # Create the LOG dir if not there already
+  ####
+  [ ! -d $LOGDIR ] && install -d -m 0755 -o $METEOR_USER -g $METEOR_GROUP $LOGDIR
+
+  # Start the daemons using forever
+  ###
+  BASE_COMMAND="forever start -l $LOGFILE --pidFile $PIDFILE -a $METEOR_MAINJS"
+  COMMAND="source $CONFIGFILE; $BASE_COMMAND"
+  su - $METEOR_USER -c "$COMMAND" 1> /dev/null 2> /dev/null
+  RETVAL=$?
+
+  # Print status and return
+  ###
+  [ $RETVAL -eq 0 ] && touch $LOCKFILE && echo -n "Started!" && success
+  [ ! $RETVAL -eq 0 ] && failure
+  echo
+  return $RETVAL
+}
+
+#
+# Function to stop the service
+######################################################
+stop()
+{
+
+  check	    # check that the user is root
+
+  echo -n $"Stopping @SERVICE_NAME@...    "
+
+  # Stopping the service
+  ###
+  su - $METEOR_USER -c "forever stop $METEOR_MAINJS"  1> /dev/null 2> /dev/null
+  RETVAL=$?
+
+  # Print status and return
+  ###
+  [ $RETVAL -eq 0 ] && rm -f $LOCKFILE && echo -n "Stopped!" && success
+  [ ! $RETVAL -eq 0 ] && echo -n "Was not running!" && failure
+  echo 
+  return $RETVAL
+}
+
+#
+# Function to restart the service
+#
+restart () {
+  stop
+  start
+}
+
+
+RETVAL=0
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart|reload|force-reload)
+    restart
+    ;;
+  condrestart)
+    [ -f $LOCKFILE ] && restart || :
+    ;;
+  status)
+    status @SERVICE_NAME@
+    RETVAL=$?
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status|restart|reload|force-reload|condrestart}"
+    RETVAL=1
+esac
+
+exit $RETVAL
+
