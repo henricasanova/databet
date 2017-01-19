@@ -44,5 +44,7 @@ cat ./init.d_script.in \
 
 
 echo "Script generated in ./$SERVICE_NAME"
-echo "To install it: sudo cp ./$SERVICE_NAME /etc/init.d/$SERVICE_NAME"
+echo ""
+echo "To install the script: sudo cp ./$SERVICE_NAME /etc/init.d/$SERVICE_NAME"
 echo "Make sure that there is a $SERVICE_NAME user and a $SERVICE_NAME group"
+echo "(As explained, along with other tidbits, on the \"Deploying a Meteor App on RHEL 6\" page)"
