@@ -29,7 +29,7 @@ then
 	exit 0
 fi
 
-read -p "Should we create/install the app bundle?" -n 1 -r
+read -p "\e[32m\e[1mShould we create/install the app bundle?\e[0m " -n 1 -r
 echo ""
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
