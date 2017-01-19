@@ -1,6 +1,5 @@
-#!/bin/sh 
-
--e
+#!/bin/bash
+set -e
 
 if [ "$#" -ne 4 ] ; then
 	echo "Usage: $0 <server name> <port> </url_suffix> <path to settings file>"
