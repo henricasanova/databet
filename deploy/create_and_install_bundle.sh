@@ -14,6 +14,6 @@ echo "Building the Meteor bundle..."
 cd ../app && meteor build --directory ..
 
 # NMP install
-echo "NPM-install of app..."
+echo "NPM-install..."
 cd ../bundle/programs/server && npm install
 
