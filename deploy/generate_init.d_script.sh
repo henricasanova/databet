@@ -26,7 +26,7 @@ if [ ! -r $SETTING_FILE ]; then
 	exit 1
 fi
 
-SETTINGS_FILE="$(cd "$(dirname $SETTINGS_FILE)"; pwd)/$(basename $SETTINGS_FILE))"
+SETTINGS_FILE="$(cd "$(dirname $SETTINGS_FILE)"; pwd)/$(basename $SETTINGS_FILE)"
 
 MAIN_DIR=`cd ..; pwd`
 
@@ -41,10 +41,4 @@ cat ./init.d_script.in \
 	| sed "s|@MAIN_DIR@|$MAIN_DIR|"  \
      	> ./$SERVICE_NAME
 
-
-
-echo "Script generated in ./$SERVICE_NAME"
-echo ""
-echo "To install the script: sudo cp ./$SERVICE_NAME /etc/init.d/$SERVICE_NAME"
-echo "Make sure that there is a $SERVICE_NAME user and a $SERVICE_NAME group"
-echo "(As explained, along with other tidbits, on the \"Deploying a Meteor App on RHEL 6\" page)"
+#echo "Script generated in ./$SERVICE_NAME"
