@@ -40,7 +40,9 @@ echo "Generating the init.d script..."
 ./generate_init.d_script.sh $SERVICE_NAME $PORT $URL_SUFFIX $SETTINGS_FILE $SERVICE_NAME
 
 echo "Copying the init.d script in /etc/init.d..."
-sudo cp ./$SERVICE_NAME /etc/init.d/
+sudo cp ./$SERVICE_NAME /etc/init.d/$SERVICE_NAME
+echo "Making it executable..."
+sudo chmod +x /etc/init.d/$SERVICE_NAME
 /bin/rm -f ./$SERICE_NAME
 
 echo ""
