@@ -18,13 +18,14 @@
 export METEOR_USER=@SERVICE_NAME@
 export METEOR_GROUP=@SERVICE_NAME@
 
-## For variables for the Meteor app
+## Useful variables for the Meteor app
 ###################################################
 MONGO_URL=mongodb://localhost:27017
 PORT=@PORT@
 ROOT_URL=http://@SERVER_NAME@:@PORT@@URL_SUFFIX@
 
-# Set the path to the useful files given the METEOR_ROOT
+
+# Assign useful paths to variables
 METEOR_MAINJS=@MAIN_DIR@/bundle/main.js
 PIDDIR=/var/run
 PIDFILE=$PIDDIR/@SERVICE_NAME@.pid
@@ -32,7 +33,6 @@ LOCKDIR=/var/lock/
 LOCKFILE=$LOCKDIR/@SERVICE_NAME@
 LOGDIR=/var/log
 LOGFILE=$LOGDIR/@SERVICE_NAME@.log
-
 
 #
 # Function to check that user is root
