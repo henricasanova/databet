@@ -35,9 +35,9 @@ var meteor_files_config = {};
 
 if (Meteor.server) {
 
-  var upload_root = process.env.UPLOAD_DIR;
+  var upload_root = Meteor.settings.upload_dir.path;
   if (upload_root == undefined) {
-    throw new Meteor.Error("UPLOAD_DIR environment variable must be defined");
+    throw new Meteor.Error("upload_dir should be defined in the settings file");
   }
 
 

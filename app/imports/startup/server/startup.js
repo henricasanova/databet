@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { TmpFiles } from '../../api/databet_collections/TmpFiles';
 
-console.log("SERVER-SIDE: ROOT_URL = ", process.env.ROOT_URL);
-
 Meteor.startup(function () {
   try {
     configure_email();

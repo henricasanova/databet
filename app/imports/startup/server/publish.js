@@ -26,7 +26,6 @@ import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
 Meteor.publish("offered_courses_for_a_user", function (instructor, archived) {
   check(instructor, String);
   check(archived, Boolean);
-  console.log("RETURNING OFFERED COURSES! isServer", Meteor.isServer, instructor, archived);
   return [
     OfferedCourses.find({instructor: instructor, archived: archived}),
   ]
