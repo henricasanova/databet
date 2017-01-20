@@ -29,9 +29,9 @@ INITD_FILE=/etc/init.d/mongod_$SERVICE_NAME
 
 cat $ORIGINAL_INITD_FILE | \
 	sed "s|config: /etc/mongod.conf|config: $CONFIG_FILE|" | \
-	sed "s|CONFIGFILE=\"/etc/mongod.conf\"|CONFIGFILE=\"$CONFIG_FILE\"|" \
-	sed "s|Starting mongod|Starting mongod_$SERVICE_NAME|" \
-	sed "s|Error starting mongod|Error starting mongod_$SERVICE_NAME|" \
+	sed "s|CONFIGFILE=\"/etc/mongod.conf\"|CONFIGFILE=\"$CONFIG_FILE\"|" | \
+	sed "s|Starting mongod|Starting mongod_$SERVICE_NAME|" | \
+	sed "s|Error starting mongod|Error starting mongod_$SERVICE_NAME|" | \
 	sed "s|Stopping mongod|Stopping mongod_$SERVICE_NAME|" \
 	> /tmp/mongod
 sudo mv -f /tmp/mongod $INITD_FILE
