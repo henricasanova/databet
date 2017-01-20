@@ -12,7 +12,7 @@ PORT=$2
 ORIGINAL_CONFIG_FILE=/etc/mongod.conf
 CONFIG_FILE=/etc/mongo_$SERVICE_NAME.conf
 
-echo "Creating $CONFIG_FILE..."
+#echo "  Creating $CONFIG_FILE..."
 cat $ORIGINAL_CONFIG_FILE | \
 	sed "s|/var/log/mongodb/mongod.log|/var/log/mongodb/mongod_$SERVICE_NAME.log|" | \
 	sed "s|dbPath: /var/lib/mongo|dbPath: /var/lib/mongo_$SERVICE_NAME|" | \
@@ -21,7 +21,7 @@ cat $ORIGINAL_CONFIG_FILE | \
 	> /tmp/mongod.conf
 sudo mv -f /tmp/mongod.conf $CONFIG_FILE
 
-echo "Creating /var/lib/mongo_$SERVICE_NAME directory..."
+#echo "  Creating /var/lib/mongo_$SERVICE_NAME directory..."
 sudo mkdir -p /var/lib/mongo_$SERVICE_NAME
 sudo chown mongod:mongod /var/lib/mongo_$SERVICE_NAME
 
