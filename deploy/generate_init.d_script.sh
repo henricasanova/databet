@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-if [ "$#" -ne 5 ] ; then
-	echo "Usage: $0 <server name> <port> </url_suffix> <path to settings file> <service_name>"
+if [ "$#" -ne 4 ] ; then
+	echo "Usage: $0 <port> </url_suffix> <path to settings file> <service_name>"
 	echo ""
 	echo "Examples:"
 	echo "  $0 myserver.ics.hawaii.edu 5001 / ../config/settings.json meteor_myapp"
@@ -10,11 +10,10 @@ if [ "$#" -ne 5 ] ; then
 	exit 1
 fi
 
-SERVER_NAME=$1
-PORT=$2
-URL_SUFFIX=$3
-SETTINGS_FILE=$4
-SERVICE_NAME=$5
+PORT=$1
+URL_SUFFIX=$2
+SETTINGS_FILE=$3
+SERVICE_NAME=$4
 
 if [ ! -e $SETTING_FILE ]; then
 	echo "Can't find file '$SETTINGS_FILE'"
@@ -34,7 +33,6 @@ MAIN_DIR=`cd ..; pwd`
 
 cat ./init.d_script.in \
 	| sed "s|@SERVICE_NAME@|$SERVICE_NAME|"  \
-	| sed "s|@SERVER_NAME@|$SERVER_NAME|"  \
 	| sed "s|@PORT@|$PORT|"  \
 	| sed "s|@URL_SUFFIX@|$URL_SUFFIX|"  \
 	| sed "s|@SETTINGS_FILE@|$SETTINGS_FILE|"  \

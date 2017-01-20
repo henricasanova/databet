@@ -40,7 +40,7 @@ then
 fi
 
 echo -e "\e[32m\e[1mGenerating the init.d script...\e[0m"
-./generate_init.d_script.sh $SERVER_NAME $PORT $URL_SUFFIX $SETTINGS_FILE $SERVICE_NAME
+./generate_init.d_script.sh $PORT $URL_SUFFIX $SETTINGS_FILE $SERVICE_NAME
 
 echo -e "\e[32m\e[1mCopying the init.d script in /etc/init.d...\e[0m"
 sudo cp ./$SERVICE_NAME /etc/init.d/$SERVICE_NAME
