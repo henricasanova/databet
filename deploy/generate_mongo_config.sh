@@ -23,6 +23,7 @@ sudo mv -f /tmp/mongod.conf $CONFIG_FILE
 
 echo "Creating /var/lib/mongo_$SERVICE_NAME directory..."
 sudo mkdir -p /var/lib/mongo_$SERVICE_NAME
+sudo chown mongod:mongod /var/lib/mongo_$SERVICE_NAME
 
 ORIGINAL_INITD_FILE=/etc/init.d/mongod 
 INITD_FILE=/etc/init.d/mongod_$SERVICE_NAME
