@@ -66,14 +66,14 @@ echo -e "\e[1m  within the <VirtualHost *:80> clause that contains \"ServerName 
 
 
 echo ""
-echo -e "\e[1m* To start the services:\e[0m\e[33m"
+echo -e "\e[1m* To (re)start the services:\e[0m\e[33m"
 echo "  sudo service mongod_$SERVICE_NAME restart"
 echo "  sudo service $SERVICE_NAME restart"
-echo ""
-echo "  sudo chkconfig $SERVICE_NAME on          (if needed)"
-echo "  sudo chkconfig mongod_$SERVICE_NAME on    (if needed)"
-echo ""
 echo "  sudo service httpd restart"
+echo ""
+echo -e "\e[1m* To make the services persistent (if needed):\e[0m\e[33m"
+echo "  sudo chkconfig $SERVICE_NAME on"
+echo "  sudo chkconfig mongod_$SERVICE_NAME on"
 echo ""
 echo -e "\e[0m"
 
