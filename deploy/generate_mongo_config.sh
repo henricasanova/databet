@@ -32,3 +32,4 @@ cat $ORIGINAL_INITD_FILE | \
 	sed "s|CONFIGFILE=\"/etc/mongod.conf\"|CONFIGFILE=\"$CONFIG_FILE\"|" \
 	> /tmp/mongod
 sudo mv -f /tmp/mongod $INITD_FILE
+sudo chmod +x $INITD_FILE
