@@ -7,7 +7,7 @@ set -e
 
 SERVER_NAME=databet.ics.hawaii.edu
 PORT=5001
-URL_SUFFIX=/
+URL_SUFFIX=/            # Starts with a '/', and does not end with a '/'!
 SETTINGS_FILE=../../settings.production.json
 SERVICE_NAME=meteor_databet
 
@@ -56,8 +56,8 @@ echo "  <VirtualHost *:80>"
 echo "      ServerName $SERVER_NAME"
 echo "      ProxyPreserveHost On"
 echo "      ProxyRequests     Off Order deny,allow Allow from all"
-echo "      ProxyPass $URL_SUFFIX http://localhost:$PORT/"
-echo "      ProxyPassReverse $URL_SUFFIX http://localhost:$PORT/"
+echo "      ProxyPass $URL_SUFFIX http://localhost:$PORT$URL_SUFFIX"
+echo "      ProxyPassReverse $URL_SUFFIX http://localhost:$PORT$URL_SUFFIX"
 echo "  </VirtualHost>"
 echo ""
 
