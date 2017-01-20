@@ -74,6 +74,7 @@ echo ""
 echo -e "\e[1m* To make the services persistent (if needed):\e[0m\e[33m"
 echo "  sudo chkconfig $SERVICE_NAME on"
 echo "  sudo chkconfig mongod_$SERVICE_NAME on"
+echo "  sudo chkconfig httpd on"
 echo ""
 echo -e "\e[0m"
 
