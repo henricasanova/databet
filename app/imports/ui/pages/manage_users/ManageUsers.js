@@ -17,7 +17,7 @@ Template.ManageUsers.onCreated(function () {
 Template.ManageUsers.helpers({
 
   listOfUsers: function () {
-    return Meteor.users.find().fetch();
+    return Meteor.users.find({}, {sort: {username: 1}}).fetch();
   },
 
   add_user_mode: function () {

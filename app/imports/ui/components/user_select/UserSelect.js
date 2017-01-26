@@ -4,7 +4,7 @@ import { set_current_user, get_current_user } from '../../../api/global_helpers/
 Template.UserSelect.helpers({
 
   listOfUsers: function () {
-    return Meteor.users.find({});
+    return Meteor.users.find({},{sort: {username: 1}});
   },
 
   is_current_user: function () {

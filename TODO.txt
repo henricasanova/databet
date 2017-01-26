@@ -1,3 +1,6 @@
+Bug Fixes:
+
+
 Software improvement:
     - Have each Template call "subscribe()" in OnCreated()
         - archive_page
@@ -27,5 +30,3 @@ New features:
     - Start thinking about generating the assessment reports
 
 
-
-Make sure deployment works:
