@@ -8,8 +8,6 @@ import { Meteor } from 'meteor/meteor';
 
 Template.InstructorViewArchived.onCreated(function() {
 
-  console.log("IN ON CRETED FOR ARCHIVE TEMPLATE");
-
   // var instructor = get_current_user();
   // console.log("SUBSCRIBING TO THE OFFERED COURSES as", instructor);
   // Tracker.autorun(function() {
@@ -50,9 +48,7 @@ Template.InstructorViewArchived.onCreated(function() {
 Template.InstructorViewArchived.helpers({
 
   "listOfArchivedOfferedCourses": function () {
-
-    console.log("IN LIST OF ARCHIVED OFFERED COURSE HELPER");
-
+    
     var offered_courses = OfferedCourses.find({"instructor": get_current_user(), "archived": true}).fetch();
 
     offered_courses.sort(function (a, b) {
@@ -73,14 +69,11 @@ Template.InstructorViewArchived.helpers({
         }
       }
     });
-    console.log("RETURNING LIST OF ARCHIVED OFFERED COURSES, this many: ", offered_courses.length);
     return offered_courses;
   },
 
   "atLeastOneArchivedOfferedCourse": function () {
-    console.log("IN AT LEAST ONE ARCHIVED OFFERED COURSE");
     var to_return = (OfferedCourses.find({"instructor": get_current_user(), "archived": true}).count() > 0);
-    console.log("RETURNING AT LEAST ONE ARCHIVED OFFERED COURSE: ", to_return);
     return to_return;
   },
 
