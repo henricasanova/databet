@@ -9,11 +9,15 @@ import { semesterid_to_semesterstring } from '../../../api/global_helpers/semest
 Template.ManageSemesters.helpers({
 
   listOfSemesters: function() {
-    // var x= Semesters.find({}, {sort: {order: 1}}).fetch();
-    // for (var i=0; i < x.length; i++) {
-    //   console.log("====> ", x[i].order);
-    // }
-    return Semesters.find({}, {sort: {order: -1}});
+    return Semesters.find({}).fetch().sort(function(a,b) {
+        if (a.order < b.order) {
+          return 1;
+        } else if (a.order > b.order) {
+          return -1;
+        } else {
+          return 0;
+        }
+    });
   },
 
   atLeastOneSemester: function() {
