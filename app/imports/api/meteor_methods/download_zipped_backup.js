@@ -10,7 +10,7 @@ import { fs_read_file_sync } from '../global_helpers/file_system';
 import { generic_docs_to_JSON } from '../global_helpers/collection_to_json';
 import { save_and_publish_zipfile} from '../global_helpers/downloadable_zipfile';
 import { Random } from 'meteor/random';
-import { TmpFiles } from '../../api/databet_collections/TmpFiles';
+import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
 
 Meteor.methods({
 
@@ -19,8 +19,10 @@ Meteor.methods({
     if (Meteor.server) {
 
       // Get all files
-      var upload_root = TmpFiles.get_storage_path();
+      var upload_root = UploadedFiles.get_storage_path();
+      console.log("Getting file list at ", upload_root);
       var filelist = fs_get_file_list(upload_root);
+      console.log("GOT THIS MANY FILES ", filelist.length);
 
       // Construct archive name
       var now = new Date();
