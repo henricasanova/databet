@@ -5,6 +5,7 @@ import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses'
 import { Semesters } from '../../../api/databet_collections/Semesters';
 import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
 import { trim_date } from '../../../api/global_helpers/trim_date';
+import { _ } from 'meteor/underscore';
 
 Template.StatisticsCounts.helpers({
   num_users: function() {
@@ -65,7 +66,19 @@ Template.StatisticsCounts.helpers({
   },
 
   list_of_users: function() {
-    return Meteor.users.find({});
+    var list= Meteor.users.find({}).fetch();
+
+    list = list.sort(function (a,b) {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    return list;
   },
 
   num_offered_courses_for_user: function() {
@@ -80,10 +93,6 @@ Template.StatisticsCounts.helpers({
     }
     return num;
   }
-
-
-
-
 
 
 });
