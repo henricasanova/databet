@@ -8,6 +8,7 @@ import { Meteor } from 'meteor/meteor';
 
 Template.InstructorViewArchived.onCreated(function() {
 
+  console.log("IN ON CRETED FOR ARCHIVE TEMPLATE");
 
   // var instructor = get_current_user();
   // console.log("SUBSCRIBING TO THE OFFERED COURSES as", instructor);
@@ -48,7 +49,10 @@ Template.InstructorViewArchived.onCreated(function() {
 
 Template.InstructorViewArchived.helpers({
 
-  "listOfOfferedCourses": function () {
+  "listOfArchivedOfferedCourses": function () {
+
+    console.log("IN LIST OF ARCHIVED OFFERED COURSE HELPER");
+
     var offered_courses = OfferedCourses.find({"instructor": get_current_user(), "archived": true}).fetch();
 
     offered_courses.sort(function (a, b) {
@@ -69,19 +73,21 @@ Template.InstructorViewArchived.helpers({
         }
       }
     });
-
+    console.log("RETURNING LIST OF ARCHIVED OFFERED COURSES, this many: ", offered_courses.length);
     return offered_courses;
   },
 
-  "atLeastOneOfferedCourse": function () {
-    return (OfferedCourses.find({"instructor": get_current_user(), "archived": true}).count() > 0);
+  "atLeastOneArchivedOfferedCourse": function () {
+    console.log("IN AT LEAST ONE ARCHIVED OFFERED COURSE");
+    var to_return = (OfferedCourses.find({"instructor": get_current_user(), "archived": true}).count() > 0);
+    console.log("RETURNING AT LEAST ONE ARCHIVED OFFERED COURSE: ", to_return);
+    return to_return;
   },
 
 });
 
 
 Template.OfferedCourseRowArchived.onCreated(function () {
-  Meteor.subscribe("subscription_OfferedCourseTowArchived", this);
 });
 
 
@@ -123,7 +129,9 @@ Template.OfferedCourseRowArchived.helpers({
 
   "popup_info": function (e) {
     var assessment_items = AssessmentItems.find({"offered_course": this._id}).fetch();
+    console.log("PLUCKING");
     return _.pluck(assessment_items, "assessment_type");
+    console.log("DONE PLUCKING");
   }
 
 });

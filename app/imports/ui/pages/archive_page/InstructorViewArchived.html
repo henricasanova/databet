@@ -20,7 +20,7 @@
     <hr>
     {{/if}}
 
-    {{#if atLeastOneOfferedCourse}}
+    {{#if atLeastOneArchivedOfferedCourse}}
     <table class="ui table">
       <thead>
       <tr>
@@ -31,7 +31,7 @@
       </tr>
       </thead>
       <tbody>
-      {{#each listOfOfferedCourses}}
+      {{#each listOfArchivedOfferedCourses}}
       {{> OfferedCourseRowArchived }}
       {{/each}}
       </tbody>

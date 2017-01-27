@@ -20,9 +20,7 @@ Meteor.methods({
 
       // Get all files
       var upload_root = UploadedFiles.get_storage_path();
-      console.log("Getting file list at ", upload_root);
       var filelist = fs_get_file_list(upload_root);
-      console.log("GOT THIS MANY FILES ", filelist.length);
 
       // Construct archive name
       var now = new Date();
