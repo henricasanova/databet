@@ -28,7 +28,11 @@ export function generic_import_docs_from_JSON(collection, doclist, update_existi
 
       if ((!docId) || (collection.find({_id: docId}).count() == 0)) {
         console.log("    Inserting a new document in ", collection._name);
-        collection.insert(doc);
+        try {
+          collection.insert(doc);
+        } catch (err) {
+          console.log("Error while inserting ", doc, "in ", collection._name);
+        }
       } else if (update_existing) {
         console.log("    Replacing an existing document in ", collection._name);
         collection.remove({_id: docId});

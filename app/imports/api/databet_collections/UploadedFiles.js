@@ -158,7 +158,7 @@ export class UploadedFilesCollection {
           var storage_dir = this.config["storageDir"];
           var import_upload_root  = doc_path.split(storage_dir)[0];
           var new_doc_path = doc_path.replace(import_upload_root, local_upload_root);
-          
+
           this.MeteorFiles.addFile(new_doc_path,
             {
               fileName: doc_name,
