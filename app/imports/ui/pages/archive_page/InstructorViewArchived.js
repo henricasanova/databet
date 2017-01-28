@@ -48,7 +48,7 @@ Template.InstructorViewArchived.onCreated(function() {
 Template.InstructorViewArchived.helpers({
 
   "listOfArchivedOfferedCourses": function () {
-    
+
     var offered_courses = OfferedCourses.find({"instructor": get_current_user(), "archived": true}).fetch();
 
     offered_courses.sort(function (a, b) {
@@ -122,9 +122,7 @@ Template.OfferedCourseRowArchived.helpers({
 
   "popup_info": function (e) {
     var assessment_items = AssessmentItems.find({"offered_course": this._id}).fetch();
-    console.log("PLUCKING");
     return _.pluck(assessment_items, "assessment_type");
-    console.log("DONE PLUCKING");
   }
 
 });

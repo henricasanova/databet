@@ -156,7 +156,7 @@ FlowRouter.route('/course_info/:_id', {
 
 function conditional_render(must_be_logged_in, must_be_admin, template_name) {
 
-  console.log("Conditional rendering of " + template_name,  must_be_logged_in, must_be_admin);
+  //console.log("Conditional rendering of " + template_name,  must_be_logged_in, must_be_admin);
 
   var what_to_show = template_name;
 

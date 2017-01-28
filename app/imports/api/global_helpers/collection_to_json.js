@@ -34,6 +34,7 @@ export function generic_import_docs_from_JSON(collection, doclist, update_existi
         collection.remove({_id: docId});
         collection.insert(doc);
       } else {
+        console.log("    Trying to insert a document with a key that's already there (",docId,")");
         // do nothing
       }
     }

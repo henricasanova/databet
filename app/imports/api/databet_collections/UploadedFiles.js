@@ -137,6 +137,8 @@ export class UploadedFilesCollection {
         var doc_path = doclist[k].path;
         var doc_type = doclist[k].type;
 
+
+
         var file_already_known = (this.find_document(doc_databet_id) != undefined);
 
         if ((!file_already_known) || (file_already_known && update_existing)) {
@@ -145,8 +147,19 @@ export class UploadedFilesCollection {
             super.remove({"meta.databet_id": doc_databet_id});
           }
           console.log("Adding document with databet_id", doc_databet_id, "into UploadedFiles");
+          console.log(" doc_databet_id = ", doc_databet_id);
+          console.log(" doc_name = ", doc_name);
+          console.log(" doc_path = ", doc_path);
+          console.log(" doc_type = ", doc_type);
 
-          this.MeteorFiles.addFile(doc_path,
+          // Modify the doc_path in case we're on a different file system! This is a bit of
+          // a hack right now
+          var local_upload_root = Meteor.settings.upload_dir.path;
+          var storage_dir = this.config["storageDir"];
+          var import_upload_root  = doc_path.split(storage_dir)[0];
+          var new_doc_path = doc_path.replace(import_upload_root, local_upload_root);
+          
+          this.MeteorFiles.addFile(new_doc_path,
             {
               fileName: doc_name,
               type: doc_type,
@@ -156,7 +169,7 @@ export class UploadedFilesCollection {
               if (error == null) {
                 console.log("Successfully re-linked an UploadedFiles doc to  FS file '", doc_name, "'");
               } else {
-                console.log("Couldn't re-linked an UploadedFiles doc to FS file '",doc_name,"': not found");
+                console.log("Couldn't re-linked an UploadedFiles doc to FS file '",doc_path, "(", doc_name,")': not found");
                 // TODO: Figure out a way to send this back to the client - seems impossible :(
                 throw new Meteor.Error("RE-LINKING FAILED!!");
               }
@@ -184,8 +197,11 @@ if (Meteor.server) {
     throw new Meteor.Error("upload_dir should be defined in the settings file");
   }
 
-  meteor_files_config["storagePath"] = upload_root + "/assessment_uploads/";
+  meteor_files_config["storageDir"] = "/assessment_uploads/";
+
+  meteor_files_config["storagePath"] = upload_root + meteor_files_config["storageDir"];
   fs_create_dir(meteor_files_config["storagePath"]);
+
 
   console.log("storage path =", meteor_files_config["storagePath"]);
 }
