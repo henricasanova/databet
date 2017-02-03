@@ -44,13 +44,15 @@
   {{#if is_update}}
   {{#if previously_uploaded_file_exists}}
   <div class="field">
-    <label>Previously uploaded file:
+    <div>Previously uploaded file:
       {{#if previously_uploaded_file_is_valid}}
       <a href="{{previously_uploaded_file_url}}" target="_blank">[Click here to view]</a>
       {{else}}
-      <b>[Failed last upload attempt! Please re-upload</b>
+      <div class="ui red basic label">
+        Failed last upload attempt! Please re-upload a valid file
+      </div>
       {{/if}}
-    </label>
+    </div>
   </div>
   {{/if}}
   {{/if}}
