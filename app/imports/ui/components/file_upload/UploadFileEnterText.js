@@ -85,14 +85,28 @@ Template.UploadFileEnterText.helpers({
     return (Template.currentData().context.initial_file != null);
   },
 
+  "previously_uploaded_file_is_valid": function() {
+    var previously_uploaded_file_id = Template.currentData().context.initial_file;
+    if (previously_uploaded_file_id != null) {
+      var found_file = UploadedFiles.findOne({"meta": {"databet_id": previously_uploaded_file_id}});
+      if (found_file) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  },
+
   "previously_uploaded_file_url": function () {
     var previously_uploaded_file_id = Template.currentData().context.initial_file;
     if (previously_uploaded_file_id != null) {
-      console.log("LOOKING FOR A PREVIOUSLY UPLOADED FILE");
+      // console.log("LOOKING FOR A PREVIOUSLY UPLOADED FILE");
       var found_file = UploadedFiles.findOne({"meta": {"databet_id": previously_uploaded_file_id}});
-      console.log("FOUND FILE: ", found_file);
+      // console.log("FOUND FILE: ", found_file);
       if (found_file) {
-        console.log(" RETURNING  URL!!!", found_file.link());
+        // console.log(" RETURNING  URL!!!", found_file.link());
         return found_file.link();
       } else {
         return "BROKEN";
