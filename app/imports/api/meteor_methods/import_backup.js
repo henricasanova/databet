@@ -101,7 +101,7 @@ Meteor.methods({
               collection.import_from_JSON(data[j][1], update_existing);
             }
           } catch (e) {
-            console.log("IN IMPORT FROM JASON GOT EXCEPTION", e.toString());
+            console.log("Exception while importing some JSON:", e.toString());
           }
         }
       }

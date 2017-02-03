@@ -146,11 +146,11 @@ export class UploadedFilesCollection {
             console.log("Removing document with databet_id", doc_databet_id, "from UploadedFiles");
             super.remove({"meta.databet_id": doc_databet_id});
           }
-          console.log("Adding document with databet_id", doc_databet_id, "into UploadedFiles");
-          console.log(" doc_databet_id = ", doc_databet_id);
-          console.log(" doc_name = ", doc_name);
-          console.log(" doc_path = ", doc_path);
-          console.log(" doc_type = ", doc_type);
+          // console.log("Adding document with databet_id", doc_databet_id, "into UploadedFiles");
+          // console.log(" doc_databet_id = ", doc_databet_id);
+          // console.log(" doc_name = ", doc_name);
+          // console.log(" doc_path = ", doc_path);
+          // console.log(" doc_type = ", doc_type);
 
           // Modify the doc_path in case we're on a different file system! This is a bit of
           // a hack right now
@@ -167,7 +167,7 @@ export class UploadedFilesCollection {
             },
             function(error, fileRef) {
               if (error == null) {
-                console.log("Successfully re-linked an UploadedFiles doc to  FS file '", doc_name, "'");
+                // console.log("Successfully re-linked an UploadedFiles doc to  FS file '", doc_name, "'");
               } else {
                 console.log("Couldn't re-linked an UploadedFiles doc to FS file '",doc_path, "(", doc_name,")': not found");
                 // TODO: Figure out a way to send this back to the client - seems impossible :(

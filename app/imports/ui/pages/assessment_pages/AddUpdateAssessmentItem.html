@@ -208,10 +208,10 @@
       <!--{{#if max_grade_has_been_entered}}-->
 
       <div class="field">
-        <label for="assessment_grades">B) Enter numerical grades obtained by students (on one line and/or multiple lines, separated by commas,
+        <label for="assessment_grades">B) Enter the (numerical) student grades (one grade per student, on one line and/or multiple lines, separated by commas,
           spaces, and/or carriage returns):
         </label>
-        <textarea placeholder="e.g., 13, 96, 45, 77, ..." id="assessment_grades" rows=5>{{#if is_update}}{{existing_item_content "grades"}}{{/if}}</textarea>
+        <textarea placeholder="e.g., 13, 96, 96, 99, 45, 77, ..." id="assessment_grades" rows=5>{{#if is_update}}{{existing_item_content "grades"}}{{/if}}</textarea>
         <!--{{#if missing_grades}}-->
         {{#if missing_content "grades"}}
         <div class="ui pointing red basic label">
