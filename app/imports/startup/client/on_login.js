@@ -34,8 +34,13 @@ Accounts.onLogin(function() {
   // behavior in case the user hacks the URL or hits reload on the browser
 
   if ((FlowRouter.getRouteName() == "Home_Page") || (FlowRouter.getRouteName() == "NonCasLogin")) {
-    FlowRouter.go('Home_Page');
+    BlazeLayout.render("App_Body", {main: "Home_Page"});
+  } else {
   }
 
 });
 
+Accounts.onLogout(function() {
+    BlazeLayout.render("App_Body", {main: "Login"});
+  }
+);

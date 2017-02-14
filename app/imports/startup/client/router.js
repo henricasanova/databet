@@ -11,6 +11,7 @@ FlowRouter.notFound = {
 FlowRouter.route('/', {
   name: 'Home_Page',
   action() {
+    console.log("HAHA!");
     conditional_render(true, false, "Home_Page");
   },
 });
@@ -156,7 +157,7 @@ FlowRouter.route('/course_info/:_id', {
 
 function conditional_render(must_be_logged_in, must_be_admin, template_name) {
 
-  //console.log("Conditional rendering of " + template_name,  must_be_logged_in, must_be_admin);
+  // console.log("Conditional rendering of " + template_name,  must_be_logged_in, must_be_admin);
 
   var what_to_show = template_name;
 
@@ -173,6 +174,7 @@ function conditional_render(must_be_logged_in, must_be_admin, template_name) {
   }
 
 
+  // console.log("WHAT TO SHOW=", what_to_show);
   BlazeLayout.render("App_Body", {main: what_to_show});
 
 }
