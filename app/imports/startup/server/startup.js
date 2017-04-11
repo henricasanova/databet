@@ -1,10 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 import { TmpFiles } from '../../api/databet_collections/TmpFiles';
+import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
+import { is_so_critical } from '../../api/global_helpers/student_outcome';
 
 Meteor.startup(function () {
   try {
     configure_email();
     remove_tmp_files();
+    update_critical_student_outcomes();
   } catch (e) {
     throw(e);
   }
@@ -26,4 +29,15 @@ function configure_email() {
 
 function remove_tmp_files() {
   TmpFiles.remove_all();
+}
+
+function update_critical_student_outcomes() {
+  let sos = StudentOutcomes.find({}).fetch();
+  for (let i=0; i < sos.length; i++) {
+    let doc_id = sos[i]._id;
+    let critical = is_so_critical(sos[i]);
+    // Will add the critical property to existing SOs in case they're "old"
+    StudentOutcomes.update({"_id": doc_id}, {$set: {"critical": critical}});
+  }
+
 }

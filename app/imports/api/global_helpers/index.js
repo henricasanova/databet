@@ -7,3 +7,4 @@ import './users_and_usernames';
 import './bogus_database';
 import './collection_to_json';
 import './latex';
+import './student_outcome';

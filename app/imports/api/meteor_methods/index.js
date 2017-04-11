@@ -4,3 +4,4 @@ import './email.js';
 import './import_backup.js';
 import './latex_curriculum.js';
 import './uploaded_files_operations.js';
+import './update_student_outcome_critical.js';

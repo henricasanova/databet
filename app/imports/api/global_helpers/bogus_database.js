@@ -8,15 +8,15 @@ import {Semesters} from "../databet_collections/Semesters";
 import {OfferedCourses} from "../databet_collections/OfferedCourses";
 import {AssessmentItems} from "../databet_collections/AssessmentItems";
 
-var curriculum_id = "BogusCurriculum";
-var curriculum_description = "Bogus curriculum for testing purposes";
-var num_courses = 10;
-var max_num_courses_per_pi = 3;
-var num_sos = 7;
-var num_semesters = 10;
-var min_num_offered_courses_per_semester = Math.trunc(num_courses/4);
-var max_num_offered_courses_per_semester = num_courses;
-var num_assessment_items_per_semesters = 12;
+const curriculum_id = "BogusCurriculum";
+const curriculum_description = "Bogus curriculum for testing purposes";
+const num_courses = 10;
+const max_num_courses_per_pi = 2;
+const num_sos = 4;
+const num_semesters = 10;
+const min_num_offered_courses_per_semester = Math.trunc(num_courses/4);
+const max_num_offered_courses_per_semester = num_courses;
+const num_assessment_items_per_semesters = 20;
 
 export function insert_bogus_database() {
 
@@ -36,7 +36,7 @@ function create_bogus_curriculum() {
     Curricula.remove_document(curriculum_id);
   }
 
-  var doc = {
+  const doc = {
     "_id": curriculum_id,
     "description": curriculum_description,
     "date_created": new Date(),
@@ -46,10 +46,10 @@ function create_bogus_curriculum() {
 }
 
 function create_bogus_courses() {
-  for (var i = 0; i < num_courses; i++) {
-    var course_id = "BogusCourse" + i;
+  for (let i = 0; i < num_courses; i++) {
+    const course_id = "BogusCourse" + i;
 
-    var doc = {
+    const doc = {
       _id: course_id,
       alphanumeric: "ICS " + ((100 + 100 * (i / 2) + (i % 3)) % 499),
       title: Fake.sentence(),
@@ -59,14 +59,16 @@ function create_bogus_courses() {
   }
 }
 
-function create_bogus_sos_and_pis() {
-  for (var i = 0; i < num_sos; i++) {
-    var so_id = "BogusStudentOutcome" + i;
 
-    var doc = {
+function create_bogus_sos_and_pis() {
+  for (let i = 0; i < num_sos; i++) {
+    const so_id = "BogusStudentOutcome" + i;
+
+    const doc = {
       _id: so_id,
       description: Fake.sentence(15),
       order: i,
+      critical: false,
       curriculum: curriculum_id
     };
     StudentOutcomes.insert_document(doc);
@@ -76,11 +78,11 @@ function create_bogus_sos_and_pis() {
 }
 
 function create_bogus_pis(so_id) {
-  var num_pis = Math.trunc(Random.fraction() * 4) + 1;
-  for (var i = 0; i < num_pis; i++) {
-    var pi_id = "BogusPerformanceIndicator" + so_id + "" + i;
+  const num_pis = Math.trunc(Random.fraction() * 4) + 1;
+  for (let i = 0; i < num_pis; i++) {
+    const pi_id = "BogusPerformanceIndicator" + so_id + "" + i;
 
-    var doc = {
+    const doc = {
       _id: pi_id,
       description: Fake.sentence(20),
       order: i,
@@ -91,20 +93,20 @@ function create_bogus_pis(so_id) {
 }
 
 function create_bogus_curriculum_map() {
-  var list_of_courses = Courses.find({curriculum: curriculum_id}).fetch();
-  var list_of_sos = StudentOutcomes.find({curriculum: curriculum_id}).fetch();
+  const list_of_courses = Courses.find({curriculum: curriculum_id}).fetch();
+  const list_of_sos = StudentOutcomes.find({curriculum: curriculum_id}).fetch();
 
   // console.log("CURRICULUM MAP", list_of_sos);
-  var count = 0;
-  for (var i = 0; i < list_of_sos.length; i++) {
-    var pis = PerformanceIndicators.find({student_outcome: list_of_sos[i]._id}).fetch();
-    for (var j = 0; j < pis.length; j++) {
-      var num_courses_for_pi = Math.trunc(1 + Random.fraction() * max_num_courses_per_pi);
-      for (var k=0; k < num_courses_for_pi; k++) {
+  let count = 0;
+  for (let i = 0; i < list_of_sos.length; i++) {
+    const pis = PerformanceIndicators.find({student_outcome: list_of_sos[i]._id}).fetch();
+    for (let j = 0; j < pis.length; j++) {
+      const num_courses_for_pi = Math.trunc(1 + Random.fraction() * max_num_courses_per_pi);
+      for (let k=0; k < num_courses_for_pi; k++) {
         while (true) {
-          var course = Random.choice(list_of_courses);
-          var performance_indicator = Random.choice(pis)._id;
-          var level = "elementary";
+          const course = Random.choice(list_of_courses);
+          const performance_indicator = Random.choice(pis)._id;
+          let level = "elementary";
           if (Random.fraction() < 0.5) {
             level = "proficient";
           }
@@ -115,7 +117,7 @@ function create_bogus_curriculum_map() {
               performance_indicator: performance_indicator,
               level: level
             })) {
-            var doc = {
+            const doc = {
               _id: "BogusCurriculumMapping" + count,
               curriculum: curriculum_id,
               course: course._id,
@@ -134,13 +136,13 @@ function create_bogus_curriculum_map() {
 }
 
 function create_bogus_semesters() {
-  var count = 0;
-  var sessions = ["Spring", "Fall", "Summer"];
-  var session = 0;
+  let count = 0;
+  const sessions = ["Spring", "Fall", "Summer"];
+  let session = 0;
   while (count < num_semesters) {
 
-    var year = 2020 + Math.trunc(count/2);
-    var order = 10 * Number(year);
+    const year = 2013 + Math.trunc(count/2);
+    let order = 10 * Number(year);
     if (sessions[session] == "Spring") {
       order += 1;
     } else if (sessions[session] == "Summer") {
@@ -149,7 +151,7 @@ function create_bogus_semesters() {
       order += 3;
     }
 
-    var doc = {
+    const doc = {
       _id: "BogusSemester"+count,
       session: sessions[session],
       year: year,
@@ -165,25 +167,25 @@ function create_bogus_semesters() {
 }
 
 function create_bogus_offered_courses() {
-  var list_of_semesters = Semesters.find({curriculum: curriculum_id}).fetch();
-  var list_of_courses = Courses.find({curriculum: curriculum_id}).fetch();
+  const list_of_semesters = Semesters.find({curriculum: curriculum_id}).fetch();
+  const list_of_courses = Courses.find({curriculum: curriculum_id}).fetch();
 
-  var count = 0;
-  for (var i = 0; i < list_of_semesters.length; i++) {
-    var num_offered_courses = min_num_offered_courses_per_semester +
+  let count = 0;
+  for (let i = 0; i < list_of_semesters.length; i++) {
+    const num_offered_courses = min_num_offered_courses_per_semester +
       Math.trunc(+Random.fraction() *
         (max_num_offered_courses_per_semester - min_num_offered_courses_per_semester));
-    for (var j = 0; j < num_offered_courses; j++) {
+    for (let j = 0; j < num_offered_courses; j++) {
       while (true) {
-        var course = Random.choice(list_of_courses);
-        var user = Random.choice(Meteor.users.find({}).fetch())._id;
+        const course = Random.choice(list_of_courses);
+        const user = Random.choice(Meteor.users.find({}).fetch())._id;
 
         if (!OfferedCourses.findOne({
             course: course._id,
             semester: list_of_semesters[i]._id,
             instructor: user
           })) {
-          var doc = {
+          const doc = {
             _id: "BogusOfferedCourse" + count,
             course: course._id,
             semester: list_of_semesters[i]._id,
@@ -201,15 +203,15 @@ function create_bogus_offered_courses() {
 
 function create_bogus_assessment_items() {
 
-  var list_of_semesters = Semesters.find({curriculum: curriculum_id}).fetch();
-  var count=0;
-  for (var i=0; i < list_of_semesters.length; i++) {
-    var list_of_offered_courses = OfferedCourses.find(
+  const list_of_semesters = Semesters.find({curriculum: curriculum_id}).fetch();
+  let count=0;
+  for (let i=0; i < list_of_semesters.length; i++) {
+    const list_of_offered_courses = OfferedCourses.find(
       {semester: list_of_semesters[i]._id}).fetch();
-    for (var j=0; j < num_assessment_items_per_semesters; j++) {
-      var offered_course = Random.choice(list_of_offered_courses);
-      var curriculum_mapping = Random.choice(CurriculumMappings.find({"curriculum": curriculum_id}).fetch());
-      var doc = {
+    for (let j=0; j < num_assessment_items_per_semesters; j++) {
+      const offered_course = Random.choice(list_of_offered_courses);
+      const curriculum_mapping = Random.choice(CurriculumMappings.find({"curriculum": curriculum_id}).fetch());
+      const doc = {
         _id: "BogusAssessmentItem" + count,
         instructor: offered_course.instructor,
         offered_course: offered_course._id,

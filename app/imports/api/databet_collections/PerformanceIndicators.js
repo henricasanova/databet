@@ -27,7 +27,7 @@ class PerformanceIndicatorsCollection extends DatabetCollection {
 }
 
 
-export var PerformanceIndicators = new PerformanceIndicatorsCollection("PerformanceIndicators");
+export const PerformanceIndicators = new PerformanceIndicatorsCollection("PerformanceIndicators");
 
 
 PerformanceIndicators.attachSchema(new SimpleSchema({

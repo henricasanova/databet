@@ -15,7 +15,7 @@ class OfferedCoursesCollection extends DatabetCollection {
   }
 }
 
-export var OfferedCourses = new OfferedCoursesCollection("OfferedCourses");
+export const OfferedCourses = new OfferedCoursesCollection("OfferedCourses");
 
 
 OfferedCourses.attachSchema(new SimpleSchema({

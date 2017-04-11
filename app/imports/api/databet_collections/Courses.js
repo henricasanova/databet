@@ -21,7 +21,7 @@ class CoursesCollection extends DatabetCollection {
 }
 
 
-export var Courses = new CoursesCollection("Courses");
+export const Courses = new CoursesCollection("Courses");
 
 Courses.attachSchema(new SimpleSchema({
   _id: {

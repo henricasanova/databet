@@ -18,7 +18,7 @@ class CurriculumMappingsCollection extends DatabetCollection {
 }
 
 
-export var CurriculumMappings = new CurriculumMappingsCollection("CurriculumMappings");
+export const CurriculumMappings = new CurriculumMappingsCollection("CurriculumMappings");
 
 
 CurriculumMappings.attachSchema(new SimpleSchema({

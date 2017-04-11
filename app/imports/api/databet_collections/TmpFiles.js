@@ -31,7 +31,7 @@ export class TmpFilesCollection {
 }
 
 
-var meteor_files_config = {};
+const meteor_files_config = {};
 
 if (Meteor.server) {
 
@@ -51,5 +51,5 @@ meteor_files_config["debug"] = false;
 meteor_files_config["collectionName"] = 'TmpFiles';
 meteor_files_config["allowClientCode"] = true;  // to allow file removal
 
-export var TmpFiles = new TmpFilesCollection(meteor_files_config);
+export const TmpFiles = new TmpFilesCollection(meteor_files_config);
 

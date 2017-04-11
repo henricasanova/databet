@@ -5,7 +5,7 @@
  * for reactivity!
  */
 
-export var Globals = new Mongo.Collection(null);
+export const Globals = new Mongo.Collection(null);
 
 Globals.attachSchema(new SimpleSchema({
   name: {

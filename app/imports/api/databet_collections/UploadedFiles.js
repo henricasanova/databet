@@ -20,7 +20,7 @@ export class UploadedFilesCollection {
   }
 
   insert_document(fileObj, databet_id, prefix) {
-    var uploadInstance = this.MeteorFiles.insert({
+    let uploadInstance = this.MeteorFiles.insert({
       file: fileObj,
       meta: { "databet_id": databet_id },
       streams: 'dynamic',
@@ -38,9 +38,9 @@ export class UploadedFilesCollection {
         alert('File "' + fileObj.name + '" successfully uploaded');
         // This is a terrible hack to impose particular filenames in Meteor-Files
         //console.log("Should try to rename File: fileObj", fileObj);
-        var search_pattern = new RegExp(fileObj._id, "g");
-        var replace_with = prefix + "::" + fileObj._id;
-        var new_path = fileObj.path.replace(search_pattern, replace_with);
+        const search_pattern = new RegExp(fileObj._id, "g");
+        const replace_with = prefix + "::" + fileObj._id;
+        const new_path = fileObj.path.replace(search_pattern, replace_with);
         Meteor.call("rename_uploaded_file", fileObj._id, new_path);
       }
     });
@@ -72,18 +72,18 @@ export class UploadedFilesCollection {
 
   export_to_JSON() {
 
-    var cursor = this.MeteorFiles.find();
+    const cursor = this.MeteorFiles.find();
     if (cursor.count() == 0) {
       return "[ ]";
     }
-    var string = "[ ";
+    let string = "[ ";
 
-    var documents = cursor.fetch();
-    for (var i = 0; i < documents.length; i++) {
-      var doc = documents[i];
+    const documents = cursor.fetch();
+    for (let i = 0; i < documents.length; i++) {
+      const doc = documents[i];
       console.log("DOC = ", doc);
 
-      var place_holder_object = {
+      const place_holder_object = {
         "databet_id": doc.meta.databet_id,
         "name": doc.name,
         "path": doc.path,
@@ -103,9 +103,9 @@ export class UploadedFilesCollection {
     // This is a "fake check" (no schema, etc.)
     // We just care: it there a databet_id? is there a path?
 
-    var k, error_message = "";
+    let k, error_message = "";
     for (k = 0; k < doclist.length; k++) {
-      var doc = doclist[k];
+      const doc = doclist[k];
       if (!("databet_id" in doc) ||
         !("name" in doc) ||
         !("path" in doc) ||
@@ -128,18 +128,18 @@ export class UploadedFilesCollection {
   import_from_JSON(doclist, update_existing) {
 
     if (Meteor.isServer) {
-      var k;
+      let k;
 
       console.log("Importing into UploadedFiles");
       for (k = 0; k < doclist.length; k++) {
-        var doc_databet_id = doclist[k].databet_id;
-        var doc_name = doclist[k].name;
-        var doc_path = doclist[k].path;
-        var doc_type = doclist[k].type;
+        const doc_databet_id = doclist[k].databet_id;
+        const doc_name = doclist[k].name;
+        const doc_path = doclist[k].path;
+        const doc_type = doclist[k].type;
 
 
 
-        var file_already_known = (this.find_document(doc_databet_id) != undefined);
+        const file_already_known = (this.find_document(doc_databet_id) != undefined);
 
         if ((!file_already_known) || (file_already_known && update_existing)) {
           if (file_already_known) {
@@ -154,10 +154,10 @@ export class UploadedFilesCollection {
 
           // Modify the doc_path in case we're on a different file system! This is a bit of
           // a hack right now
-          var local_upload_root = Meteor.settings.upload_dir.path;
-          var storage_dir = this.config["storageDir"];
-          var import_upload_root  = doc_path.split(storage_dir)[0];
-          var new_doc_path = doc_path.replace(import_upload_root, local_upload_root);
+          const local_upload_root = Meteor.settings.upload_dir.path;
+          const storage_dir = this.config["storageDir"];
+          const import_upload_root = doc_path.split(storage_dir)[0];
+          const new_doc_path = doc_path.replace(import_upload_root, local_upload_root);
 
           this.MeteorFiles.addFile(new_doc_path,
             {
@@ -187,11 +187,11 @@ export class UploadedFilesCollection {
 }
 
 
-var meteor_files_config = {};
+const meteor_files_config = {};
 
 if (Meteor.server) {
 
-  var upload_root = Meteor.settings.upload_dir.path;
+  const upload_root = Meteor.settings.upload_dir.path;
 
   if (upload_root == undefined) {
     throw new Meteor.Error("upload_dir should be defined in the settings file");
@@ -219,6 +219,6 @@ meteor_files_config["onBeforeUpload"] = function (file) {
   }
 };
 
-export var UploadedFiles = new UploadedFilesCollection(meteor_files_config);
+export const UploadedFiles = new UploadedFilesCollection(meteor_files_config);
 
 

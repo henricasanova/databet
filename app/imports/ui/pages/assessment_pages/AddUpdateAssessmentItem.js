@@ -1,6 +1,7 @@
 import { OfferedCourses } from '../../../api/databet_collections/OfferedCourses';
 import { Semesters } from '../../../api/databet_collections/Semesters';
 import { Courses } from '../../../api/databet_collections/Courses';
+import { StudentOutcomes } from '../../../api/databet_collections/StudentOutcomes';
 import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
 import { CurriculumMappings } from '../../../api/databet_collections/CurriculumMappings';
 import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
@@ -67,7 +68,7 @@ Template.AddUpdateAssessmentItem.onCreated(function () {
   /*** Create ReactiveVars for missing content warnings on the HTML ***/
 
   this.missing_content_reactive_vars = {};
-  var missing_content_names = [
+  const missing_content_names = [
     "curriculum_mapping",
     "assessment_item_type",
     "custom_assessment_item_type",
@@ -82,8 +83,8 @@ Template.AddUpdateAssessmentItem.onCreated(function () {
     "sample_good_answer_text",
     "sample_good_answer_file"];
 
-  for (var i = 0; i < missing_content_names.length; i++) {
-    var missing_content_name = missing_content_names[i];
+  for (let i = 0; i < missing_content_names.length; i++) {
+    const missing_content_name = missing_content_names[i];
     Template.instance().missing_content_reactive_vars[missing_content_name] = new ReactiveVar();
     Template.instance().missing_content_reactive_vars[missing_content_name].set(false);
   }
@@ -162,7 +163,7 @@ Template.AddUpdateAssessmentItem.helpers({
   },
 
   "course_string": function () {
-    var course = Courses.findOne({"_id": Template.instance().offered_course.course});
+    let course = Courses.findOne({"_id": Template.instance().offered_course.course});
     return course.alphanumeric;
 
   },
@@ -180,11 +181,80 @@ Template.AddUpdateAssessmentItem.helpers({
     return Template.instance().offered_course._id;
   },
 
-  "list_of_curriculum_mappings": function () {
+  // "list_of_curriculum_mappings": function () {
+  //
+  //   let offered_course = Template.instance().offered_course;
+  //   console.log("LIST OF CURR MAPING: ", CurriculumMappings.find({"course": offered_course.course}).fetch() );
+  //   return CurriculumMappings.find({"course": offered_course.course}).fetch();
+  // },
 
-    var offered_course = Template.instance().offered_course;
-    console.log("LIST OF CURR MAPING: ", CurriculumMappings.find({"course": offered_course.course}).fetch() );
-    return CurriculumMappings.find({"course": offered_course.course}).fetch();
+  "list_of_curriculum_mappings": function () {
+    const critical_marker =   "<div class=\"ui label red\"> CRITICAL </div>";
+    const desirable_marker =  "<div class=\"ui label blue\">DESIRABLE</div>";
+
+    let offered_course = Template.instance().offered_course;
+    let list_of_curriculum_mappings =  CurriculumMappings.find({"course": offered_course.course}).fetch();
+
+    // Initialize order, scores and markers
+    for (let i=0; i < list_of_curriculum_mappings.length; i++) {
+      list_of_curriculum_mappings[i].order = 0;
+      list_of_curriculum_mappings[i].critical_score = 0;
+      list_of_curriculum_mappings[i].desirable_score = 0;
+      list_of_curriculum_mappings[i].critical_marker = "";
+      list_of_curriculum_mappings[i].desirable_marker = "";
+    }
+
+    // Compute critical_score
+    let no_critical = true;
+    for (let i=0; i < list_of_curriculum_mappings.length; i++) {
+      const curriculum_mapping = list_of_curriculum_mappings[i];
+      const performance_indicator = PerformanceIndicators.findOne({"_id": curriculum_mapping.performance_indicator});
+      const student_outcome = StudentOutcomes.findOne({"_id": performance_indicator.student_outcome});
+
+      if (student_outcome.critical) {
+        list_of_curriculum_mappings[i].critical_score = 1;
+        no_critical = false;
+      }
+    }
+
+    // Compute the desirable score
+    let max_desirable_score = 0;
+
+    // Don't even think about "desirable" if things are critical"
+    if (no_critical) {
+
+      // Compute desirable_score
+      for (let i = 0; i < list_of_curriculum_mappings.length; i++) {
+        let score = mappingDesirableScore(offered_course, list_of_curriculum_mappings[i]);
+        list_of_curriculum_mappings[i].desirable_score = score;
+        if (score > max_desirable_score) {
+          max_desirable_score = score;
+        }
+      }
+    }
+
+    // Set the critical markers and order
+    for (let i=0; i < list_of_curriculum_mappings.length; i++) {
+      if (list_of_curriculum_mappings[i].critical_score > 0) {
+        list_of_curriculum_mappings[i].critical_marker = critical_marker;
+        list_of_curriculum_mappings[i].order = 2;
+      }
+    }
+
+    if (no_critical && (max_desirable_score > 0)) {
+      for (let i = 0; i < list_of_curriculum_mappings.length; i++) {
+        if ((list_of_curriculum_mappings[i].desirable_score >= max_desirable_score) &&
+          (list_of_curriculum_mappings[i].critical_score == 0)) {
+          list_of_curriculum_mappings[i].desirable_marker = desirable_marker;
+          list_of_curriculum_mappings[i].order = 1;
+        }
+      }
+    }
+
+    // Sort the desirable mappings by order
+    list_of_curriculum_mappings.sort(function(a,b) { return b.order - a.order;});
+
+    return list_of_curriculum_mappings;
   },
 
   "curriculum_mapping_is_selected": function () {
@@ -208,7 +278,7 @@ Template.AddUpdateAssessmentItem.helpers({
   "existing_item_content": function (name) {
 
     // In case this is called by mistake in "add" mode
-    var existing_assessment_item = Template.instance().existing_assessment_item;
+    let existing_assessment_item = Template.instance().existing_assessment_item;
 
     if (!existing_assessment_item) {
       return "";
@@ -254,7 +324,9 @@ Template.AddUpdateAssessmentItem.helpers({
   },
 
   "curr_mapping_description": function () {
-    var performance_indicator = PerformanceIndicators.findOne({"_id": this.performance_indicator});
+    let performance_indicator = PerformanceIndicators.findOne({"_id": this.performance_indicator});
+    //let score = (Random.fraction() * 4) | 0;
+
     return performance_indicator.description;
   },
 
@@ -262,8 +334,19 @@ Template.AddUpdateAssessmentItem.helpers({
     return this.level.toUpperCase();
   },
 
+  "curr_mapping_critical": function () {
+    return this.critical_marker;
+  },
+
+  "curr_mapping_desirable": function () {
+    return this.desirable_marker;
+  },
+
+
+
+
   "are_there_errors": function() {
-    for (var error_var in Template.instance().missing_content_reactive_vars) {
+    for (let error_var in Template.instance().missing_content_reactive_vars) {
       if (Template.instance().missing_content_reactive_vars.hasOwnProperty(error_var)) {
         if (Template.instance().missing_content_reactive_vars[error_var].get() == true) {
           return true;
@@ -404,7 +487,7 @@ Template.AddUpdateAssessmentItem.events({
   "change #assessment_item_type": function (e) {
     Template.instance().missing_content_reactive_vars["assessment_item_type"].set(false);
 
-    var assessment_type = $('#assessment_item_type').val();
+    let assessment_type = $('#assessment_item_type').val();
     if (assessment_type == "other") {
       Template.instance().type_is_other.set(true);
     } else {
@@ -440,12 +523,12 @@ Template.AddUpdateAssessmentItem.events({
 
   "click #submit": function (e) {
 
-    var allGood = true;
+    let allGood = true;
 
     Template.instance().save_has_been_clicked_once.set(true);
 
     // Build a tentative object based on what's been entered
-    var tentative_doc = {};
+    let tentative_doc = {};
 
     // Curriculum mapping
     tentative_doc.curriculum_mapping_id = $('#curriculum_mapping').val();
@@ -462,7 +545,7 @@ Template.AddUpdateAssessmentItem.events({
     }
 
     if (tentative_doc.assessment_item_type == "other") {
-      var entered_string = $('#custom_assessment_item_type_input').val();
+      let entered_string = $('#custom_assessment_item_type_input').val();
       if (entered_string.length < 5) {
         Template.instance().missing_content_reactive_vars["custom_assessment_item_type"].set(true);
         allGood = false;
@@ -487,8 +570,8 @@ Template.AddUpdateAssessmentItem.events({
       // Remove all training commas
       tentative_doc.grades = tentative_doc.grades.replace(/,+$/, "");
       // Get numerical grades
-      var grades = tentative_doc.grades.split(",");
-      for (var i = 0; i < grades.length; i++) {
+      const grades = tentative_doc.grades.split(",");
+      for (let i = 0; i < grades.length; i++) {
         if (isNaN(grades[i])) {
           Template.instance().invalid_grades.set(true);
           allGood = false;
@@ -515,10 +598,10 @@ Template.AddUpdateAssessmentItem.events({
 
     // File/text input
 
-    var list_of_file_or_text_names = ["assessment_question", "sample_poor_answer", "sample_medium_answer", "sample_good_answer"];
-    for (var i = 0; i < list_of_file_or_text_names.length; i++) {
-      var name = list_of_file_or_text_names[i];
-      var final_state = Template.instance().file_uploads[name];
+    let list_of_file_or_text_names = ["assessment_question", "sample_poor_answer", "sample_medium_answer", "sample_good_answer"];
+    for (let i = 0; i < list_of_file_or_text_names.length; i++) {
+      const name = list_of_file_or_text_names[i];
+      const final_state = Template.instance().file_uploads[name];
       if (!final_state.is_file) {  // Text
         tentative_doc[name + "_is_file"] = false;
         tentative_doc[name + "_file"] = null;
@@ -549,9 +632,9 @@ Template.AddUpdateAssessmentItem.events({
       return false;
     }
 
-    // console.log("ALL GOOD, LET'S DO IT!!!");
+    console.log("ALL GOOD, LET'S DO IT!!!");
 
-    // console.log("TENTATIVE DOC = ", tentative_doc);
+    console.log("TENTATIVE DOC = ", tentative_doc);
 
     // console.log("*** ALL GOOD!!! ***");
     /**** After this point, we know we will successfully add the item ****/
@@ -561,20 +644,20 @@ Template.AddUpdateAssessmentItem.events({
 
     /**** Deal with files ****/
 
-    var list_of_file_or_text_names = ["assessment_question", "sample_poor_answer", "sample_medium_answer", "sample_good_answer"];
+    list_of_file_or_text_names = ["assessment_question", "sample_poor_answer", "sample_medium_answer", "sample_good_answer"];
 
-    for (var i = 0; i < list_of_file_or_text_names.length; i++) {
-      var name = list_of_file_or_text_names[i];
+    for (let i = 0; i < list_of_file_or_text_names.length; i++) {
+      const name = list_of_file_or_text_names[i];
 
 
       // console.log("TENTATIVE DOC NAME: ", name, "  ", tentative_doc[name + "_file"]);
       // Remove the old file if necessary
 
-      var there_was_a_previously_uploaded_file;
-      var we_are_now_uploading_text;
-      var we_are_uploading_a_new_file;
-      var id_of_previously_uploaded_file = null;
-      var new_file_object = null;
+      let there_was_a_previously_uploaded_file;
+      let we_are_now_uploading_text;
+      let we_are_uploading_a_new_file;
+      let id_of_previously_uploaded_file = null;
+      let new_file_object = null;
 
       there_was_a_previously_uploaded_file =
         (Template.instance().existing_assessment_item != null) &&
@@ -622,9 +705,10 @@ Template.AddUpdateAssessmentItem.events({
       }
     }
 
-    //console.log("FINAL TENTATIVE DOC=", tentative_doc);
+    console.log("FINAL TENTATIVE DOC=", tentative_doc);
     if (Template.currentData().action == "add") {
 
+      console.log("I AM DOING AN ADD!!!!");
       // Create the assessment item
       var assessment_item = {
         instructor: get_current_user(),
@@ -656,6 +740,8 @@ Template.AddUpdateAssessmentItem.events({
 
     } else {
 
+      console.log("I AM DOING AN UPDATE");
+
       // Everything but files
       var modifier = {
         //offered_course: existing_assessment_item.offered_course,
@@ -686,7 +772,7 @@ Template.AddUpdateAssessmentItem.events({
       // be rendered anyway... Looks like some kind of race condition...
 
 
-      var url_to_return_to = "/assessment_items/" + Template.instance().offered_course._id;
+      const url_to_return_to = "/assessment_items/" + Template.instance().offered_course._id;
       console.log("URL=", url_to_return_to);
       AssessmentItems.update_document(Template.instance().existing_assessment_item._id, modifier, function () {
         FlowRouter.go(url_to_return_to);
@@ -697,4 +783,17 @@ Template.AddUpdateAssessmentItem.events({
   },
 
 });
+
+/** Helpers **/
+
+// TODO: Do something real
+function mappingDesirableScore(offered_course, pi) {
+  let score = Random.fraction() * 100 | 0;
+  // return score;
+  return 0;
+}
+
+
+
+
 

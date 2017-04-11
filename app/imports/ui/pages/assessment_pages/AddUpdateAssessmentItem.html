@@ -57,15 +57,14 @@
           <option value="">Select a performance indicator (scrollable dropdown)</option>
           {{#each list_of_curriculum_mappings}}
           {{#if is_add}}
-          <option value="{{this._id}}" class="inverted red">{{curr_mapping_description}} ({{curr_mapping_level}})
+          <option value="{{this._id}}" class="inverted red">{{{curr_mapping_critical}}} {{{curr_mapping_desirable}}} ({{curr_mapping_level}})
           </option>
           {{else}}
           {{#if curriculum_mapping_is_selected}}
-          <option value="{{this._id}}" selected class="inverted red"> {{curr_mapping_description}}
-            ({{curr_mapping_level}})
+          <option value="{{this._id}}" selected class="inverted red">{{{curr_mapping_critical}}} {{{curr_mapping_desirable}}} {{curr_mapping_description}} ({{curr_mapping_level}})
           </option>
           {{else}}
-          <option value="{{this._id}}" class="inverted red"> {{curr_mapping_description}} ({{curr_mapping_level}})
+          <option value="{{this._id}}" class="inverted red">{{{curr_mapping_critical}}} {{{curr_mapping_desirable}}} {{curr_mapping_description}} ({{curr_mapping_level}})
           </option>
           {{/if}}
           {{/if}}
@@ -78,6 +77,8 @@
         </div>
         {{/if}}
       </div>
+
+
 
     </form>
 

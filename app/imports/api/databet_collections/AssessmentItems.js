@@ -1,13 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 import { DatabetCollection} from './DatabetCollection';
 import { UploadedFiles } from './UploadedFiles';
+import { CurriculumMappings } from './CurriculumMappings';
+import { StudentOutcomes } from './StudentOutcomes';
+import { PerformanceIndicators } from './PerformanceIndicators';
 
 class AssessmentItemsCollection extends DatabetCollection {
 
+  // Overriding the original remove
   remove_document(doc_id, callback) {
 
     // Remove referenced Uploaded Files!
-    var doc = this.findOne({"_id": doc_id});
+    const doc = this.findOne({"_id": doc_id});
     if (doc) {
       if (doc.assessment_question_is_file) {
         UploadedFiles.remove_document(doc.assessment_question_file);
@@ -23,11 +27,76 @@ class AssessmentItemsCollection extends DatabetCollection {
       }
     }
 
+    // Get the SO for the assessment item
+    const curriculum_mapping = CurriculumMappings.findOne({"_id": doc.curriculum_mapping});
+    const performance_indicator = PerformanceIndicators.findOne(
+      {"_id": curriculum_mapping.performance_indicator});
+    const student_outcome_id = StudentOutcomes.findOne({"_id": performance_indicator.student_outcome})._id;
+
+    // Remove the document itself
     super.remove_document(doc_id, callback);
+
+    // Update the critical status of the student outcome
+    Meteor.call("update_student_outcome_critical", student_outcome_id);
   }
+
+  insert_document(doc, callback) {
+
+    // Insert the document
+    super.insert_document(doc,callback);
+
+    // Get the SO for the assessment item
+    const curriculum_mapping = CurriculumMappings.findOne({"_id": doc.curriculum_mapping});
+    const performance_indicator = PerformanceIndicators.findOne(
+      {"_id": curriculum_mapping.performance_indicator});
+    const student_outcome_id = StudentOutcomes.findOne({"_id": performance_indicator.student_outcome})._id;
+
+    // Update the critical status of the student outcome
+    Meteor.call("update_student_outcome_critical", student_outcome_id);
+
+  }
+
+  update_document(doc_id, modifier, callback) {
+
+    console.log("IN UPDATE DOCUMENT FOR ASSESSMENT ITEM", doc_id);
+
+    let old_curriculum_mapping = null;
+
+    if (modifier.hasOwnProperty("curriculum_mapping")) {
+      old_curriculum_mapping = AssessmentItems.findOne({"_id": doc_id}).curriculum_mapping;
+      // console.log("OLD: ", old_curriculum_mapping, "NEW: ", modifier.curriculum_mapping);
+    }
+
+    // Update the document
+    super.update_document(doc_id, modifier, callback);
+
+    // Get the new version of the document
+    let doc = AssessmentItems.findOne({"_id": doc_id});
+
+    // Get the new SO for the assessment item
+    const curriculum_mapping = CurriculumMappings.findOne({"_id": doc.curriculum_mapping});
+    // console.log("curriculum_mapping = ", curriculum_mapping);
+    const performance_indicator = PerformanceIndicators.findOne(
+      {"_id": curriculum_mapping.performance_indicator});
+    const student_outcome_id = StudentOutcomes.findOne({"_id": performance_indicator.student_outcome})._id;
+    // Update the critical status of the student outcome
+    Meteor.call("update_student_outcome_critical", student_outcome_id);
+
+
+    // Was there an old SO to update as well? (which could now become critical?)
+    if (old_curriculum_mapping) {
+      const curriculum_mapping = CurriculumMappings.findOne({"_id": old_curriculum_mapping});
+      const performance_indicator = PerformanceIndicators.findOne({"_id": curriculum_mapping.performance_indicator});
+      const student_outcome_id = StudentOutcomes.findOne({"_id": performance_indicator.student_outcome})._id;
+      // Update the critical status of the student outcome
+      Meteor.call("update_student_outcome_critical", student_outcome_id);
+    }
+
+  }
+
 }
 
-export var AssessmentItems = new AssessmentItemsCollection("AssessmentItems");
+export const AssessmentItems = new AssessmentItemsCollection("AssessmentItems");
 
 
 AssessmentItems.attachSchema(new SimpleSchema({

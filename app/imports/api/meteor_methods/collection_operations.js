@@ -10,19 +10,16 @@ import { Random } from 'meteor/random';
 Meteor.methods({
 
   insert_document_into_collection: function (collection_name, doc) {
-
-    var collection = collection_dictionary[collection_name];
-
+    const collection = collection_dictionary[collection_name];
     if (collection == null) {
       throw new Meteor.Error("Unknown Collection " + collection_name);
     }
-
-    var id = collection.insert(doc);
+    const id = collection.insert(doc);
     console.log("Inserted new document ", id, " into collection", collection_name);
   },
 
   update_document_in_collection: function (collection_name, doc_id, modifier) {
-    var collection = collection_dictionary[collection_name];
+    const collection = collection_dictionary[collection_name];
     if (collection == null) {
       throw new Meteor.Error("Unknown Collection " + collection_name);
     }
@@ -31,12 +28,10 @@ Meteor.methods({
   },
 
   remove_document_from_collection: function (collection_name, doc_id) {
-    var collection = collection_dictionary[collection_name];
+    const collection = collection_dictionary[collection_name];
     if (collection == null) {
       throw new Meteor.Error("Unknown Collection " + collection_name);
     }
     collection.remove({"_id": doc_id});
-    if (Meteor.isServer) {
-    }
   }
 });

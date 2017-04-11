@@ -16,7 +16,7 @@ class SemestersCollection extends DatabetCollection {
   }
 }
 
-export var Semesters = new SemestersCollection("Semesters");
+export const Semesters = new SemestersCollection("Semesters");
 
 Semesters.attachSchema(new SimpleSchema({
   _id: {

@@ -1,7 +1,29 @@
+
+New features:
+    - Find a way to "guide" assessment
+        [DONE] CRITICAL
+         - DESIRABLE:
+                   - A Curriculum Mapping Property for a course by a User
+                           - If this PI would be assessement #2 in a row: +=3
+                           - If this PI would be assessement #3 in a row: +=2
+                           - If this PI would be assessement #4 in a row: +=1
+                           - If this PI would be assessment  #1 in a row: +=2
+                   - Computed dynamically each time (ok, just looks at one user)
+                           - Compute it dynamically in the template
+                           X Modify the GUI to show "desirable"
+
+    - Implement a feature for storing meeting minutes
+
+    - Start thinking about generating the assessment reports
+
+    - Implement a way to store syllabi?
+
+
 Bug Fixes:
 
 
 Software improvement:
+
     - Have each Template call "subscribe()" in OnCreated()
         - archive_page
         - assessment_page
@@ -24,9 +46,5 @@ Software improvement:
             - user_select
     - Remove all subscribe called in startup/client/on_login.js
 
-
-New features:
-    - Find a way to "guide" assessment
-    - Start thinking about generating the assessment reports
 
 

@@ -29,7 +29,7 @@ class CurriculaCollection extends DatabetCollection {
 }
 
 
-export var Curricula = new CurriculaCollection("Curricula");
+export const Curricula = new CurriculaCollection("Curricula");
 
 
 Curricula.attachSchema(new SimpleSchema({
