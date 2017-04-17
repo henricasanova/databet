@@ -4,17 +4,17 @@
   <div class="ui container raised ">
 
 
-  <div class="ui top attached tabular menu">
-    <div class="active item" id="outcomes_tab" data-tab="counts_tab">Collection Counts</div>
-    <div class="item" id="courses_tab" data-tab="coverage_tab">SO Coverage</div>
-  </div>
-  <div class="ui active bottom attached tab segment" data-tab="counts_tab">
-    {{> StatisticsCounts }}
-  </div>
-  <div class="ui bottom attached  tab segment" data-tab="coverage_tab">
-    {{> StatisticsCoverage }}
-  </div>
+    <div class="ui top attached tabular menu">
+      <div class="active item" id="counts_tab" data-tab="counts_tab">Collection Counts</div>
+      <div class="item" id="coverage_tab" data-tab="coverage_tab">SO Coverage</div>
+    </div>
+    <div class="ui active bottom attached tab segment" data-tab="counts_tab">
+      {{> StatisticsCounts }}
+    </div>
+    <div class="ui bottom attached  tab segment" data-tab="coverage_tab">
+      {{> StatisticsCoverage }}
+    </div>
 
-</div>
+  </div>
 
 </template>

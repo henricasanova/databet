@@ -10,3 +10,4 @@ import './Semesters.js';
 import './StudentOutcomes.js';
 import './UploadedFiles.js';
 import './TmpFiles.js';
+import './Minutes.js';

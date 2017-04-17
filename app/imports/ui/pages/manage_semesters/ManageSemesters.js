@@ -78,19 +78,19 @@ Template.semesterRow.helpers({
   },
 
   curriculumDescription: function() {
-    var curriculum =  Curricula.findOne({"_id": this.curriculum});
+    const curriculum =  Curricula.findOne({"_id": this.curriculum});
     return curriculum.description;
   },
 
   numOfferedCourses: function() {
-    var semester_id = this._id;
+    const semester_id = this._id;
     return OfferedCourses.find({"semester":semester_id}).count();
   },
 
   num_assessment_items: function() {
-    var offered_courses = OfferedCourses.find({"semester":this._id}).fetch();
-    var num_assessment_items = 0;
-    for (var i=0; i < offered_courses.length; i++) {
+    const offered_courses = OfferedCourses.find({"semester":this._id}).fetch();
+    let num_assessment_items = 0;
+    for (let i=0; i < offered_courses.length; i++) {
       num_assessment_items += AssessmentItems.find({"offered_course": offered_courses[i]._id}).count();
     }
     return num_assessment_items;

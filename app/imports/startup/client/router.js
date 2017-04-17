@@ -116,6 +116,7 @@ FlowRouter.route('/edit_semester/:_id', {
   },
 });
 
+
 FlowRouter.route('/semester_email_before/:_id', {
   name: 'SemesterEmailInstructorsBefore',
   action() {

@@ -1,9 +1,22 @@
 <template name="Reports">
 
-  <div class="ui container raised very padded text segment">
 
-    TBD
+    <br>
+    <div class="ui container raised ">
 
-  </div>
+
+      <div class="ui top attached tabular menu">
+        <div class="active item" id="minutes_tab" data-tab="minutes_tab">Meeting Minutes</div>
+        <div class="item" id="other_tab" data-tab="other_tab">Other Stuff</div>
+      </div>
+      <div class="ui active bottom attached tab segment" data-tab="minutes_tab">
+        {{> Minutes }}
+      </div>
+      <div class="ui bottom attached tab segment" data-tab="other_tab">
+        NOTHING YET
+      </div>
+
+    </div>
+
 
 </template>

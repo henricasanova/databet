@@ -8,6 +8,7 @@ import { OfferedCourses } from '../../api/databet_collections/OfferedCourses';
 import { PerformanceIndicators } from '../../api/databet_collections/PerformanceIndicators';
 import { Semesters } from '../../api/databet_collections/Semesters';
 import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
+import { Minutes } from '../../api/databet_collections/Minutes';
 import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
 
 
@@ -109,3 +110,11 @@ Meteor.publish("UploadedFiles", function() {
                                          // a MongoDB collection (but looks like one)
 });
 
+// Publish the Minutes collection
+Meteor.publish("Minutes", function() {
+  if (Roles.userIsInRole(this.userId, 'admin')) {
+    return Minutes.find({});
+  } else {
+    return Minutes.find({"_id": "none"});
+  }
+});

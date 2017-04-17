@@ -1,0 +1,122 @@
+<template name="AddUpdateMinutes">
+
+  {{#if is_visible}}
+
+  <div class="ui container raised padded text segment fluid">
+
+    {{#if is_add}}
+    <h3 class="ui  header center aligned ">Entering a new set of minutes</h3>
+    {{else}}
+    <h3 class="ui  header center aligned">Updating an existing set of minutes</h3>
+    {{/if}}
+
+
+    <!-- DATE -->
+    <!--<div class="field">-->
+    <!--<label for="minutes_date">Date </label>-->
+    <!--</div>-->
+
+    <form class="ui fluid form">
+
+      <div class="ui calendar" id="date">
+        <div class="ui input left icon">
+          <i class="calendar icon"></i>
+          {{# if is_add }}
+          <input type="text" id="minutes_date" name="minutes_date" value={{todays_date}}>
+          {{else}}
+          <input type="text" id="minutes_date" name="minutes_date" value="{{existing_content 'date'}}">
+          {{/if}}
+        </div>
+      </div>
+      {{#if missing_content "date"}}
+      <div class="ui up pointing red basic label">
+        Enter a date
+      </div>
+      {{/if}}
+
+      <br>
+
+      <div class="field">
+        <select id="minutes_type" class="ui dropdown scrolling minutes_type_select">
+          <option value="">Select a minutes type</option>
+          {{#each list_of_minutes_types}}
+          {{#if is_add}}
+          <option value="{{this}}" class=""> {{this}}</option>
+          {{else}}
+          {{#if is_selected_type }}
+          <option value="{{this}}" selected class="">{{this}} </option>
+          {{else}}
+          <option value="{{this}}" class="">{{this}} </option>
+          {{/if}}
+          {{/if}}
+          {{/each}}
+        </select>
+        {{#if missing_content "type"}}
+        <div class="ui pointing red basic label">
+          Select a minutes type
+        </div>
+        {{/if}}
+      </div>
+
+    </form>
+
+    <br>
+
+    <!-- PARTICIPANTS -->
+
+    <form class="ui fluid form">
+
+
+      <div class="field fuild">
+        <textarea rows=3 placeholder="Enter a list of participants" id="minutes_participants">{{#if is_update}}{{existing_content "participants"}}{{/if}}</textarea>
+
+        {{#if missing_content "participants"}}
+        <div class="ui pointing red basic label">
+          Enter a list of participants
+        </div>
+        {{/if}}
+      </div>
+
+    </form>
+
+
+    <br>
+
+
+    <!-- MINUTES -->
+
+    <form class="ui fluid form">
+
+      <div class="field">
+        <textarea placeholder="Enter minutes description..." id="minutes_minutes" rows=15>{{#if is_update}}{{existing_content "minutes"}}{{/if}}</textarea>
+        {{#if missing_content "minutes"}}
+        <div class="ui pointing red basic label">
+          Enter minutes
+        </div>
+        {{/if}}
+      </div>
+    </form>
+    <br>
+
+    {{#if are_there_errors}}
+    <div class="ui  red basic label">
+      Correct the above errors
+    </div>
+    <br>
+    <br>
+    {{/if}}
+
+
+    {{#if is_add}}
+    <button class="ui button green" id="submit">Save</button>
+    {{else}}
+    <button class="ui button green" id="submit">Save</button>
+    {{/if}}
+
+    <button class="ui button red" id="cancel">Cancel</button>
+
+  </div>
+
+  {{/if}}
+
+</template>

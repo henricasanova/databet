@@ -12,14 +12,18 @@ New features:
                            - Compute it dynamically in the template
                            X Modify the GUI to show "desirable"
 
-    - Implement a feature for storing meeting minutes
+    [DONE] Implement a feature for storing meeting minutes
 
     - Start thinking about generating the assessment reports
 
     - Implement a way to store syllabi?
 
+    - Have a page for people to enter their information (degrees, etc.)
+
 
 Bug Fixes:
+
+    - CURRICULUM CLONING DOES NOT CLONE SOS AND MAP!!!
 
 
 Software improvement:

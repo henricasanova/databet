@@ -1,0 +1,89 @@
+<template name="Minutes">
+
+  <br>
+
+  <div class="ui container center">
+
+    {{#if add_minutes_mode}}
+
+    {{> AddUpdateMinutes action="add" set_to_false_when_done=get_reference_to_reactive_var_add_minutes_mode}}
+
+    {{else}}
+
+    <a class="ui button green" id="add_minutes"><i class="ui icon add"></i>Add a new set of minutes</a>
+
+    {{/if}}
+
+    {{#if atLeastOneMinutes}}
+    <table class="ui table">
+      <thead>
+      <tr>
+        <th class="two wide">Date</th>
+        <th class="three wide">Type</th>
+        <th class="two wide"></th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each listOfMinutes}}
+      {{> MinutesRow minutes=this set_to_false_when_done=null}}
+      {{/each}}
+      </tbody>
+    </table>
+    {{/if}}
+
+
+
+  </div>
+
+</template>
+
+
+<template name="MinutesRow">
+
+  <div id="modal_{{this._id}}" class="ui scrolling modal">
+    <i class="close icon"></i>
+    <div class="header">
+      ID: {{this._id}}
+    </div>
+    <div class="header">
+      Are you sure?
+    </div>
+
+    <div class="actions">
+      <div class="ui red button cancel">
+        <i class="remove icon"></i>
+        No
+      </div>
+      <div class="ui green button ok">
+        <i class="checkmark icon"></i>
+        Remove Minutes
+      </div>
+    </div>
+  </div>
+
+
+  {{#if update_minutes_mode}}
+  <tr class="fluid">
+    <td colspan="3">
+    {{> AddUpdateMinutes action="update" minutes=this.minutes set_to_false_when_done=get_reference_to_reactive_var_update_minutes_mode}}
+    </td>
+  </tr>
+
+  {{else}}
+  <tr>
+    <td>{{ short_date }}</td>
+    <td>{{ minutes_type }}</td>
+
+    <td class="right align">
+      <a class="button circular ui icon teal update_minutes">
+        <i class="icon edit"></i>
+      </a>
+      <button class="button circular ui icon  red delete_minutes">
+        <i class="icon delete"></i>
+      </button>
+    </td>
+  </tr>
+  {{/if}}
+
+
+</template>

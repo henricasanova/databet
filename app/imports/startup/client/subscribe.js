@@ -12,3 +12,4 @@ Meteor.subscribe("CurriculumMappings");
 Meteor.subscribe("OfferedCourses");
 Meteor.subscribe("AssessmentItems");
 Meteor.subscribe("UploadedFiles");
+Meteor.subscribe("Minutes");
