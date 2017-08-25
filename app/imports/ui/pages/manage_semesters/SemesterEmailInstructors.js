@@ -49,17 +49,16 @@ Template.SemesterEmailInstructors.helpers({
 Template.SemesterEmailInstructors.events({
 
   "click #button_send_email": function(e) {
-    var subject_line = $('#email_subject').val();
-    var cc = $('#cc').val();
-    var body = $('#email_body').val();
+    const subject_line = $('#email_subject').val();
+    const cc = $('#cc').val();
+    const body = $('#email_body').val();
 
 
 
-    var distribution_list = compute_distribution_list();
-    console.log("DISTRIBUTION_LIST = ", distribution_list);
+    const distribution_list = compute_distribution_list();
 
-    for (var i=0; i < distribution_list[0].length; i++) {
-      var processed_body = process_body(body, distribution_list[0][i]);
+    for (let i=0; i < distribution_list[0].length; i++) {
+      const processed_body = process_body(body, distribution_list[0][i]);
       Meteor.call("send_email", {
         to: distribution_list[1][i],
         from: "donotreply@databet.hawaii.edu",
@@ -86,27 +85,25 @@ Template.ListOfUsersEmails.helpers({
 /*** Helper function ***/
 
 function process_body(original_body, user_id) {
-  var processed_body;
-  var course_info = get_course_info_for_user_and_semester(user_id, FlowRouter.getParam("_id"));
+  const course_info = get_course_info_for_user_and_semester(user_id, FlowRouter.getParam("_id"));
 
-  processed_body = original_body.replace(/COURSE_INFO/, course_info);
 
-  return processed_body;
+  return original_body.replace(/COURSE_INFO/, course_info);
 
 }
 
 
 function compute_distribution_list() {
 
-  var semester_id = FlowRouter.getParam("_id");
-  var offered_courses = OfferedCourses.find({"semester": semester_id, "archived": false}).fetch();
-  var user_ids = _.map(offered_courses, function(e) {return e.instructor;});
-  var user_ids = _.uniq(user_ids);
-  var user_list = Meteor.users.find({_id: {$in: user_ids}}).fetch();
-  user_list = _.uniq(user_list);
+  const semester_id = FlowRouter.getParam("_id");
+  const offered_courses = OfferedCourses.find({"semester": semester_id, "archived": false}).fetch();
+  const user_ids = _.uniq(_.map(offered_courses, function(e) {return e.instructor;}));
+  let user_list = [];
+  for (let i=0; i < user_ids.length; i++) {
+    user_list.push(Meteor.users.findOne({_id: user_ids[i]}));
+  }
 
-
-  var e_mail_list =  _.map(user_list, function(e) {
+  const e_mail_list =  _.map(user_list, function(e) {
                       if (e.emails) { return e.name + " <" + e.emails[0].address + ">  ";}
                       if (e.email) { return e.name + " <" + e.email + "> ";}
                       return ""; });
@@ -116,11 +113,11 @@ function compute_distribution_list() {
 
 function get_course_info_for_user_and_semester(user_id, semester_id) {
 
-  var offered_courses = OfferedCourses.find({"semester": semester_id, "instructor": user_id}).fetch();
-  var course_info = "";
-  for (var i=0; i < offered_courses.length; i++) {
-    var course = Courses.findOne({_id: offered_courses[i].course});
-    var url= get_course_info_url(offered_courses[i].course);
+  const offered_courses = OfferedCourses.find({"semester": semester_id, "instructor": user_id}).fetch();
+  let course_info = "";
+  for (let i=0; i < offered_courses.length; i++) {
+    const course = Courses.findOne({_id: offered_courses[i].course});
+    const url= get_course_info_url(offered_courses[i].course);
     course_info += course.alphanumeric + " (" +
       semesterid_to_semesterstring(semester_id) +
       "): " + url + "\n";
