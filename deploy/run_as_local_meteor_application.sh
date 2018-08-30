@@ -25,6 +25,7 @@ if [ ! -r $SETTING_FILE ]; then
 	exit 1
 fi
 
+echo ROOT_URL=http://$SERVER_NAME:$PORT$URL_SUFFIX meteor --settings=$SETTINGS_FILE  --port $PORT --no-release-check
 cd ../app && ROOT_URL=http://$SERVER_NAME:$PORT$URL_SUFFIX meteor --settings=$SETTINGS_FILE  --port $PORT --no-release-check
 
 

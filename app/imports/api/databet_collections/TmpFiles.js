@@ -6,13 +6,14 @@
 import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import { fs_create_dir, fs_remove_dir } from '../global_helpers/file_system';
+import { FilesCollection } from 'meteor/ostrio:files';
 
 
 export class TmpFilesCollection {
 
   constructor(config) {
     this.config = config;
-    this.MeteorFiles = new Meteor.Files(config);
+    this.MeteorFiles = new FilesCollection(config);
   }
 
   get_storage_path() {

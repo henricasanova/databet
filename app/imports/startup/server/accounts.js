@@ -60,7 +60,7 @@ Accounts.validateNewUser(function (user) {
   } else {
     username = user.emails[0].address;
   }
-
+  console.log("USERNAME = " + username);
   if (is_CAS || (!(username in Meteor.settings.authorized_nonCAS_users))) {
     console.log("** Rejecting creation of non-CAS account **");
     // Weirdly enough, this no longer works...

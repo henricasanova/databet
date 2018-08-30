@@ -122,6 +122,7 @@ function fix_dates(collection_name, doc) {
   date_fixing_rules["AssessmentItems"] = ["date_last_modified"];
   date_fixing_rules["Curricula"] = ["date_created"];
   date_fixing_rules["Meteor.users"] = ["createdAt"];
+  date_fixing_rules["Minutes"] = ["date"];
 
   for (collection_name in date_fixing_rules) {
     if (date_fixing_rules.hasOwnProperty(collection_name)) {
