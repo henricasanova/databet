@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating';
 import { Meteor } from 'meteor/meteor';
-import { UploadedAssessmentFiles } from '../../../api/databet_collections/UploadedAssessmentFiles';
+import { UploadedFiles } from '../../../api/databet_collections/UploadedFiles';
 import { AssessmentItems } from '../../../api/databet_collections/AssessmentItems';
 import { object_to_json_html } from '../../../api/global_helpers/object_to_json';
 
@@ -25,7 +25,7 @@ Template.UnreferencedDocs.helpers({
 
     var list_of_unreferenced_docs = [];
 
-    list_of_unreferenced_docs = list_of_unreferenced_docs.concat(get_unreferenced_in_collection(UploadedAssessmentFiles,
+    list_of_unreferenced_docs = list_of_unreferenced_docs.concat(get_unreferenced_in_collection(UploadedFiles,
       { "collection": AssessmentItems,
         "fields": ["assessment_question_file", "sample_poor_answer_file", "sample_medium_answer_file", "sample_good_answer_file"]}));
 

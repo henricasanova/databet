@@ -28,7 +28,7 @@ Template.MissingFiles.helpers({
       if (error) {
         set_to_true_if_error.set(true);
       } else {
-        var docs = UploadedAssessmentFiles.find({}).fetch();
+        var docs = UploadedFiles.find({}).fetch();
         var list_of_missing_files = [];
         for (var i=0; i < docs.length; i++) {
           var filename = docs[i].path.replace(result[0]+"/","");
@@ -52,7 +52,7 @@ Template.MissingFiles.helpers({
 Template.MissingFileRow.helpers({
 
   this_collection: function () {
-    return "UploadedAssessmentFiles";
+    return "UploadedFiles";
   },
 
   this_id: function () {
@@ -75,7 +75,7 @@ Template.MissingFileRow.onRendered(function () {
 Template.MissingFileRow.events({
 
   "click .manage_delete_item": function (e) {
-    UploadedAssessmentFiles.remove_document(this.meta.databet_id);
+    UploadedFiles.remove_document(this.meta.databet_id);
   },
 
 });
