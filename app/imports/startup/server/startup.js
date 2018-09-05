@@ -1,10 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { TmpFiles } from '../../api/databet_collections/TmpFiles';
 import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
+import { OfferedCourses } from '../../api/databet_collections/OfferedCourses';
 import { is_so_critical } from '../../api/global_helpers/student_outcome';
 
 Meteor.startup(function () {
   try {
+    fix_db_in_ad_hoc_ways();
     configure_email();
     remove_tmp_files();
     update_critical_student_outcomes();
@@ -40,4 +42,13 @@ function update_critical_student_outcomes() {
     StudentOutcomes.update({"_id": doc_id}, {$set: {"critical": critical}});
   }
 
+}
+
+function fix_db_in_ad_hoc_ways() {
+  console.log("HAH!");
+  let ocs = OfferedCourses.find({}).fetch();
+  for (let i=0; i < ocs.length; i++) {
+    let doc_id = ocs[i]._id;
+    console.log("Should modify Offered Course " + doc_id);
+  }
 }
