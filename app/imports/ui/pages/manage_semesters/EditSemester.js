@@ -14,6 +14,8 @@ Template.EditSemester.onCreated(function() {
   Template.instance().missing_instructor.set(false);
   Template.instance().missing_alphanumeric.set(false);
   Template.instance().already_exists.set(false);
+
+  console.log("AT THE END OF EditSemester.onCreated()");
 });
 
 Template.EditSemester.helpers({
@@ -147,14 +149,30 @@ Template.EditSemester.events({
 
 
 
+Template.CourseOfferingsRow.onCreated(function() {
+
+  this.uploaded_syllabus = null;
+
+});
+
+
 
 Template.CourseOfferingsRow.helpers({
+
+  "syllabus_upload_context": function () {
+    return generic_file_upload_context("syllabus");
+  },
+
   "course_alphanumeric": function() {
     return Courses.findOne({"_id": this.course}).alphanumeric;
   },
 
   "instructor_name": function() {
     return Meteor.users.findOne({"_id": this.instructor}).name;
+  },
+
+  "syllabus": function() {
+    return this.syllabus;
   },
 
   "num_assessment_items": function() {
@@ -170,7 +188,6 @@ Template.CourseOfferingsRow.helpers({
 Template.CourseOfferingsRow.events({
 
   "click .delete_course_offering": function(e) {
-    console.log("SHOULD DELETE");
 
     var course_offering_id = this._id;
 

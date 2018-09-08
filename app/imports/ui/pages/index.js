@@ -8,6 +8,7 @@ import "./manage_semesters";
 import "./backups";
 import "./doctor";
 import "./reports";
+import "./manage_syllabi";
 import "./assessment_pages";
 import "./todo_list";
 import "./course_info";

@@ -3,3 +3,5 @@
  */
 import './UploadFileEnterText.html';
 import './UploadFileEnterText';
+import './UploadFile.html';
+import './UploadFile';

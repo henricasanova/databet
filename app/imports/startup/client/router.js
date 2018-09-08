@@ -105,6 +105,13 @@ FlowRouter.route('/manage_semesters', {
   name: 'ManageSemesters',
   action() {
     conditional_render(true, true, "ManageSemesters");
+  },
+});
+
+FlowRouter.route('/manage_syllabi', {
+  name: 'ManageSyllabi',
+  action() {
+    conditional_render(true, true, "ManageSyllabi");
 
   },
 });

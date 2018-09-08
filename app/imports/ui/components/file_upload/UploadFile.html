@@ -1,0 +1,19 @@
+<template name="UploadFile">
+
+
+  {{#if previously_uploaded_file_exists}}
+  <div class="field">
+    <div>
+      {{#if previously_uploaded_file_is_valid}}
+      <a href="{{previously_uploaded_file_url}}" target="_blank">[Click here to view]</a>
+      {{/if}}
+    </div>
+  </div>
+  {{/if}}
+
+  <!--{{> upload_semanticUI fileTypes='.txt,.pdf,.jpg,.zip,.tgz,.tar' multiple=false callbacks=file_upload_callbacks}}-->
+  <input id="fileinput" type="file" /><br>
+
+
+
+</template>

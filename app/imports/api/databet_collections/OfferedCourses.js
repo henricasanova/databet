@@ -36,7 +36,7 @@ OfferedCourses.attachSchema(new SimpleSchema({
     optional: false
   },
   syllabus: {
-    type: String, // _id of UploadedFile
+    type: String,
     optional: true
   },
   archived: {     // archived by instructor

@@ -1,0 +1,53 @@
+<template name="ManageSyllabi">
+
+  <br>
+
+  <div class="ui container center">
+
+    <table class="ui table">
+      <thead>
+      <tr>
+        <th class="one wide">Semester</th>
+        <th class="one wide">Course</th>
+        <th class="two wide">Instructor</th>
+        <th class="three wide">Syllabus</th>
+        <th class="one wide"></th>
+      </tr>
+      </thead>
+      <tbody>
+      {{#each listOfOfferedCourses}}
+      {{> OfferedCourseSyllabusRow offered_course_id=get_offered_course_id}}
+      {{/each}}
+      </tbody>
+    </table>
+
+  </div>
+
+</template>
+
+
+
+<template name="OfferedCourseSyllabusRow">
+
+  <tr>
+    <td>{{ semesterString }}</td>
+    <td>{{ courseAlpha }}</td>
+    <td>{{ courseInstructor }}</td>
+    <td>
+      {{> UploadFile context=get_syllabus_upload_context}}
+    </td>
+    <td>
+      {{#if upload_path_selected}}
+      <div class="ui button circular icon blue upload_syllabus">
+        <i class="icon upload"></i>
+      </div>
+      {{else}}
+      <div class="ui button circular icon green upload_syllabus disabled">
+        <i class="icon upload"></i>
+      </div>
+      {{/if}}
+    </td>
+  </tr>
+
+</template>
+

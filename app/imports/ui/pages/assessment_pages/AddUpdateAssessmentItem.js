@@ -434,25 +434,25 @@ Template.AddUpdateAssessmentItem.helpers({
   },
 
   "assessment_question_upload_context": function () {
-    return generic_upload_context("assessment_question");
+    return generic_file_upload_or_text_context("assessment_question");
   },
 
   "sample_poor_answer_upload_context": function () {
-    return generic_upload_context("sample_poor_answer");
+    return generic_file_upload_or_text_context("sample_poor_answer");
   },
 
   "sample_medium_answer_upload_context": function () {
-    return generic_upload_context("sample_medium_answer");
+    return generic_file_upload_or_text_context("sample_medium_answer");
   },
 
   "sample_good_answer_upload_context": function () {
-    return generic_upload_context("sample_good_answer");
+    return generic_file_upload_or_text_context("sample_good_answer");
   },
 
 });
 
 
-function generic_upload_context(name) {
+function generic_file_upload_or_text_context(name) {
   return {
     "my_name": name,
     "action": Template.currentData().action,
