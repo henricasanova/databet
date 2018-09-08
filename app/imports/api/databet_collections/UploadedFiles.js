@@ -21,6 +21,8 @@ export class UploadedFilesCollection {
   }
 
   insert_document(fileObj, databet_id, prefix) {
+
+    console.log("IN UPLOADED_FILES.INSERT_DOCUMNET()")
     let uploadInstance = this.MeteorFiles.insert({
       file: fileObj,
       meta: { "databet_id": databet_id },
@@ -32,6 +34,8 @@ export class UploadedFilesCollection {
       // nothing
     });
 
+    console.log("HERE");
+    
     uploadInstance.on('end', function(error, fileObj) {
       if (error) {
         alert('Error during upload: ' + error.reason);
