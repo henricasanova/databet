@@ -198,7 +198,7 @@ if (Meteor.server) {
     throw new Meteor.Error("upload_dir should be defined in the settings file");
   }
 
-  meteor_files_config["storageDir"] = "/user_uploads/";
+  meteor_files_config["storageDir"] = "/assessment_uploads/";
 
   meteor_files_config["storagePath"] = upload_root + meteor_files_config["storageDir"];
   fs_create_dir(meteor_files_config["storagePath"]);

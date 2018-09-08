@@ -28,7 +28,7 @@ Template.UnreachableFiles.helpers({
     var set_to_results = Template.instance().list_of_unreachable_assessment_files;
 
     // Asynchronous call with callbacks
-    Meteor.call("get_list_of_uploaded_files", "user_uploads", function (error, result) {
+    Meteor.call("get_list_of_uploaded_files", "assessment_uploads", function (error, result) {
       if (error) {
         set_to_true_if_error.set(true);
       } else {
