@@ -45,15 +45,15 @@ function update_critical_student_outcomes() {
 }
 
 function fix_db_in_ad_hoc_ways() {
-  let ocs = OfferedCourses.find({}).fetch();
-  for (let i=0; i < ocs.length; i++) {
-    let doc_id = ocs[i]._id;
-    if (ocs[i].syllabus == undefined) {
-      OfferedCourses.update({"_id": doc_id}, {$set: {"syllabus": "n/a"}});
-    }
-    if (ocs[i].syllabus === "foo") {
-      OfferedCourses.update({"_id":doc_id}, {$set: {"syllabus": "n/a"}});
-    }
-    console.log(OfferedCourses.findOne({"_id": doc_id}));
-  }
+  // let ocs = OfferedCourses.find({}).fetch();
+  // for (let i=0; i < ocs.length; i++) {
+  //   let doc_id = ocs[i]._id;
+  //   if (ocs[i].syllabus == undefined) {
+  //     OfferedCourses.update({"_id": doc_id}, {$set: {"syllabus": "n/a"}});
+  //   }
+  //   if (ocs[i].syllabus === "foo") {
+  //     OfferedCourses.update({"_id":doc_id}, {$set: {"syllabus": "n/a"}});
+  //   }
+  //   console.log(OfferedCourses.findOne({"_id": doc_id}));
+  // }
 }
