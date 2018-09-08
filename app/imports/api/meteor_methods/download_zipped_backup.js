@@ -38,7 +38,7 @@ Meteor.methods({
       for (var i = 0; i < filelist.length; i++) {
         console.log("Archiving ", upload_root + "/" + filelist[i]);
         data = fs_read_file_sync(upload_root + "/" + filelist[i]);
-        zipfile.file(archive_name + '/assessment_uploads/' + filelist[i], data);
+        zipfile.file(archive_name + '/user_uploads/' + filelist[i], data);
       }
 
       // Add the Collection dump to the archive
@@ -49,8 +49,8 @@ Meteor.methods({
         "\n\nThis archive contains:\n\t- this README.txt file\n" +
         "\t- collections.json, which contains a JSON array that contains all collection content, which \n" +
         "can be uploaded back into the collections via the JSON upload feature on the Backup admin page.\n" +
-        "\t- an assessment_uploads/ directory, which contains all uploaded files, which on the server\n" +
-        "is located in" + upload_root + "/assessment_uploads/\n\n"+
+        "\t- an user_uploads/ directory, which contains all uploaded files, which on the server\n" +
+        "is located in" + upload_root + "/user_uploads/\n\n"+
         "** WARNING ** The uploaded files should be put on the server BEFORE using DataBET to re-import\n " +
         "the JSON array\n");
 
