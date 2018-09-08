@@ -113,7 +113,7 @@ Template.OfferedCourseSyllabusRow.events({
   "click .upload_syllabus": function (e) {
 
     // Removing an old file?
-    if (Template.instance().offered_course.syllabus) {
+    if (!(Template.instance().offered_course.syllabus === "n/a")) {
       UploadedFiles.remove_document(Template.instance().offered_course.syllabus);
     }
 
