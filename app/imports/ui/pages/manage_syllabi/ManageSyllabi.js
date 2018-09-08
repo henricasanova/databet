@@ -128,9 +128,7 @@ Template.OfferedCourseSyllabusRow.events({
     let username =get_current_username();
 
     let prefix = "SYLLABUS:"+semester_string+":"+course_alpha+":"+username;
-    console.log("CALLING INSER DOCUMNET");
     UploadedFiles.insert_document(fileObj, new_file_id, prefix);
-    console.log("CALLED INSER DOCUMNET");
 
     // Update the offered course
     OfferedCourses.update_document(Template.instance().offered_course._id, {"syllabus": new_file_id});
