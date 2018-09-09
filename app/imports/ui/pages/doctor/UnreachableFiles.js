@@ -33,15 +33,15 @@ Template.UnreachableFiles.helpers({
         set_to_true_if_error.set(true);
       } else {
 
-        var list_of_known_files = UploadedFiles.find({}).fetch();
-        var list_of_known_filenames = [];
-        for (var i=0; i < list_of_known_files.length; i++) {
+        let list_of_known_files = UploadedFiles.find({}).fetch();
+        let list_of_known_filenames = [];
+        for (let i=0; i < list_of_known_files.length; i++) {
           list_of_known_filenames.push(list_of_known_files[i].path.replace(result[0]+"/",""));
         }
 
         // Build list of unreachable filenames
-        var list_of_unreachable_filenames = [];
-        for (var j = 1; j < result.length; j++) {
+        let list_of_unreachable_filenames = [];
+        for (let j = 1; j < result.length; j++) {
           if (list_of_known_filenames.indexOf(result[j]) < 0) {
             list_of_unreachable_filenames.push(result[0] + result[j]);
           } else {

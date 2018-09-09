@@ -51,6 +51,5 @@ function fix_db_in_ad_hoc_ways() {
     if (ocs[i].toassess == undefined) {
       OfferedCourses.update({"_id": doc_id}, {$set: {"toassess": true}});
     }
-    console.log(OfferedCourses.findOne({"_id": doc_id}));
   }
 }
