@@ -51,7 +51,7 @@
           <th class="three wide">ID</th>
           <th class="three wide">Course</th>
           <th class="three wide">Instructor </th>
-          <th class="three wide">Syllabus </th>
+          <th class="two wide">To Asses</th>
           <th class="one wide"></th>
         </tr>
         </thead>
@@ -142,6 +142,29 @@
     </td>
     <td>
       {{instructor_name}}
+    </td>
+    <td>
+      {{#if semester_is_locked}}
+        {{#if to_assess}}
+        <div class="ui checkbox">
+          <input type="checkbox" class="assesscheckbox" name="toassess_name" id="toassess_{{this._id}}" checked tabindex="0"><label></label>
+        </div>
+        {{else}}
+        <div class="ui checkbox">
+          <input type="checkbox" class="assesscheckbox" name="toassess_name" id="toassess_{{this._id}}" tabindex="0"><label></label>
+        </div>
+        {{/if}}
+      {{else}}
+        {{#if to_assess}}
+        <div class="ui checkbox">
+          <input type="checkbox" class="assesscheckbox" name="toassess_name" id="toassess_{{this._id}}" checked tabindex="0"><label></label>
+        </div>
+        {{else}}
+        <div class="ui checkbox">
+          <input type="checkbox" class="assesscheckbox" name="toassess_name" id="toassess_{{this._id}}" tabindex="0"><label></label>
+        </div>
+        {{/if}}
+      {{/if}}
     </td>
     <td>
       {{#if semester_is_locked}}

@@ -39,6 +39,10 @@ OfferedCourses.attachSchema(new SimpleSchema({
     type: String,
     optional: true
   },
+  toassess: {
+    type: Boolean,
+    optional: true
+  },
   archived: {     // archived by instructor
     type: Boolean,
     optional: false

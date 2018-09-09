@@ -110,15 +110,15 @@ Template.CheckBoxes.helpers({
 Template.CheckBoxes.events({
 
   "change .mapcheckbox": function (e) {
-    var curriculumId = FlowRouter.getParam('_id');
+    let curriculumId = FlowRouter.getParam('_id');
 
-    var tokens = e.currentTarget.id.split("_");
-    var level = tokens[1];
-    var courseId = tokens[2];
-    var piId = tokens[3];
-    var checked = $("#" + e.currentTarget.id).is(":checked");
+    let tokens = e.currentTarget.id.split("_");
+    let level = tokens[1];
+    let courseId = tokens[2];
+    let piId = tokens[3];
+    let checked = $("#" + e.currentTarget.id).is(":checked");
 
-    var mapping = {
+    let mapping = {
       "curriculum": curriculumId,
       "level": level,
       "course": courseId,
@@ -133,7 +133,7 @@ Template.CheckBoxes.events({
 
     } else {
       // Remove mapping
-      var to_remove = CurriculumMappings.findOne(mapping);
+      let to_remove = CurriculumMappings.findOne(mapping);
       CurriculumMappings.remove_document(to_remove._id);
 
     }

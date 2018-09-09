@@ -15,7 +15,6 @@ Template.EditSemester.onCreated(function() {
   Template.instance().missing_alphanumeric.set(false);
   Template.instance().already_exists.set(false);
 
-  console.log("AT THE END OF EditSemester.onCreated()");
 });
 
 Template.EditSemester.helpers({
@@ -180,16 +179,28 @@ Template.CourseOfferingsRow.helpers({
   },
 
   "semester_is_locked": function() {
-    var semester = Semesters.findOne({"_id": this.semester});
+    let semester = Semesters.findOne({"_id": this.semester});
     return semester.locked;
+  },
+
+  "to_assess": function() {
+    return this.toassess;
   }
 });
 
 Template.CourseOfferingsRow.events({
 
+  "change .assesscheckbox": function(e) {
+    let course_offering_id = this._id;
+    let checked = $("#" + e.currentTarget.id).is(":checked");
+
+    OfferedCourses.update_document(course_offering_id, {"toassess": checked});
+
+  },
+
   "click .delete_course_offering": function(e) {
 
-    var course_offering_id = this._id;
+    let course_offering_id = this._id;
 
     $('#delete_course_offering_modal').
       modal({

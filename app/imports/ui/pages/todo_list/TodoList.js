@@ -25,7 +25,7 @@ Template.TodoList.onCreated(function () {
 Template.TodoList.helpers({
 
   "listOfOfferedCourses": function () {
-    var offered_courses = OfferedCourses.find({"instructor": get_current_user(), "archived": false}).fetch();
+    var offered_courses = OfferedCourses.find({"instructor": get_current_user(), "archived": false, "toassess": true}).fetch();
 
     offered_courses.sort(function (a, b) {
       var semester_order_a = Semesters.findOne({"_id": a.semester}).order;
