@@ -7,12 +7,29 @@ import {semesterid_to_semesterstring} from "../../../api/global_helpers/semester
 import {get_current_username} from "../../../api/global_helpers/users_and_usernames";
 import {UploadedFiles} from "../../../api/databet_collections/UploadedFiles";
 import { Random } from 'meteor/random';
+import {collection_dictionary} from "../../../startup/both/collection_dictionary";
 
 
 Template.ManageSyllabi.onCreated(function() {
 });
 
 Template.ManageSyllabi.helpers({
+
+  "num_uploaded_syllabi": function() {
+    const offered_courses = OfferedCourses.find({}).fetch();
+    let count = 0;
+    for (let i=0; i < offered_courses.length; i++) {
+      let syllabus_id = offered_courses[i].syllabus;
+      if (!(syllabus_id === "n/a")) {
+        count += 1;
+      }
+    }
+    return count;
+  },
+
+  "num_needed_syllabi": function() {
+    return OfferedCourses.find({}).fetch().length;
+  },
 
   "listOfOfferedCourses": function() {
 
