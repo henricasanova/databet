@@ -60,7 +60,19 @@ Template.EditSemester.helpers({
 
   listOfCourseOfferings: function() {
     var semester_id = FlowRouter.getParam('_id');
-    return OfferedCourses.find({"semester": semester_id});
+    return OfferedCourses.find({"semester": semester_id}).fetch().sort(function(a,b) {
+      let a_course = a.course;
+      let b_course = b.course;
+      let a_alpha = Courses.findOne({"_id": a_course}).alphanumeric;
+      let b_alpha = Courses.findOne({"_id": b_course}).alphanumeric;
+      if (a_alpha < b_alpha) {
+        return -1;
+      } else if (a_alpha > b_alpha) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
   }
 });
 
