@@ -20,7 +20,8 @@ Template.ManageSyllabi.helpers({
     let count = 0;
     for (let i=0; i < offered_courses.length; i++) {
       let syllabus_id = offered_courses[i].syllabus;
-      if (!(syllabus_id === "n/a")) {
+      console.log("syllabus_id = " + syllabus_id);
+      if (syllabus_id) {
         count += 1;
       }
     }
@@ -130,7 +131,7 @@ Template.OfferedCourseSyllabusRow.events({
   "click .upload_syllabus": function (e) {
 
     // Removing an old file?
-    if (!(Template.instance().offered_course.syllabus === "n/a")) {
+    if (Template.instance().offered_course.syllabus) {
       UploadedFiles.remove_document(Template.instance().offered_course.syllabus);
     }
 

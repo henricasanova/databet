@@ -51,13 +51,7 @@ function fix_db_in_ad_hoc_ways() {
   for (let i=0; i < ocs.length; i++) {
     let syllabus_id = ocs[i].syllabus;
     if (syllabus_id === "n/a") {
-      //fine, but not really
-    } else {
-      if (UploadedFiles.findOne({"_id": syllabus_id})) {
-        // fine
-      } else {
-        OfferedCourses.update({"_id": ocs[i]._id}, {$set: {"syllabus": "n/a"}});
-      }
+      OfferedCourses.update({"_id": ocs[i]._id}, {$set: {"syllabus": ""}});
     }
   }
 }
