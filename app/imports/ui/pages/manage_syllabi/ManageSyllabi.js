@@ -48,9 +48,9 @@ Template.ManageSyllabi.helpers({
       let a_alpha = Courses.findOne({"_id":a.course}).alphanumeric;
       let b_alpha = Courses.findOne({"_id":b.course}).alphanumeric;
       if (a_alpha < b_alpha) {
-        return 1;
-      } else if (a_alpha > b_alpha) {
         return -1;
+      } else if (a_alpha > b_alpha) {
+        return 1;
       }
 
       // Then by instructor
