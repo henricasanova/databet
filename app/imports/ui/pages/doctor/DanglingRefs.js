@@ -95,8 +95,8 @@ export var get_dangling_refs = function () {
     get_dangling_refs_in_collection("OfferedCourses",
       [["course", "Courses"],
         ["semester", "Semesters"],
-        ["instructor", "Meteor.users",
-        "syllabus", "UploadedFiles"]]));
+        ["instructor", "Meteor.users"],
+        ["syllabus", "UploadedFiles"]]));
 
   // PerformanceIndicators
   dangling_refs.push.apply(dangling_refs,
