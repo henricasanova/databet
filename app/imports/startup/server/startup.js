@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { TmpFiles } from '../../api/databet_collections/TmpFiles';
 import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
 import { OfferedCourses } from '../../api/databet_collections/OfferedCourses';
+import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
 import { is_so_critical } from '../../api/global_helpers/student_outcome';
 
 Meteor.startup(function () {
@@ -45,11 +46,18 @@ function update_critical_student_outcomes() {
 }
 
 function fix_db_in_ad_hoc_ways() {
+
   let ocs = OfferedCourses.find({}).fetch();
   for (let i=0; i < ocs.length; i++) {
-    let doc_id = ocs[i]._id;
-    if (ocs[i].toassess == undefined) {
-      OfferedCourses.update({"_id": doc_id}, {$set: {"toassess": true}});
+    let syllabus_id = ocs[i].syllabus;
+    if (syllabus_id === "n/a") {
+      //fine, but not really
+    } else {
+      if (UploadedFiles.findOne({"_id": syllabus_id})) {
+        // fine
+      } else {
+        OfferedCourses.update({"_id": ocs[i]._id}, {$set: {"syllabus": "n/a"}});
+      }
     }
   }
 }
