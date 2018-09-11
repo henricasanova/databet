@@ -28,10 +28,13 @@ Template.MissingFiles.helpers({
       if (error) {
         set_to_true_if_error.set(true);
       } else {
+        console.log(result);
         var docs = UploadedFiles.find({}).fetch();
         var list_of_missing_files = [];
         for (var i=0; i < docs.length; i++) {
           var filename = docs[i].path.replace(result[0]+"/","");
+          console.log(docs[i]);
+          console.log(filename);
           if (result.indexOf(filename) == -1) {
             list_of_missing_files.push(docs[i]);
           }
