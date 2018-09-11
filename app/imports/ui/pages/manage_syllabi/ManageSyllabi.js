@@ -20,7 +20,6 @@ Template.ManageSyllabi.helpers({
     let count = 0;
     for (let i=0; i < offered_courses.length; i++) {
       let syllabus_id = offered_courses[i].syllabus;
-      console.log("syllabus_id = " + syllabus_id);
       if (syllabus_id) {
         count += 1;
       }

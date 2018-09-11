@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { _ } from 'meteor/underscore';
 import { DatabetCollection} from './DatabetCollection';
 import { AssessmentItems} from './AssessmentItems';
+import {UploadedFiles} from "./UploadedFiles";
 
 class OfferedCoursesCollection extends DatabetCollection {
 
@@ -10,6 +11,12 @@ class OfferedCoursesCollection extends DatabetCollection {
     // Removing referencing AssessmentItems
     var referencing_ids = AssessmentItems.get_selected_doc_ids({offered_course: doc_id});
     _.each(referencing_ids, function(e) { AssessmentItems.remove_document(e); });
+
+    // Remove syllabus if any
+    let syllabus_id = OfferedCourses.findOne({"_id": doc_id}).syllabus;
+    if (syllabus_id) {
+      UploadedFiles.remove_document(syllabus_id);
+    }
 
     super.remove_document(doc_id, callback);
   }

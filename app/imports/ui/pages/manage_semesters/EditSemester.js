@@ -129,7 +129,8 @@ Template.EditSemester.events({
       "instructor": instructor,
       "semester": FlowRouter.getParam('_id'),
       "archived": false,
-      "toassess": true
+      "toassess": true,
+      "syllabus": undefined
     };
 
     if (OfferedCourses.findOne(offered_course)) {

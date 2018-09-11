@@ -120,7 +120,7 @@ export var get_dangling_refs = function () {
 // Generic method that returns an error message
 function not_in_collection(doc, field_name, target_collection_name) {
 
-  // If the document has an null field, we say it's fine
+  // If the document has an null / undefined field, we say it's fine
   //  (it's not a Bogus ID, it's just a non-ID)
   if (doc[field_name] == null) {
     return "";
