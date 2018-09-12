@@ -21,21 +21,62 @@ Template.ManageSyllabi.onRendered(function () {
 
 Template.ManageSyllabi.helpers({
 
-  "num_uploaded_syllabi": function() {
+  "num_uploaded_compliant_syllabi": function() {
     const offered_courses = OfferedCourses.find({}).fetch();
     let count = 0;
     for (let i=0; i < offered_courses.length; i++) {
       let syllabus_id = offered_courses[i].syllabus;
+      let compliant = offered_courses[i].syllabus_compliant;
       if (syllabus_id) {
-        count += 1;
+        if (compliant === "yes") {
+          count += 1;
+        }
       }
     }
     return count;
   },
 
-  "num_needed_syllabi": function() {
-    return OfferedCourses.find({}).fetch().length;
+  "num_uploaded_non_compliant_syllabi": function() {
+    const offered_courses = OfferedCourses.find({}).fetch();
+    let count = 0;
+    for (let i=0; i < offered_courses.length; i++) {
+      let syllabus_id = offered_courses[i].syllabus;
+      let compliant = offered_courses[i].syllabus_compliant;
+      if (syllabus_id) {
+        if (compliant === "no") {
+          count += 1;
+        }
+      }
+    }
+    return count;
   },
+
+  "num_uploaded_tbd_compliant_syllabi": function() {
+    const offered_courses = OfferedCourses.find({}).fetch();
+    let count = 0;
+    for (let i=0; i < offered_courses.length; i++) {
+      let syllabus_id = offered_courses[i].syllabus;
+      let compliant = offered_courses[i].syllabus_compliant;
+      if (syllabus_id) {
+        if (compliant === "tbd") {
+          count += 1;
+        }
+      }
+    }
+    return count;
+  },
+
+  "num_missing_syllabi": function() {
+      const offered_courses = OfferedCourses.find({}).fetch();
+      let count = 0;
+      for (let i=0; i < offered_courses.length; i++) {
+        let syllabus_id = offered_courses[i].syllabus;
+        if (!(syllabus_id)) {
+            count += 1;
+        }
+      }
+      return count;
+    },
 
   "listOfOfferedCourses": function() {
 

@@ -4,7 +4,43 @@
 
   <div class="ui container center">
 
-    <label>Uploaded Syllabi: {{num_uploaded_syllabi}} / {{num_needed_syllabi}} </label>
+    <div class="ui container raised padded text segment fluid">
+      <table class="ui table">
+        <tr>
+          <td>
+            <label># Uploaded ABET-compliant Syllabi</label>
+            </td>
+          <td>
+            <label>{{num_uploaded_compliant_syllabi}}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label># Uploaded TBD-compliance Syllabi</label>
+          </td>
+          <td>
+            <label>{{num_uploaded_tbd_compliant_syllabi}}</label>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label># Uploaded non-ABET-compliant Syllabi</label>
+          </td>
+          <td>
+            <div class="ui red label">{{num_uploaded_non_compliant_syllabi}}</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label># Missing Syllabi</label>
+          </td>
+          <td>
+            <div class="ui  red label">{{num_missing_syllabi}}</div>
+          </td>
+        </tr>
+      </table>
+    </div>
     <table class="ui table">
       <thead>
       <tr>
