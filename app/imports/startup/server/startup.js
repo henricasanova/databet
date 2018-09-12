@@ -3,6 +3,9 @@ import { TmpFiles } from '../../api/databet_collections/TmpFiles';
 import { StudentOutcomes } from '../../api/databet_collections/StudentOutcomes';
 import { OfferedCourses } from '../../api/databet_collections/OfferedCourses';
 import { UploadedFiles } from '../../api/databet_collections/UploadedFiles';
+import { AssessmentItems } from '../../api/databet_collections/AssessmentItems';
+import { CurriculumMappings } from '../../api/databet_collections/CurriculumMappings';
+import { PerformanceIndicators } from '../../api/databet_collections/PerformanceIndicators';
 import { is_so_critical } from '../../api/global_helpers/student_outcome';
 
 Meteor.startup(function () {
@@ -49,9 +52,36 @@ function fix_db_in_ad_hoc_ways() {
 
   let ocs = OfferedCourses.find({}).fetch();
   for (let i=0; i < ocs.length; i++) {
-    let syllabus_id = ocs[i].syllabus;
-    if (syllabus_id === "n/a") {
-      OfferedCourses.update({"_id": ocs[i]._id}, {$set: {"syllabus": ""}});
+    let compliant = ocs[i].syllabus_compliant;
+    if (compliant === undefined) {
+      OfferedCourses.update({"_id": ocs[i]._id}, {$set: {"syllabus_compliant": "tbd"}});
     }
   }
+
+  // let pis = PerformanceIndicators.find({}).fetch();
+  // for (let i=0; i < pis.length; i++) {
+  //   let so_id = pis[i].student_outcome;
+  //   let so = StudentOutcomes.findOne({"_id": so_id});
+  //   console.log(so.description);
+  //   console.log("     " + pis[i].description);
+  // }
+  //
+  // console.log("--------------------------");
+  // let items = AssessmentItems.find({}).fetch();
+  // for (let i=0; i < items.length; i++) {
+  //  let instructor_id = items[i].instructor;
+  //  let instructor = Meteor.users.findOne({"_id": instructor_id});
+  //  let curriculum_mapping_id = items[i].curriculum_mapping;
+  //  let curriculum_mapping = CurriculumMappings.findOne({"_id": curriculum_mapping_id});
+  //  let pi_id = curriculum_mapping.performance_indicator;
+  //  let pi = PerformanceIndicators.findOne({"_id" : pi_id});
+  //  let so_id = pi.student_outcome;
+  //  let so = StudentOutcomes.findOne({"_id": so_id});
+  //  console.log(so.description);
+  //  console.log("     " + pi.description);
+  //  console.log("     " + instructor.name);
+  // }
+
+
+
 }

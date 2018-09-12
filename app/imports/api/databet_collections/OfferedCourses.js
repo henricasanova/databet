@@ -46,6 +46,10 @@ OfferedCourses.attachSchema(new SimpleSchema({
     type: String,
     optional: true
   },
+  syllabus_compliant: {
+    type: String,  // "yes", "no", "tbd"
+    optional: true
+  },
   toassess: {
     type: Boolean,
     optional: true

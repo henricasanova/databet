@@ -13,6 +13,12 @@ import {collection_dictionary} from "../../../startup/both/collection_dictionary
 Template.ManageSyllabi.onCreated(function() {
 });
 
+Template.ManageSyllabi.onRendered(function () {
+
+  $('.ui.checkbox').checkbox();
+
+});
+
 Template.ManageSyllabi.helpers({
 
   "num_uploaded_syllabi": function() {
@@ -86,6 +92,10 @@ Template.OfferedCourseSyllabusRow.onCreated(function() {
 
 });
 
+Template.OfferedCourseRow.onRendered(function() {
+  $('.ui.checkbox').checkbox();
+});
+
 
 Template.OfferedCourseSyllabusRow.helpers({
 
@@ -104,7 +114,7 @@ Template.OfferedCourseSyllabusRow.helpers({
   },
 
   "upload_path_selected": function () {
-    return (Template.instance().new_selected_syllabus_file.get() != undefined);
+    return (Template.instance().new_selected_syllabus_file.get() !== null);
   },
 
   "courseAlpha": function () {
@@ -122,7 +132,31 @@ Template.OfferedCourseSyllabusRow.helpers({
       "previously_uploaded_file": Template.instance().previously_uploaded_syllabus,
       "most_recently_selected_file_path": Template.instance().new_selected_syllabus_file
     };
-  }
+  },
+
+  "uploadedSyllabus": function() {
+    return OfferedCourses.findOne({"_id":Template.instance().offered_course._id}).syllabus;
+  },
+
+  "my_id": function() {
+    return Template.instance().offered_course._id;
+  },
+
+  "syllabus_compliant_yes": function() {
+    let offered_course_id = Template.instance().offered_course._id;
+    return (OfferedCourses.findOne({"_id": offered_course_id}).syllabus_compliant === "yes");
+  },
+
+  "syllabus_compliant_no": function() {
+    let offered_course_id = Template.instance().offered_course._id;
+    return (OfferedCourses.findOne({"_id": offered_course_id}).syllabus_compliant === "no");
+  },
+
+  "syllabus_compliant_tbd": function() {
+    let offered_course_id = Template.instance().offered_course._id;
+    return (OfferedCourses.findOne({"_id": offered_course_id}).syllabus_compliant === "tbd");  }
+
+
 });
 
 Template.OfferedCourseSyllabusRow.events({
@@ -151,7 +185,27 @@ Template.OfferedCourseSyllabusRow.events({
     OfferedCourses.update_document(Template.instance().offered_course._id, {"syllabus": new_file_id});
 
     Template.instance().previously_uploaded_syllabus.set(new_file_id);
-    Template.instance().new_selected_syllabus_file.set(undefined);
+    Template.instance().new_selected_syllabus_file.set(null);
+  },
+
+  "change .compliant_yes": function(e) {
+    // let target_id = e.currentTarget.id;
+    // let tokens = target_id.split("_");
+    // let id = tokens[tokens.length-1]
+    let offered_course = Template.instance().offered_course;
+    OfferedCourses.update_document(offered_course._id, {"syllabus_compliant": "yes"});
+  },
+
+  "change .compliant_no": function(e) {
+    let offered_course = Template.instance().offered_course;
+    OfferedCourses.update_document(offered_course._id, {"syllabus_compliant": "no"});
+    },
+
+  "change .compliant_tbd": function(e) {
+    let offered_course = Template.instance().offered_course;
+    OfferedCourses.update_document(offered_course._id, {"syllabus_compliant": "tbd"});
   }
+
+
 
 });

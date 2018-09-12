@@ -13,6 +13,7 @@
         <th class="two wide">Instructor</th>
         <th class="three wide">Syllabus</th>
         <th class="one wide"></th>
+        <th class="one wide">Compliant</th>
       </tr>
       </thead>
       <tbody>
@@ -46,6 +47,41 @@
       <div class="ui button circular icon blue upload_syllabus disabled">
         <i class="icon upload"></i>
       </div>
+      {{/if}}
+    </td>
+    <td>
+      {{#if uploadedSyllabus}}
+      <div class="fields">
+        <div class="field">
+          <div class="ui radio checkbox compliant_yes" id="compliant_checkbox_yes_{{my_id}}">
+            {{#if syllabus_compliant_yes}}
+            <input type="radio" class="hidden" name="compliant_checkbox_{{my_id}}" id="compliant_yes_{{my_id}}" checked tabindex="0"><label>Y</label>
+            {{else}}
+            <input type="radio" class="hidden" name="compliant_checkbox_{{my_id}}" id="compliant_yes_{{my_id}}" tabindex="0"><label>Y</label>
+            {{/if}}
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox compliant_no" id="compliant_checkbox_no_{{my_id}}">
+            {{#if syllabus_compliant_no}}
+            <input type="radio" class="hidden" name="compliant_checkbox_{{my_id}}" id="compliant_no_{{my_id}}" checked tabindex="0"><label>N</label>
+            {{else}}
+            <input type="radio" class="hidden" name="compliant_checkbox_{{my_id}}" id="compliant_no_{{my_id}}" tabindex="0"><label>N</label>
+          {{/if}}
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui radio checkbox compliant_tbd" id="compliant_checkbox_tbd_{{my_id}}">
+            {{#if syllabus_compliant_tbd}}
+            <input type="radio" class="hidden" name="compliant_checkbox_{{my_id}}" id="compliant_tbd_{{my_id}}" checked tabindex="0"><label>?</label>
+            {{else}}
+            <input type="radio" class="hidden" name="compliant_checkbox_{{my_id}}" id="compliant_tbd_{{my_id}}" tabindex="0"><label>?</label>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+      {{else}}
+      <label>n/a</label>
       {{/if}}
     </td>
   </tr>
