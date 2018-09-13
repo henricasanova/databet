@@ -195,8 +195,25 @@ Template.OfferedCourseSyllabusRow.helpers({
 
   "syllabus_compliant_tbd": function() {
     let offered_course_id = Template.instance().offered_course._id;
-    return (OfferedCourses.findOne({"_id": offered_course_id}).syllabus_compliant === "tbd");  }
+    return (OfferedCourses.findOne({"_id": offered_course_id}).syllabus_compliant === "tbd");
+    },
 
+    "row_color": function() {
+      let offered_course_id = Template.instance().offered_course._id;
+
+      if (OfferedCourses.findOne({"_id":Template.instance().offered_course._id}).syllabus) {
+
+        if (OfferedCourses.findOne({"_id": offered_course_id}).syllabus_compliant === "no") {
+          return "error";
+        }
+        if (OfferedCourses.findOne({"_id": offered_course_id}).syllabus_compliant === "tbd") {
+          return "warning";
+        }
+        return "";
+      } else {
+        return "error";
+      }
+    }
 
 });
 

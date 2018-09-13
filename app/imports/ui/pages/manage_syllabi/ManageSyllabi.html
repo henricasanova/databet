@@ -41,7 +41,7 @@
         </tr>
       </table>
     </div>
-    <table class="ui table">
+    <table class="ui celled table">
       <thead>
       <tr>
         <th class="one wide">Semester</th>
@@ -67,7 +67,7 @@
 
 <template name="OfferedCourseSyllabusRow">
 
-  <tr>
+  <tr class="{{row_color}}">
     <td>{{ semesterString }}</td>
     <td>{{ courseAlpha }}</td>
     <td>{{ courseInstructor }}</td>

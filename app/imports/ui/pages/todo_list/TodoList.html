@@ -84,14 +84,14 @@
     <td class="right aligned">
       <a class="button circular ui icon green"
          href="{{pathFor 'AssessmentItems'}}/{{this._id}}">
-        <i class="ui icon folder open outline"></i>&nbsp;Assess</a>
+        <i class="ui icon folder open"></i>&nbsp;Assess</a>
       {{#if is_there_at_least_one_assessment_item}}
       <button class="button circular ui icon red archive_course" id="{{this._id}}">
-        <i class="ui icon folder closed outline"></i>&nbsp;Finalize
+        <i class="ui icon folder closed"></i>&nbsp;Finalize
       </button>
       {{else}}
       <button class="button circular ui icon red archive_course disabled" id="{{this._id}}">
-        <i class="ui icon folder closed outline"></i>&nbsp;Finalize
+        <i class="ui icon folder closed"></i>&nbsp;Finalize
       </button>
       {{/if}}
     </td>
