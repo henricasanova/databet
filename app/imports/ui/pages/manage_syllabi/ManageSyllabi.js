@@ -240,7 +240,7 @@ Template.OfferedCourseSyllabusRow.events({
     UploadedFiles.insert_document(fileObj, new_file_id, prefix);
 
     // Update the offered course
-    OfferedCourses.update_document(Template.instance().offered_course._id, {"syllabus": new_file_id});
+    OfferedCourses.update_document(Template.instance().offered_course._id, {"syllabus": new_file_id, "syllabus_compliant": "tbd"});
 
     Template.instance().previously_uploaded_syllabus.set(new_file_id);
     Template.instance().new_selected_syllabus_file.set(null);
