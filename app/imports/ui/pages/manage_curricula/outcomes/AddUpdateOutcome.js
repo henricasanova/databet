@@ -161,7 +161,8 @@ Template.AddUpdateOutcome.events({
       var outcome = {
         "description": description,
         "curriculum": curriculumId,
-        "order": order
+        "order": order,
+        "critical": false
       };
 
       StudentOutcomes.insert_document(outcome);
