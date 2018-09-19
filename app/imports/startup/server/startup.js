@@ -50,11 +50,18 @@ function update_critical_student_outcomes() {
 
 function fix_db_in_ad_hoc_ways() {
 
-  let ocs = OfferedCourses.find({}).fetch();
+  let ocs = PerformanceIndicators.find({}).fetch();
   for (let i=0; i < ocs.length; i++) {
     let compliant = ocs[i].syllabus_compliant;
     if (compliant === undefined) {
       OfferedCourses.update({"_id": ocs[i]._id}, {$set: {"syllabus_compliant": "tbd"}});
+    }
+  }
+
+  let sos = StudentOutcomes.find({}).fetch();
+  for (let i=0; i < sos.length; i++) {
+    if (sos[i].critical == undefined) {
+      StudentOutcomes.update({"_id": sos[i]._id}, {$set: {"critical": false}});
     }
   }
 

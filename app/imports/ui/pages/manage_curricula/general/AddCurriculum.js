@@ -130,8 +130,10 @@ function clone_curriculum(sourceCurriculumId, destCurriculumId) {
       "_id": Random.id(),
       "description": to_clone_outcomes[i].description,
       "curriculum": destCurriculumId,
-      "order": to_clone_outcomes[i].order
+      "order": to_clone_outcomes[i].order,
+      "critical": to_clone_outcomes[i].critical,
     };
+
     StudentOutcomes.insert_document(cloned_outcome);
     // Clone performance indicators
     var to_clone_pis = PerformanceIndicators.find({"student_outcome": to_clone_outcomes[i]._id}).fetch();
